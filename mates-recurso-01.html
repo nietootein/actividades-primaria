@@ -1,0 +1,1374 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>La Noche de los Números · Matemáticas 5.º</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=Nunito:wght@500;700;800;900&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎃%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --night:#150b29;--night2:#21123d;--plum:#2d1a50;--card:#251641;--card2:#2f1d52;--line:#4b3478;
+  --moon:#fff1c1;--pumpkin:#ff8a24;--pumpkin2:#ffb347;--gold:#ffd54a;--potion:#8be36b;--rose:#ff6f91;--lilac:#b892ff;
+  --text:#f7efe0;--muted:#c4b4e2;--ink:#1a0f2e;
+  --display:'Mystery Quest','Georgia',serif;--body:'Nunito','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--night2);scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;min-height:100vh;font-family:var(--body);font-weight:700;color:var(--text);font-size:17px;line-height:1.5;
+  background:radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 72% 9%,#fff9 50%,transparent 51%),radial-gradient(1px 1px at 38% 62%,#fff6 50%,transparent 51%),radial-gradient(1.2px 1.2px at 86% 44%,#fff7 50%,transparent 51%),radial-gradient(1px 1px at 55% 30%,#fff5 50%,transparent 51%),radial-gradient(1px 1px at 22% 84%,#fff5 50%,transparent 51%),
+  radial-gradient(ellipse at 85% -10%,#4a2a7a 0%,transparent 55%),linear-gradient(180deg,var(--night) 0%,var(--night2) 100%);background-attachment:fixed;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:10px}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:1.15;margin:0 0 .3em}
+h1{font-size:clamp(1.7rem,4.5vw,2.6rem);color:var(--moon)}
+h2{font-size:clamp(1.5rem,3.6vw,2rem);color:var(--moon)}
+h3{margin:.2em 0;font-weight:900}
+p{margin:.4em 0}
+.nb{font-variant-numeric:tabular-nums;color:var(--pumpkin2);font-weight:900;white-space:nowrap}
+.lead{color:var(--muted);max-width:62ch}
+.note{color:var(--muted);font-size:.9rem}
+.center{text-align:center;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+/* cabecera */
+.top{position:sticky;top:0;z-index:20;background:rgba(21,11,41,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top-in{max-width:1080px;margin:0 auto;padding:8px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:1.25rem;color:var(--moon);margin-right:auto}
+.brand .bi{width:34px;height:34px;display:inline-block}.brand svg{width:100%;height:100%}
+.pill{display:inline-flex;align-items:center;gap:4px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 6px;font-weight:900;font-variant-numeric:tabular-nums}
+.pill span:first-child{width:26px;height:26px;display:inline-block}.pill svg{width:100%;height:100%}
+.pill.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.18)}}
+.icon-btn{background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:800;font-size:.92rem}
+.icon-btn:hover{background:var(--card2)}
+
+main{max-width:1080px;margin:0 auto;padding:18px 14px 50px}
+
+/* botones */
+.btn{background:linear-gradient(180deg,var(--pumpkin2),var(--pumpkin));color:var(--ink);border:0;border-radius:14px;padding:11px 20px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 #a8480a;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #a8480a}
+.btn:disabled{filter:grayscale(.8) brightness(.7);cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--text);border:2px solid var(--line);box-shadow:none}
+.btn.ghost:hover{background:var(--card2)}
+.btn.danger{background:var(--rose);box-shadow:0 4px 0 #a33456}
+.btn.sm{padding:7px 14px;font-size:.92rem;border-radius:11px}
+.linkb{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.9rem;padding:4px}
+
+/* bienvenida */
+.welcome{position:relative;text-align:center;padding:30px 10px 10px;display:flex;flex-direction:column;align-items:center}
+.w-moon{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffbe8,var(--moon) 55%,#f0d98c);box-shadow:0 0 80px 20px rgba(255,241,193,.25);margin-bottom:-60px}
+.w-cast{display:flex;gap:4px;justify-content:center;align-items:flex-end;position:relative;margin-bottom:14px}
+.wc{display:block;width:clamp(58px,13vw,96px)}.wc svg{width:100%;display:block}
+.wc0{transform:translateY(-14px)}.wc1{transform:translateY(-40px)}.wc4{width:clamp(70px,15vw,112px)}
+@media (prefers-reduced-motion:no-preference){.wc0{animation:float 4s ease-in-out infinite}.wc1{animation:float 3s ease-in-out infinite .5s}}
+@keyframes float{50%{translate:0 -8px}}
+.welcome h1{font-size:clamp(2.2rem,7vw,3.6rem);color:var(--pumpkin2);text-shadow:0 3px 0 #6b2b05,0 0 30px rgba(255,138,36,.45)}
+.namebox{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:18px;margin:16px auto 6px;max-width:520px;width:100%}
+.namebox label{display:block;font-family:var(--display);font-size:1.4rem;color:var(--moon);margin-bottom:8px}
+.nrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.nrow input{flex:1 1 200px;min-width:0;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--night);font-size:1.1rem}
+.gen{border:0;padding:0;margin:14px 0 0;min-width:0}
+.gen legend{font-family:var(--display);font-size:1.25rem;color:var(--moon);margin:0 auto 8px;padding:0}
+.gen-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.namebox .gen-row label{position:relative;cursor:pointer;display:inline-block;margin:0;font-family:var(--body);font-size:1rem;color:var(--text)}
+.gen-row input{position:absolute;opacity:0;width:1px;height:1px}
+.gen-row span{display:inline-block;padding:8px 20px;border-radius:999px;background:var(--night);border:2px solid var(--line);font-weight:900}
+.gen-row input:checked+span{background:var(--pumpkin);color:var(--ink);border-color:var(--pumpkin2)}
+.gen-row input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+
+/* mapa */
+.maphead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.map{position:relative;aspect-ratio:1000/620;border-radius:22px;overflow:hidden;border:2px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.map>svg{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;transform:translate(-50%,-62%);background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;width:clamp(40px,7.4vw,74px)}
+.pin-ico{width:100%;aspect-ratio:1;display:block;border-radius:50%;filter:drop-shadow(0 0 10px rgba(255,138,36,.45));transition:transform .15s}
+.pin-ico svg{width:100%;height:100%;display:block}
+.pin:hover .pin-ico{transform:scale(1.1)}
+.pin.freed .pin-ico{filter:drop-shadow(0 0 12px rgba(255,213,74,.75))}
+.pin.boss{width:clamp(48px,9vw,90px)}
+.pin.locked .pin-ico{color:var(--muted);background:var(--card2);border:2px solid var(--line);padding:22%;filter:none}
+.pin-n{position:absolute;top:-2px;left:-4px;background:var(--moon);color:var(--ink);border-radius:50%;width:clamp(16px,2.4vw,22px);height:clamp(16px,2.4vw,22px);font-size:clamp(.62rem,1.4vw,.8rem);font-weight:900;display:grid;place-items:center;box-shadow:0 0 0 2px var(--ink)}
+.pin-st{display:flex;gap:1px;margin-top:-2px}.pin-st svg{width:clamp(9px,1.6vw,15px)}
+svg.on path{fill:var(--gold);stroke:#7a4b00;stroke-width:1.2}svg.off path{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.3);stroke-width:1.2}
+.sech{margin-top:26px}
+.zones{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.zone{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px}
+.zone.zboss{background:linear-gradient(135deg,#3a1f6b,#251641);border-color:var(--lilac)}
+.zone.locked{opacity:.75}
+.z-ico{flex:0 0 64px;height:64px}.z-ico svg{width:100%;height:100%}
+.sil svg{filter:brightness(0) opacity(.45)}
+.z-body{flex:1;min-width:0}.z-body h3{font-size:1.02rem;color:var(--moon)}.z-body p{margin:.1em 0;color:var(--muted);font-size:.9rem}
+.z-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.stars{display:flex;gap:2px}.stars svg{width:20px}
+
+/* juego */
+.playhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.ph-l{display:flex;align-items:center;gap:10px}.ph-ico{width:54px;height:54px;flex:0 0 54px}.ph-ico svg{width:100%;height:100%}
+.playhead h1{font-size:clamp(1.3rem,3.4vw,1.9rem);margin:0}.playhead p{margin:0;color:var(--muted);font-size:.92rem}
+.streak{display:inline-block;margin-left:8px;background:var(--card2);border:1px solid var(--pumpkin);color:var(--pumpkin2);border-radius:999px;padding:0 9px;font-size:.82rem}
+.hearts{display:flex;gap:3px}.hearts svg{width:30px}.hearts svg.on path{fill:var(--rose);stroke:#7a1d3a}
+.prog{display:flex;gap:4px;margin:6px 0 12px;flex-wrap:wrap}
+.pp{width:clamp(26px,6vw,38px);aspect-ratio:1;display:block;opacity:.4;filter:grayscale(1)}
+.pp svg{width:100%;height:100%}
+.pp.ok{opacity:1;filter:none}.pp.ko{opacity:.55;filter:grayscale(1) brightness(.55)}.pp.cur{opacity:1;filter:none;transform:translateY(-3px);border-bottom:3px solid var(--pumpkin);border-radius:4px}
+.qcard{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:clamp(16px,3vw,26px);box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.qk{margin:0 0 6px;color:var(--lilac);font-size:.9rem;font-weight:800}
+.qq{font-size:clamp(1.08rem,2.4vw,1.28rem);line-height:1.55;margin-bottom:12px}
+.qq .say{display:block;margin-top:8px;padding:10px 14px;border-left:4px solid var(--pumpkin);background:var(--night);border-radius:0 12px 12px 0;color:var(--moon);font-style:italic}
+.expr,.cmpq{display:inline-block;font-variant-numeric:tabular-nums;font-size:1.25em;font-weight:900;color:var(--moon);background:var(--night);border:1px solid var(--line);border-radius:12px;padding:4px 14px;margin:4px 0;letter-spacing:.02em;white-space:nowrap}
+.cmpq .box{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border:2px dashed var(--pumpkin);border-radius:8px;color:var(--pumpkin2);margin:0 .3em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips span{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-variant-numeric:tabular-nums;font-weight:900}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:9px;margin:4px 0 6px}
+.opt{text-align:left;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:11px 14px;cursor:pointer;font-weight:800;line-height:1.35;font-variant-numeric:tabular-nums}
+.opt:hover:not(:disabled){border-color:var(--lilac)}
+.opt[aria-checked="true"]{border-color:var(--pumpkin);background:#43275f;box-shadow:inset 0 0 0 1px var(--pumpkin)}
+.opt.right{border-color:var(--potion);background:#24442a}.opt.wrong{border-color:var(--rose);background:#4a1f35}
+.opt:disabled{cursor:default}
+.parts{display:flex;flex-direction:column;gap:10px}
+.numrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.numrow label{flex:0 1 min(48%,330px);color:var(--muted);font-size:.98rem}
+.mulhold{display:flex;justify-content:flex-end;max-width:520px}
+.mulparts{max-width:520px}
+.mulparts .numrow{justify-content:space-between}
+.mulparts .numin{margin-right:calc(var(--sh,0) * .62em)}
+.mulparts .numrow.total{border-top:3px solid var(--moon);padding-top:10px;margin-top:2px}
+@media (max-width:560px){.numrow label{flex-basis:100%}.mulparts .numrow label{flex-basis:auto;flex:1}}
+.inw{display:inline-flex;align-items:center;gap:6px}
+.numin{width:9.5ch;padding:9px 12px;border-radius:12px;border:2px solid var(--line);background:var(--night);font-size:1.25rem;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+.numin.wide{width:13ch}
+.numin:focus{border-color:var(--pumpkin);outline:none;box-shadow:0 0 0 3px rgba(255,138,36,.35)}
+.numin.right,.gc.right{border-color:var(--potion);background:#1f3a24}.numin.wrong,.gc.wrong{border-color:var(--rose);background:#3f1a2d}
+.sol{flex-basis:100%;margin:0;color:var(--potion);font-size:.95rem}.sol:empty{display:none}
+.unit{color:var(--muted)}
+
+.cuenta{display:inline-flex;background:var(--night);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin:0 0 12px;font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:900;color:var(--moon);letter-spacing:.18em}
+.mulbox{flex-direction:column;align-items:flex-end;min-width:9ch}.mulbox .op{color:var(--pumpkin2);margin-right:.5em}.mulbox .line{align-self:stretch;border-top:3px solid var(--moon);margin-top:4px}
+.divbox{align-items:flex-start;gap:6px}.divbox .dd{padding:2px 10px 2px 0}.divbox .ds{border-left:3px solid var(--moon)}.divbox .dv{border-bottom:3px solid var(--moon);padding:2px 10px}.divbox .dq{padding:2px 10px;color:var(--pumpkin2)}
+
+.gridw{overflow-x:auto;padding:4px 0}
+.grid{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:900;margin:0 auto 0 0}
+.grid td{width:1.7em;height:1.7em;text-align:center;padding:0;color:var(--moon)}
+.grid td.sg{color:var(--pumpkin2);width:1.2em}.grid td.cm{width:.7em;color:var(--pumpkin2)}.grid td.gh{color:#6c5a92}
+.grid tr.ln td{height:6px;border-top:3px solid var(--moon)}
+.gc{width:1.45em;height:1.6em;text-align:center;border-radius:8px;border:2px solid var(--line);background:var(--night);font-weight:900;font-size:1em;padding:0;caret-color:var(--pumpkin)}
+.gc:focus{border-color:var(--pumpkin);outline:none;box-shadow:0 0 0 3px rgba(255,138,36,.35)}
+.gnote{margin:6px 0 0;font-size:.82rem;color:var(--muted)}
+
+.steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.steps li{display:flex;gap:12px}
+.sn{flex:0 0 34px;height:34px;border-radius:50%;background:var(--pumpkin);color:var(--ink);font-weight:900;display:grid;place-items:center;font-size:1.05rem}
+.steps li>div{flex:1;min-width:0}.steps h3{color:var(--moon);font-size:1.05rem}.steps .sub{color:var(--muted);font-size:.93rem;margin:.1em 0 .5em}
+
+.hintbox{margin-top:12px;background:#2c2150;border:1px dashed var(--lilac);border-radius:14px;padding:10px 14px;color:var(--text)}
+.fb{margin-top:12px;border-radius:16px}.fb:empty{display:none}
+.fb.good,.fb.bad,.fb.warn{padding:12px 16px}
+.fb.good{background:#1d3a24;border:2px solid var(--potion)}.fb.bad{background:#3d1a2e;border:2px solid var(--rose)}.fb.warn{background:#3a2a10;border:2px solid var(--gold)}
+.fbt{font-weight:900;font-size:1.08rem;margin:0 0 4px}.exp{color:#efe6d6;line-height:1.6}
+.acts{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+/* rincón */
+.friends{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.friend{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;text-align:center}
+.f-art{width:110px;height:110px;margin:0 auto}.f-art svg{width:100%;height:100%}
+.friend h3{color:var(--moon)}.friend p{color:var(--muted);font-size:.9rem}
+
+/* capas */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(10,4,22,.78);display:grid;place-items:center;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));overflow:auto}
+.ov-card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:22px;max-width:520px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);max-height:calc(100vh - 32px);overflow:auto}
+.ov-card.wide{max-width:780px;text-align:left}
+.big-stars{display:flex;gap:8px;justify-content:center;margin:8px 0}.big-stars svg{width:56px}
+.gain{color:var(--gold)}
+.free-art{width:150px;height:150px;margin:0 auto}.free-art svg{width:100%;height:100%}
+@media (prefers-reduced-motion:no-preference){.free-art{animation:pop .7s cubic-bezier(.3,1.6,.5,1)}}
+@keyframes pop{0%{transform:scale(.2) rotate(-20deg);opacity:0}100%{transform:none;opacity:1}}
+.book h2{text-align:center}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px;margin:8px 0}
+.tab{flex:0 0 auto;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;font-weight:800;font-size:.9rem}
+.tab[aria-selected="true"]{background:var(--pumpkin);color:var(--ink);border-color:var(--pumpkin)}
+.bookc h3{color:var(--pumpkin2);margin-top:14px}.bookc p{line-height:1.6}
+.bookc .eq{background:var(--night);border-left:4px solid var(--lilac);padding:8px 12px;border-radius:0 10px 10px 0;font-variant-numeric:tabular-nums}
+.tblw{overflow-x:auto}
+.pv{border-collapse:collapse;margin:6px 0;font-variant-numeric:tabular-nums}
+.pv th,.pv td{border:1px solid var(--line);padding:4px 8px;text-align:center;font-size:.9rem}
+.pv th{background:var(--card2);color:var(--moon)}.pv tr.ex td{color:var(--pumpkin2);font-weight:900;font-size:1.1rem}
+
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;background:var(--moon);color:var(--ink);padding:10px 18px;border-radius:14px;font-weight:900;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{transform:translate(-50%,0);opacity:1}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  .brand>span:last-child{font-size:1.02rem}
+  .icon-btn{padding:4px 9px;font-size:.84rem}
+  .pin-n{display:none}
+  .acts .btn{flex:1}
+  .grid{font-size:1.2rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand" id="brand"></div>
+  <span class="pill" title="Caramelos"><span id="candyIco"></span><span id="candy">0</span></span>
+  <button class="icon-btn" id="mapBtn" type="button" hidden>Mapa</button>
+  <button class="icon-btn" id="nestBtn" type="button" hidden>Amigos</button>
+  <button class="icon-btn" id="bookBtn" type="button" hidden>Grimorio</button>
+  <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true">Sonido: sí</button>
+</div></header>
+<main id="app"></main>
+<div id="ovRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<script>
+/* =========================================================
+   NÚCLEO MATEMÁTICO Y GENERADORES (sin DOM)
+   ========================================================= */
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const P10=e=>Math.pow(10,e);
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+
+/* ---------- formato español ---------- */
+function fmtInt(n){const s=String(Math.trunc(Math.abs(n)));return (n<0?'−':'')+(s.length>=4?s.replace(/\B(?=(\d{3})+(?!\d))/g,'.'):s)}
+// v entero con e decimales; fix=true mantiene todos los decimales
+function fmtS(v,e,fix){
+  if(e===0)return fmtInt(v);
+  const neg=v<0;v=Math.abs(v);
+  const ip=Math.floor(v/P10(e));let d=String(v%P10(e)).padStart(e,'0');
+  if(!fix)d=d.replace(/0+$/,'');
+  return (neg?'−':'')+fmtInt(ip)+(d?','+d:'');
+}
+const fmtM=m=>fmtS(m,3);              // milésimas → texto
+const fmtX=x=>fmtS(Math.round(x*1000),3); // número JS (≤3 decimales)
+const M=x=>Math.round(x*1000);        // número → milésimas
+
+/* ---------- lectura de números ---------- */
+const UN=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+const DE=['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+const CE=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+// modo: 'm' (uno), 'a' (apócope: un, veintiún), 'f' (femenino: una, veintiuna, doscientas)
+function w99(r,mode){
+  if(r<30){
+    if(r===1)return mode==='a'?'un':mode==='f'?'una':'uno';
+    if(r===21)return mode==='a'?'veintiún':mode==='f'?'veintiuna':'veintiuno';
+    return UN[r];
+  }
+  const t=Math.floor(r/10),u=r%10;
+  if(!u)return DE[t];
+  return DE[t]+' y '+(u===1?(mode==='a'?'un':mode==='f'?'una':'uno'):UN[u]);
+}
+function w999(n,mode){
+  const h=Math.floor(n/100),r=n%100;let s='';
+  if(h){s=h===1?(r?'ciento':'cien'):(mode==='f'?CE[h].replace('ientos','ientas'):CE[h])}
+  if(r)s+=(s?' ':'')+w99(r,mode);
+  return s;
+}
+function words(n){
+  if(n===0)return 'cero';
+  const mi=Math.floor(n/1e6),th=Math.floor(n/1000)%1000,re=n%1000;const p=[];
+  if(mi)p.push(mi===1?'un millón':w999(mi,'a')+' millones');
+  if(th)p.push(th===1?'mil':w999(th,'a')+' mil');
+  if(re)p.push(w999(re,'m'));
+  return p.join(' ');
+}
+const PLACE_DEC=['','décima','centésima','milésima'];
+// lectura escolar de un decimal: v entero con e decimales (e=1..3), parte entera 2..999
+function wordsDec(v,e){
+  const ip=Math.floor(v/P10(e)),dp=v%P10(e);
+  const a=ip===1?'una unidad':w999(ip,'f')+' unidades';
+  if(!dp)return a;
+  const b=dp===1?'una '+PLACE_DEC[e]:w999(dp,'f')+' '+PLACE_DEC[e]+'s';
+  return a+' y '+b;
+}
+
+/* ---------- lectura de entradas ---------- */
+function parseNum(str,expectInt){
+  let s=String(str).trim().replace(/[\s€]/g,'').replace(/[’']/g,'');
+  if(!s)return NaN;
+  if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.')}
+  else if(/^\d{1,3}(\.\d{3})+$/.test(s)){if(expectInt||(s.match(/\./g)||[]).length>1)s=s.replace(/\./g,'')}
+  if(!/^\d+(\.\d+)?$/.test(s)&&!/^\d*\.\d+$/.test(s))return NaN;
+  return parseFloat(s);
+}
+const decimalsTyped=str=>{const s=String(str).trim().replace(/\s/g,'');const i=s.indexOf(',')>=0?s.indexOf(','):s.lastIndexOf('.');return i<0?0:s.length-i-1};
+const near=(a,b)=>Math.abs(a-b)<1e-9*Math.max(1,Math.abs(b));
+
+/* ---------- evaluador exacto de expresiones (fracciones) ---------- */
+function fr(n,d=1){if(d<0){n=-n;d=-d}const g=gcd(n,d)||1;return {n:n/g,d:d/g}}
+const fadd=(a,b)=>fr(a.n*b.d+b.n*a.d,a.d*b.d),fsub=(a,b)=>fr(a.n*b.d-b.n*a.d,a.d*b.d),fmul=(a,b)=>fr(a.n*b.n,a.d*b.d),fdiv=(a,b)=>fr(a.n*b.d,a.d*b.n);
+// devuelve {v:fracción, ok:bool, steps:[...]} ; ok=false si hay restas negativas, divisiones no exactas (modo natural) o división entre 0
+function evalExpr(src,natural){
+  const toks=src.replace(/\s+/g,'').match(/\d+(?:\.\d{3})*(?:,\d+)?|[+−×:()]/g);
+  let i=0,ok=true;const steps=[];
+  const num=t=>{let [a,b='']=t.replace(/\./g,'').split(',');return fr(parseInt(a+b,10),P10(b.length))};
+  const show=f=>f.d===1?fmtInt(f.n):(Number.isInteger(f.n*1000/f.d)?fmtM(f.n*1000/f.d):f.n+'/'+f.d);
+  function prim(){const t=toks[i++];if(t==='('){const v=sum();i++;return v}return num(t)}
+  function prod(){let v=prim();while(toks[i]==='×'||toks[i]===':'){const o=toks[i++],w=prim();
+      if(o==='×'){const r=fmul(v,w);steps.push(show(v)+' × '+show(w)+' = '+show(r));v=r}
+      else{if(w.n===0){ok=false;return v}const r=fdiv(v,w);if(natural&&r.d!==1)ok=false;steps.push(show(v)+' : '+show(w)+' = '+show(r));v=r}}
+    return v}
+  function sum(){let v=prod();while(toks[i]==='+'||toks[i]==='−'){const o=toks[i++],w=prod();
+      const r=o==='+'?fadd(v,w):fsub(v,w);if(r.n<0)ok=false;steps.push(show(v)+' '+o+' '+show(w)+' = '+show(r));v=r}
+    return v}
+  const v=sum();
+  return {v,ok:ok&&i===toks.length,steps,val:v.n/v.d};
+}
+
+/* ---------- utilidades de números ---------- */
+const PLN=['unidades','decenas','centenas','unidades de millar','decenas de millar','centenas de millar','unidades de millón','decenas de millón','centenas de millón'];
+const PLN1=['unidad','decena','centena','unidad de millar','decena de millar','centena de millar','unidad de millón','decena de millón','centena de millón'];
+const digitsOf=n=>String(n).split('').map(Number);
+function randNat(len,zeroP=.3){let s=String(R(1,9));for(let i=1;i<len;i++)s+=Math.random()<zeroP?'0':String(R(1,9));return parseInt(s,10)}
+// variantes cercanas para distractores: intercambia cifras vecinas distintas
+function variants(n,count){
+  const s=String(n),out=new Set();
+  for(let i=0;i<s.length-1;i++){if(s[i]!==s[i+1]){const t=s.slice(0,i)+s[i+1]+s[i]+s.slice(i+2);if(t[0]!=='0')out.add(parseInt(t,10))}}
+  for(let k=0;k<20&&out.size<count+4;k++){const i=R(1,s.length-1);const t=s.slice(0,i)+String((+s[i]+R(1,9))%10)+s.slice(i+1);out.add(parseInt(t,10))}
+  out.delete(n);return shuffle([...out]).slice(0,count);
+}
+function decompose(n){const s=String(n),L=s.length,p=[];for(let i=0;i<L;i++)if(s[i]!=='0')p.push(fmtInt(+s[i]*P10(L-1-i)));return p.join(' + ')}
+function roundTo(v,unit){return Math.floor((v+unit/2)/unit)*unit} // redondeo hacia arriba en el 5 (enteros no negativos)
+
+/* ---------- construcción de preguntas ----------
+   Cada pregunta: {k:etiqueta, q:enunciado html, parts:[...], exp:explicación html, hint}
+   part choice: {t:'c', opts:[html], ans:índice}
+   part num:    {t:'n', label, ans:número, alts:[...], int:bool, check?:fn(str)->bool, show:texto respuesta}
+   part grid:   {t:'g', a,b (enteros), e (decimales), ea, eb, op:'+'|'-'}
+*/
+function choice(correct,wrongs){
+  const w=[...new Set(wrongs)].filter(x=>x!==correct);
+  const opts=shuffle([correct,...w]);return {t:'c',opts,ans:opts.indexOf(correct)};
+}
+const num=(ans,o={})=>({t:'n',ans,alts:o.alts||[],int:Number.isInteger(ans),label:o.label||'',show:o.show||fmtX(ans),unit:o.unit||'',check:o.check,wide:o.wide});
+const B=s=>`<b class="nb">${s}</b>`;
+
+/* ======================= ZONA 1: NATURALES ======================= */
+const NAT=[
+ function lectura(){
+   const n=randNat(R(7,9),.35);const w=variants(n,3);
+   return {k:'Lectura de números naturales',q:`¿Cómo se lee el número ${B(fmtInt(n))}?`,parts:[choice(words(n),w.map(words))],
+     exp:`${fmtInt(n)} se lee «${words(n)}». Separa por clases: millones, millares y unidades, y lee cada grupo.`,hint:'Separa el número en grupos de tres cifras empezando por la derecha: millones, miles y unidades.'};
+ },
+ function escritura(){
+   const n=randNat(R(7,9),.4);
+   return {k:'Escritura de números naturales',q:`Escribe con cifras: <span class="say">${words(n)}</span>`,parts:[num(n,{wide:1})],
+     exp:`Se escribe ${B(fmtInt(n))}. Fíjate en los ceros: guardan el sitio de los órdenes que no se nombran.`,hint:'Escribe primero los millones, luego los miles (siempre tres cifras) y luego las unidades (otras tres).'};
+ },
+ function valorPos(){
+   let n,d,pos,s;
+   for(;;){n=randNat(R(7,9),.15);s=String(n);const cand=[...new Set(s)].filter(c=>c!=='0'&&s.split(c).length===2);if(cand.length){d=+pick(cand);pos=s.length-1-s.indexOf(String(d));if(pos>=2)break}}
+   const v=d*P10(pos);
+   return {k:'Valor posicional',q:`¿Qué valor tiene la cifra ${B(d)} en el número ${B(fmtInt(n))}? Escríbelo en unidades.`,parts:[num(v,{wide:1})],
+     exp:`La cifra ${d} ocupa el lugar de las ${PLN[pos]}, así que vale ${d} ${pos===0?'':PLN[pos]+' = '}${B(fmtInt(v))} unidades.`,hint:'Cuenta los lugares desde la derecha: U, D, C, UM, DM, CM, U. de millón…'};
+ },
+ function queCifra(){
+   const n=randNat(R(8,9),.25),s=String(n);const pos=R(3,s.length-1);const d=+s[s.length-1-pos];
+   return {k:'Órdenes de unidades',q:`En el número ${B(fmtInt(n))}, ¿qué cifra ocupa el lugar de las ${B(PLN[pos])}?`,parts:[num(d)],
+     exp:`Contando desde la derecha, el lugar de las ${PLN[pos]} es el ${pos+1}.º: la cifra es ${B(d)}.`,hint:'Unidades, decenas y centenas se repiten en cada clase: primero las sencillas, luego las de millar y luego las de millón.'};
+ },
+ function desdeOrdenes(){
+   const n=randNat(R(7,9),.45),s=String(n),L=s.length;const terms=[];
+   for(let i=0;i<L;i++)if(s[i]!=='0'){const p=L-1-i;terms.push(`${s[i]} ${+s[i]===1?PLN1[p]:PLN[p]}`)}
+   return {k:'Descomposición',q:`Escribe el número que forman: <span class="say">${shuffle(terms).join(' + ')}</span>`,parts:[num(n,{wide:1})],
+     exp:`Colocando cada cifra en su lugar (y ceros en los huecos) sale ${B(fmtInt(n))}.`,hint:'¡Cuidado! Los órdenes están desordenados. Empieza por el mayor y rellena con ceros los que faltan.'};
+ },
+ function descAditiva(){
+   const n=randNat(R(7,8),.4);const w=variants(n,3);
+   return {k:'Descomposición',q:`¿Cuál es la descomposición correcta de ${B(fmtInt(n))}?`,parts:[choice(decompose(n),w.map(decompose))],
+     exp:`${fmtInt(n)} = ${decompose(n)}.`,hint:'Cada sumando tiene tantos ceros como lugares quedan a la derecha de su cifra.'};
+ },
+ function cuantasCompletas(){
+   const n=randNat(R(7,8),.25);const pos=pick([1,2,3,4]);const v=Math.floor(n/P10(pos));
+   return {k:'Órdenes de unidades',q:`¿Cuántas ${B(PLN[pos])} hay en total en ${B(fmtInt(n))}?`,parts:[num(v,{wide:1})],
+     exp:`Tapa las ${pos} última${pos>1?'s':''} cifra${pos>1?'s':''}: lo que queda, ${B(fmtInt(v))}, son las ${PLN[pos]} completas que contiene.`,hint:'No es solo la cifra de ese lugar: cuenta también todas las que están a su izquierda.'};
+ },
+ function ordenesMezclados(){
+   const a=R(2,9),bp=pick([4,5]),b=R(11,49),c=R(11,99),cp=pick([1,2]);
+   const n=a*1e6+b*P10(bp)+c*P10(cp);
+   return {k:'Descomposición',q:`Reto: ¿qué número forman <span class="say">${a} unidades de millón + ${b} ${PLN[bp]} + ${c} ${PLN[cp]}</span>?`,parts:[num(n,{wide:1})],
+     exp:`${a} U. de millón = ${fmtInt(a*1e6)}; ${b} ${PLN[bp]} = ${fmtInt(b*P10(bp))}; ${c} ${PLN[cp]} = ${fmtInt(c*P10(cp))}. Sumando: ${B(fmtInt(n))}.`,hint:'Pasa cada parte a unidades (añade ceros) y luego súmalas.'};
+ }
+];
+
+/* ======================= ZONA 2: DECIMALES ======================= */
+function randDec(e,ipMin=2,ipMax=99,noEndOne=true){
+  for(;;){const ip=R(ipMin,ipMax);const dp=R(1,P10(e)-1);if(dp%10===0)continue;if(noEndOne&&(dp%10===1||ip%10===1))continue;return ip*P10(e)+dp}
+}
+const DEC=[
+ function lecturaDec(){
+   const e=pick([2,3]),v=randDec(e,2,60);const ip=Math.floor(v/P10(e)),dp=v%P10(e);
+   const cand=[];
+   // misma parte decimal leída con otro orden, cifras movidas…
+   for(const e2 of [1,2,3])if(e2!==e&&dp<P10(e2))cand.push([ip*P10(e2)+dp,e2]);
+   const s=String(dp).padStart(e,'0');
+   const sw=s.split('').reverse().join('');if(sw!==s&&+sw%10)cand.push([ip*P10(e)+(+sw),e]);
+   cand.push([(ip+10)*P10(e)+dp,e]);
+   const seen=new Set([wordsDec(v,e)]);const wr=[];
+   for(const [w,ee] of shuffle(cand)){const t=wordsDec(w,ee);if(!seen.has(t)&&Math.abs(w/P10(ee)-v/P10(e))>1e-9){seen.add(t);wr.push(t)}if(wr.length===3)break}
+   while(wr.length<3){const w=randDec(e,2,60);const t=wordsDec(w,e);if(!seen.has(t)){seen.add(t);wr.push(t)}}
+   return {k:'Lectura de decimales',q:`¿Cómo se lee ${B(fmtS(v,e))}?`,parts:[choice(wordsDec(v,e),wr)],
+     exp:`${fmtS(v,e)} → ${wordsDec(v,e)}. La última cifra decimal está en las ${PLACE_DEC[e]}s.`,hint:'Mira en qué lugar está la ÚLTIMA cifra decimal: ese es el nombre de la parte decimal.'};
+ },
+ function escrituraDec(){
+   const e=pick([2,3,3]),v=randDec(e,2,90);
+   return {k:'Escritura de decimales',q:`Escribe con cifras: <span class="say">${wordsDec(v,e)}</span>`,parts:[num(v/P10(e),{dec:1})],
+     exp:`Se escribe ${B(fmtS(v,e,true))}. ${String(v%P10(e)).length<e?'Hay que poner ceros para que la última cifra caiga en las '+PLACE_DEC[e]+'s.':''}`,hint:`Las ${PLACE_DEC[e]}s necesitan ${e} cifras detrás de la coma.`};
+ },
+ function valorDec(){
+   let v,s,d,pos;
+   for(;;){v=R(1000,99999);s=String(v);const cand=[...new Set(s.slice(-3))].filter(c=>c!=='0'&&s.split(c).length===2);if(cand.length){d=pick(cand);pos=s.length-1-s.indexOf(d);break}}
+   const val=+d*P10(pos)/1000;const nm=pos>=3?PLN[pos-3]:PLACE_DEC[3-pos]+'s';
+   return {k:'Valor de las cifras decimales',q:`¿Qué valor tiene la cifra ${B(d)} en ${B(fmtS(v,3,true))}? Escríbelo como número.`,parts:[num(val,{dec:1})],
+     exp:`La cifra ${d} está en las ${nm}: vale ${B(fmtX(val))}.`,hint:'Primer lugar tras la coma: décimas (0,1); segundo: centésimas (0,01); tercero: milésimas (0,001).'};
+ },
+ function ordenesDec(){
+   const v=randDec(3,10,99,false),s=String(v).padStart(5,'0');
+   const names=['decenas','unidades','décimas','centésimas','milésimas'];const t=[];
+   for(let i=0;i<5;i++)if(s[i]!=='0')t.push(`${s[i]} ${+s[i]===1?names[i].replace(/s$/,'').replace('decena','decena').replace('unidade','unidad'):names[i]}`);
+   return {k:'Descomposición de decimales',q:`Escribe el número decimal que forman: <span class="say">${shuffle(t).join(' + ')}</span>`,parts:[num(v/1000,{dec:1})],
+     exp:`Colocando cada cifra en su lugar: ${B(fmtM(v))}.`,hint:'Coloca la coma después de las unidades y rellena con ceros los huecos.'};
+ },
+ function equivalencias(){
+   const T=[
+    ()=>{const x=R(2,48);return [`¿Cuántas ${B('milésimas')} son ${B(x+' centésimas')}?`,x*10,`1 centésima = 10 milésimas, así que ${x} centésimas = ${B(fmtInt(x*10))} milésimas.`]},
+    ()=>{const v=R(201,999);if(v%100<10)return null;return [`¿Cuántas ${B('centésimas')} hay en total en ${B(fmtS(v,2))}?`,v,`${fmtS(v,2)} = ${B(fmtInt(v))} centésimas (quita la coma: las centésimas son la última cifra).`]},
+    ()=>{const v=R(21,99);if(v%10===0)return null;return [`¿Cuántas ${B('décimas')} son ${B(fmtS(v,1)+' unidades')}?`,v,`1 unidad = 10 décimas, así que ${fmtS(v,1)} unidades = ${B(v)} décimas.`]},
+    ()=>{const v=R(1001,9999);if(v%10===0)return null;return [`Escribe como número decimal ${B(fmtInt(v)+' milésimas')}.`,v/1000,`1.000 milésimas forman 1 unidad: ${fmtInt(v)} milésimas = ${B(fmtM(v))}.`]},
+    ()=>{const d=R(1,9);return [`¿Cuántas ${B('milésimas')} hay en ${B('0,'+d)}?`,d*100,`0,${d} = ${d} décimas = ${B(d*100)} milésimas.`]}
+   ];let r;do{r=pick(T)()}while(!r);
+   return {k:'Equivalencias decimales',q:r[0],parts:[num(r[1],{dec:!Number.isInteger(r[1])})],exp:r[2],hint:'1 unidad = 10 décimas = 100 centésimas = 1.000 milésimas.'};
+ },
+ function aditivaDec(){
+   const v=randDec(3,10,99,false);const s=String(v).padStart(5,'0');const vals=[];
+   const w=[10,1,.1,.01,.001];for(let i=0;i<5;i++)if(s[i]!=='0')vals.push(fmtX(+s[i]*w[i]));
+   if(vals.length<4)return DEC[5]();
+   return {k:'Descomposición de decimales',q:`Calcula: ${B(shuffle(vals).join(' + '))}`,parts:[num(v/1000,{dec:1})],
+     exp:`Cada sumando ocupa un lugar distinto: ${B(fmtM(v))}.`,hint:'Coloca cada sumando en su orden: decenas, unidades, décimas, centésimas, milésimas.'};
+ },
+ function dondeVale(){
+   const pl=pick([1,2,3]);const d=R(2,9);
+   const mk=p=>{let s;for(;;){const arr=[R(1,9),R(0,9),R(0,9),R(0,9)].map(String);arr[p]=String(d);for(let i=0;i<4;i++)if(i!==p&&arr[i]===String(d))arr[i]=String((d+1+i)%10);s=arr.join('');if(s[0]!=='0'&&s[3]!=='0')break}return s};
+   const fm=s=>s[0]+','+s.slice(1);
+   const ok=fm(mk(pl));const wr=new Set();while(wr.size<3){const p=pick([0,1,2,3].filter(x=>x!==pl));const t=fm(mk(p));if(t!==ok)wr.add(t)}
+   return {k:'Valor de las cifras decimales',q:`¿En qué número la cifra ${B(d)} vale ${B(d+' '+PLACE_DEC[pl]+'s')}?`,parts:[choice(ok,[...wr])],
+     exp:`En ${ok} el ${d} está en el ${pl}.º lugar tras la coma: las ${PLACE_DEC[pl]}s.`,hint:'Cuenta los lugares después de la coma.'};
+ },
+ function iguales(){
+   const ip=R(2,30),d=R(1,9);const ok=pick([`${ip},${d}0`,`${ip},${d}00`]);
+   const wr=[`${ip},0${d}`,`${ip},00${d}`,`${ip}${d},0`].map(s=>s.replace(/^(\d+),0$/,'$1'));
+   return {k:'Decimales equivalentes',q:`¿Qué número es igual a ${B(ip+','+d)}?`,parts:[choice(ok,wr)],
+     exp:`Añadir ceros a la derecha de la última cifra decimal no cambia el valor: ${ip},${d} = ${B(ok)}. Si el cero va entre la coma y el ${d}, el valor cambia.`,hint:'Los ceros solo «no importan» si van al final de la parte decimal.'};
+ }
+];
+
+/* ======================= ZONA 3: APROXIMACIONES ======================= */
+const APR=[
+ function redNat(){
+   const L=R(6,8);let n=randNat(L,.15);const pos=R(1,Math.min(6,L-1));
+   if(Math.random()<.3){const s=String(n).split('');for(let i=s.length-pos;i<s.length-pos+1;i++)s[i-1]='9';n=+s.join('')}
+   const ans=roundTo(n,P10(pos));
+   return {k:'Aproximación de naturales',q:`Redondea ${B(fmtInt(n))} a las ${B(PLN[pos])}.`,parts:[num(ans,{wide:1})],
+     exp:`Miramos la cifra de la derecha de las ${PLN[pos]}: es ${String(n)[String(n).length-pos]}. ${+String(n)[String(n).length-pos]>=5?'Como es 5 o más, sumamos 1':'Como es menor que 5, se queda igual'} y el resto pasa a ceros: ${B(fmtInt(ans))}.`,hint:'Fíjate solo en la cifra que está justo a la derecha del lugar al que redondeas.'};
+ },
+ function redDec(){
+   const v=R(1001,99999);if(v%10===0)return APR[1]();
+   const to=pick([0,1,2]);const unit=P10(3-to);let ans=roundTo(v,unit);
+   const ctx=pick([['La bruja pesa su calabaza gigante: ',' kg'],['Una poción mide ',' litros'],['El caldero tiene ',' kg de caramelos'],['',''],['','']]);
+   const nm=['unidades','décimas','centésimas'][to];const s=fmtS(v,3,true);const nx=s.replace(/\./g,'').split(',');const next=to===0?nx[1][0]:nx[1][to];
+   return {k:'Aproximación de decimales',q:`${ctx[0]}${B(s+ctx[1])}. Redondea a las ${B(nm)}.`,parts:[num(ans/1000,{dec:1,show:fmtS(ans,3)})],
+     exp:`La cifra siguiente a las ${nm} es ${next}; ${+next>=5?'como es 5 o más, sube una':'como es menor que 5, se queda igual'}: ${B(fmtS(ans,3))}.`,hint:'Redondear a las décimas = quedarte con una cifra decimal; a las centésimas, con dos.'};
+ },
+ function cualRedondea(){
+   const target=R(12,98)*1000;const ok=target-500+R(0,999);
+   const wr=[target+500+R(0,400),target-500-R(1,400),target-1500+R(0,999)].map(x=>x===ok?x+1:x);
+   return {k:'Aproximación de naturales',q:`¿Qué número, redondeado a las ${B('unidades de millar')}, da ${B(fmtInt(target))}?`,parts:[choice(fmtInt(ok),wr.map(fmtInt))],
+     exp:`${fmtInt(ok)} → la cifra de las centenas es ${String(ok).slice(-3)[0]}, así que queda en ${fmtInt(target)}. Los números que redondean a ${fmtInt(target)} van del ${fmtInt(target-500)} al ${fmtInt(target+499)}.`,hint:'Redondea cada opción mirando la cifra de las centenas.'};
+ },
+ function estimaSuma(){
+   const op=pick(['+','−','×']);let a,b,ra,rb,ans,txt;
+   if(op==='×'){a=R(112,989);b=R(12,98);ra=roundTo(a,100);rb=roundTo(b,10);if(ra===0||rb===0)return APR[3]();ans=ra*rb;txt=`el primer factor a las ${B('centenas')} y el segundo a las ${B('decenas')}`}
+   else{a=R(2100,9800);b=R(1100,a-500);const u=pick([100,1000]);ra=roundTo(a,u);rb=roundTo(b,u);if(op==='−'&&rb>=ra)return APR[3]();ans=op==='+'?ra+rb:ra-rb;txt=`cada número a las ${B(u===100?'centenas':'unidades de millar')}`}
+   return {k:'Estimación',q:`Estima el resultado redondeando ${txt}: ${B(fmtInt(a)+' '+op+' '+fmtInt(b))}`,parts:[num(ans,{wide:1})],
+     exp:`${fmtInt(a)} ≈ ${fmtInt(ra)} y ${fmtInt(b)} ≈ ${fmtInt(rb)}. Estimación: ${fmtInt(ra)} ${op} ${fmtInt(rb)} = ${B(fmtInt(ans))}. (El resultado exacto sería ${fmtInt(op==='+'?a+b:op==='−'?a-b:a*b)}.)`,hint:'Primero redondea cada número; después opera con los números redondeados.'};
+ },
+ function mayorMenor(){
+   const pos=pick([2,3,4]);const u=P10(pos);const t=R(11,95)*u;const big=Math.random()<.5;
+   const ans=big?t+u/2-1:t-u/2;
+   return {k:'Aproximación de naturales',q:`Reto: ¿cuál es el ${B(big?'mayor':'menor')} número natural que, redondeado a las ${B(PLN[pos])}, da ${B(fmtInt(t))}?`,parts:[num(ans,{wide:1})],
+     exp:`Redondean a ${fmtInt(t)} todos los números desde ${fmtInt(t-u/2)} hasta ${fmtInt(t+u/2-1)} (el ${fmtInt(t+u/2)} ya sube). El ${big?'mayor':'menor'} es ${B(fmtInt(ans))}.`,hint:'Piensa en la mitad del camino: el 5 ya redondea hacia arriba.'};
+ },
+ function redEuros(){
+   const v=R(1005,9995);if(v%10===0||v%100===50)return APR[5]();
+   const ans=roundTo(v,100);
+   return {k:'Aproximación de decimales',q:`Un disfraz de vampiro cuesta ${B(fmtS(v,2,true)+' €')}. Redondea el precio a los ${B('euros')} (unidades).`,parts:[num(ans/100,{show:fmtInt(ans/100)})],
+     exp:`Miramos las décimas: ${String(v).slice(-2)[0]}. ${+String(v).slice(-2)[0]>=5?'Sube a':'Se queda en'} ${B(fmtInt(ans/100)+' €')}.`,hint:'Para redondear a las unidades mira la primera cifra después de la coma.'};
+ },
+ function intervaloDec(){
+   const v=R(201,999);if(v%10===0)return APR[6]();const r=roundTo(v,10);
+   const ok=fmtS(v,2);const wr=new Set();
+   while(wr.size<3){const w=pick([r+5+R(0,4),r-5-R(1,4),r+10*pick([1,-1])+R(-4,4)]);if(w>100&&w%10!==0&&roundTo(w,10)!==r)wr.add(fmtS(w,2))}
+   return {k:'Aproximación de decimales',q:`¿Qué número, redondeado a las ${B('décimas')}, da ${B(fmtS(r,2,true).replace(/0$/,''))}?`,parts:[choice(ok,[...wr])],
+     exp:`${ok} → la cifra de las centésimas es ${String(v).slice(-1)}, así que queda en ${fmtS(r,2,true).replace(/0$/,'')}.`,hint:'Redondea cada opción mirando la segunda cifra decimal.'};
+ }
+];
+
+/* ======================= ZONA 4: COMPARACIÓN ======================= */
+function trickyDecs(k){
+  const ip=R(1,40);const set=new Map();
+  while(set.size<k){const e=pick([1,2,3]);let d=R(1,P10(e)-1);if(d%10===0)continue;const m=ip*1000+d*P10(3-e);if(!set.has(m))set.set(m,fmtS(ip*P10(e)+d,e,true))}
+  return [...set.entries()];
+}
+const CMP=[
+ function mayor(){
+   let L;do{L=trickyDecs(4)}while(false);
+   const big=Math.random()<.5;const sorted=L.slice().sort((a,b)=>a[0]-b[0]);const ok=big?sorted[3]:sorted[0];
+   return {k:'Comparación de decimales',q:`¿Cuál es el número ${B(big?'mayor':'menor')}?`,parts:[choice(ok[1],L.filter(x=>x!==ok).map(x=>x[1]))],
+     exp:`Igualamos las cifras decimales con ceros: ${sorted.map(x=>fmtS(x[0],3,true)).join(' &lt; ')}. El ${big?'mayor':'menor'} es ${B(ok[1])}.`,hint:'Añade ceros para que todos tengan tres cifras decimales y compara cifra a cifra.'};
+ },
+ function signo(){
+   const T=pick(['eq','lt','gt','gt','lt']);let a,b,sa,sb;
+   const ip=R(0,30);
+   if(T==='eq'){const d=R(1,9),e=R(1,2);sa=`${ip},${d}`;sb=`${ip},${d}${'0'.repeat(e)}`;if(Math.random()<.5)[sa,sb]=[sb,sa];a=b=0}
+   else{
+     const d=R(1,8),x=R(1,9);sa=`${ip},${d}${x}`;sb=`${ip},${d+1}`;const k=Math.random();
+     if(k<.33){sa=`${ip},0${x}`;sb=`${ip},${x}`}
+     else if(k<.66){sa=`${ip},${d}${R(5,9)}${R(1,9)}`;sb=`${ip},${d+1}`}
+     if(T==='gt')[sa,sb]=[sb,sa];
+   }
+   const va=parseNum(sa),vb=parseNum(sb);const ok=near(va,vb)?'=':va<vb?'&lt;':'&gt;';
+   return {k:'Comparación de decimales',q:`Elige el signo correcto: <span class="cmpq">${sa} <span class="box">?</span> ${sb}</span>`,parts:[choice(ok,['&lt;','&gt;','='].filter(x=>x!==ok))],
+     exp:`${sa} ${ok} ${sb}. ${ok==='='?'Los ceros a la derecha de la parte decimal no cambian el valor.':'Compara primero la parte entera y después décimas, centésimas y milésimas, en ese orden.'}`,hint:'No gana el que tiene más cifras: compara lugar a lugar empezando por las décimas.'};
+ },
+ function ordenar(){
+   const L=trickyDecs(4);const asc=L.slice().sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+   const perms=new Set([asc.join(' &lt; ')]);
+   while(perms.size<4){const p=shuffle(asc);perms.add(p.join(' &lt; '))}
+   const all=[...perms];
+   return {k:'Ordenar decimales',q:`¿Qué orden de ${B('menor a mayor')} es correcto?`,parts:[choice(all[0],all.slice(1))],
+     exp:`Con tres cifras decimales: ${L.slice().sort((a,b)=>a[0]-b[0]).map(x=>fmtS(x[0],3,true)).join(' &lt; ')}.`,hint:'Escribe todos con tres decimales en tu cuaderno y ordénalos como números enteros.'};
+ },
+ function entreDos(){
+   const e=pick([1,2]);const ip=R(1,40);const d=R(1,P10(e)-2);const a=ip*P10(e)+d,b=a+1;const want=e+1;
+   const lo=a/P10(e),hi=b/P10(e);
+   return {k:'Intercalar decimales',q:`Escribe un número con ${B(want+' cifras decimales')} que esté entre ${B(fmtS(a,e,true))} y ${B(fmtS(b,e,true))}.`,
+     parts:[num(lo,{dec:1,show:`por ejemplo ${fmtS(a*10+5,want,true)}`,check:s=>{const v=parseNum(s,false);if(isNaN(v))return false;const k=decimalsTyped(s);const lastNonZero=String(s).trim().slice(-1)!=='0';return k===want&&lastNonZero&&v>lo+1e-12&&v<hi-1e-12}})],
+     exp:`Añade una cifra más: entre ${fmtS(a,e,true)} (= ${fmtS(a*10,want,true)}) y ${fmtS(b,e,true)} (= ${fmtS(b*10,want,true)}) están ${fmtS(a*10+1,want,true)}, ${fmtS(a*10+2,want,true)}… hasta ${fmtS(a*10+9,want,true)}.`,hint:`Escribe los dos números con ${want} decimales añadiendo un cero. ¿Qué hay entre ellos?`};
+ },
+ function puntoMedio(){
+   const e=pick([1,2]);const a=R(11,P10(e)*30);if(a%10===0)return CMP[4]();
+   const mid=(2*a+1)*5;// en escala e+1
+   return {k:'Intercalar decimales',q:`¿Qué número está ${B('justo en el medio')} entre ${B(fmtS(a,e,true))} y ${B(fmtS(a+1,e,true))}?`,parts:[num(mid/P10(e+1),{dec:1,show:fmtS(mid,e+1)})],
+     exp:`${fmtS(a,e,true)} = ${fmtS(a*10,e+1,true)} y ${fmtS(a+1,e,true)} = ${fmtS(a*10+10,e+1,true)}. El del medio es ${B(fmtS(mid,e+1))}.`,hint:'Añade un cero a los dos números. ¿Qué número queda justo en la mitad?'};
+ },
+ function cuantosMayores(){
+   const ip=R(1,20),d=R(2,8);const ref=ip*1000+d*100;
+   const pool=[ref-10+R(1,9),ref+R(1,9),ref,ref*1,ref+100,ref-100+R(1,99),ip*1000+R(1,9)*10+d,ref+R(1,9)*10,ref-1];
+   const L=shuffle([...new Set(pool)]).slice(0,6);
+   const show=m=>{const opts=[fmtM(m)];if(m===ref)opts.push(fmtS(m,3,true).replace(/0$/,''));return pick(opts)};
+   const shown=L.map(show);const cnt=L.filter(m=>m>ref).length;
+   return {k:'Comparación de decimales',q:`¿Cuántos de estos números son ${B('mayores que '+fmtM(ref))}?<div class="chips">${shown.map(s=>`<span>${s}</span>`).join('')}</div>`,parts:[num(cnt)],
+     exp:`Son mayores: ${L.filter(m=>m>ref).map(fmtM).join(', ')||'ninguno'}. Total: ${B(cnt)}. ${L.includes(ref)?'Ojo: '+fmtM(ref)+' escrito con ceros es igual, no mayor.':''}`,hint:'Escríbelos todos con tres decimales. Un número igual NO es mayor.'};
+ },
+ function intervaloChoice(){
+   const ip=R(1,30),d=R(1,8),y=R(1,8);const a=ip*100+d*10+y,b=a+1; // centésimas
+   const ok=fmtS(a*10+R(1,9),3,true);
+   const wr=[fmtS(a*10-R(1,9),3,true),fmtS(b,2,true),fmtS(ip*10+d+1,1,true)].filter(x=>x!==ok);
+   return {k:'Intercalar decimales',q:`¿Qué número es mayor que ${B(fmtS(a,2,true))} y menor que ${B(fmtS(b,2,true))}?`,parts:[choice(ok,wr)],
+     exp:`${fmtS(a,2,true)} = ${fmtS(a*10,3,true)} y ${fmtS(b,2,true)} = ${fmtS(b*10,3,true)}. Solo ${B(ok)} está entre los dos.`,hint:'Pasa todos a milésimas.'};
+ }
+];
+
+/* ======================= ZONA 5: SUMAS Y RESTAS ======================= */
+function decN(e,ipMin,ipMax){for(;;){const v=R(ipMin,ipMax)*P10(e)+(e?R(1,P10(e)-1):0);if(e===0||v%10)return v}}
+const SUM=[
+ function columnaSuma(){
+   const ea=R(0,3),eb=R(1,3);const a=decN(ea,100,9999),b=decN(eb,10,999);
+   const e=Math.max(ea,eb);const A=a*P10(e-ea),Bv=b*P10(e-eb);
+   return {k:'Suma en columna',q:`Coloca bien la coma y calcula la suma. Escribe una cifra en cada casilla, de derecha a izquierda.`,parts:[{t:'g',op:'+',a,b,ea,eb,e,res:A+Bv}],
+     exp:`${fmtS(a,ea,true)} + ${fmtS(b,eb,true)} = ${B(fmtS(A+Bv,e,true))}. Las comas van en columna y los huecos de la derecha valen 0.`,hint:'Suma columna a columna desde la derecha y no te olvides de las llevadas.'};
+ },
+ function columnaResta(){
+   const ea=R(0,1),eb=R(2,3);let a=decN(ea,40,999),b=decN(eb,10,Math.floor(a/P10(ea))-1);
+   const e=Math.max(ea,eb);const A=a*P10(e-ea),Bv=b*P10(e-eb);if(Bv>=A)return SUM[1]();
+   return {k:'Resta en columna',q:`Coloca bien la coma y calcula la resta. Escribe una cifra en cada casilla, de derecha a izquierda.`,parts:[{t:'g',op:'−',a,b,ea,eb,e,res:A-Bv}],
+     exp:`${fmtS(a,ea,true)} − ${fmtS(b,eb,true)}: completamos el minuendo con ceros (${fmtS(A,e,true)}) y restamos: ${B(fmtS(A-Bv,e,true))}.`,hint:'Rellena el minuendo con ceros hasta tener las mismas cifras decimales que el sustraendo.'};
+ },
+ function restaGrande(){
+   const a=R(1000000,9999999),b=R(100000,a-1);
+   return {k:'Resta de naturales',q:`Calcula: ${B(fmtInt(a)+' − '+fmtInt(b))}`,parts:[num(a-b,{wide:1})],
+     exp:`${fmtInt(a)} − ${fmtInt(b)} = ${B(fmtInt(a-b))}. Prueba: ${fmtInt(a-b)} + ${fmtInt(b)} = ${fmtInt(a)}.`,hint:'Hazla en el cuaderno colocando las unidades debajo de las unidades. Comprueba con la prueba de la resta.'};
+ },
+ function tresSumandos(){
+   const xs=[decN(2,10,99),decN(1,1,9),decN(3,100,999)];const tot=xs[0]*10+xs[1]*100+xs[2];
+   return {k:'Suma de decimales',q:`Calcula: ${B(fmtS(xs[0],2,true)+' + '+fmtS(xs[1],1,true)+' + '+fmtS(xs[2],3,true))}`,parts:[num(tot/1000,{dec:1})],
+     exp:`Con tres decimales: ${fmtS(xs[0]*10,3,true)} + ${fmtS(xs[1]*100,3,true)} + ${fmtS(xs[2],3,true)} = ${B(fmtM(tot))}.`,hint:'Escríbelos en columna con las comas alineadas.'};
+ },
+ function termino(){
+   const t=pick(['suma','resta1','resta2']);let q,ans,exp;
+   if(t==='suma'){const s=R(5,30)*100,a=decN(2,1,s/100-1);ans=s-a;q=`? + ${fmtS(a,2,true)} = ${fmtInt(s/100)}`;exp=`El término que falta es ${fmtInt(s/100)} − ${fmtS(a,2,true)} = ${B(fmtS(ans,2))}.`}
+   else if(t==='resta1'){const m=decN(1,20,99)*10,r=decN(2,1,Math.floor(m/100)-2);ans=m-r;q=`${fmtS(m/10,1,true)} − ? = ${fmtS(r,2,true)}`;exp=`El sustraendo es ${fmtS(m/10,1,true)} − ${fmtS(r,2,true)} = ${B(fmtS(ans,2))}.`}
+   else{const s=decN(2,1,50),r=decN(2,1,50);ans=s+r;q=`? − ${fmtS(s,2,true)} = ${fmtS(r,2,true)}`;exp=`El minuendo es ${fmtS(r,2,true)} + ${fmtS(s,2,true)} = ${B(fmtS(ans,2))}.`}
+   return {k:'Término desconocido',q:`¿Qué número falta? <span class="cmpq">${q}</span>`,parts:[num(ans/100,{dec:1})],exp,hint:'Usa la operación contraria: la suma y la resta se deshacen la una a la otra.'};
+ },
+ function prueba(){
+   const a=R(2000,9999),b=R(1000,a-500),c=a-b;
+   const ok=`${fmtInt(c)} + ${fmtInt(b)} = ${fmtInt(a)}`;
+   return {k:'Prueba de la resta',q:`Se ha calculado ${B(fmtInt(a)+' − '+fmtInt(b)+' = '+fmtInt(c))}. ¿Qué operación sirve de ${B('prueba')}?`,
+     parts:[choice(ok,[`${fmtInt(a)} + ${fmtInt(b)} = ${fmtInt(a+b)}`,`${fmtInt(c)} − ${fmtInt(b)} = ${fmtInt(Math.abs(c-b))}`,`${fmtInt(a)} + ${fmtInt(c)} = ${fmtInt(a+c)}`])],
+     exp:`La prueba de la resta: diferencia + sustraendo = minuendo → ${B(ok)}.`,hint:'La resta se comprueba con una suma. ¿Qué dos números deben sumarse para volver al primero?'};
+ },
+ function sumaNat(){
+   const a=R(100000,999999),b=R(10000,99999),c=R(1000000,4999999);
+   return {k:'Suma de naturales',q:`Calcula: ${B(fmtInt(c)+' + '+fmtInt(a)+' + '+fmtInt(b))}`,parts:[num(a+b+c,{wide:1})],
+     exp:`${fmtInt(c)} + ${fmtInt(a)} + ${fmtInt(b)} = ${B(fmtInt(a+b+c))}.`,hint:'Coloca los tres números en columna, alineados por las unidades.'};
+ }
+];
+
+/* ======================= ZONA 6: MULTIPLICACIÓN ======================= */
+const MUL=[
+ function larga(){
+   const a=R(1200,9899);let m;do{m=R(123,989)}while(String(m).includes('0'));
+   const md=digitsOf(m).reverse();const parts=md.map(d=>a*d);
+   return {k:'Multiplicación por tres cifras',q:`Multiplica paso a paso.`,layout:{type:'mul',a:fmtInt(a).replace(/\./g,''),b:String(m)},
+     parts:[...parts.map((p,i)=>num(p,{label:`${fmtInt(a)} × ${md[i]}${i?` (${i===1?'decenas: corre un lugar':'centenas: corre dos lugares'})`:''}`,alts:[p*P10(i)],show:fmtInt(p)})),num(a*m,{label:'Producto final',wide:1})],
+     exp:`Productos parciales: ${parts.map(fmtInt).join(', ')} (cada uno corrido un lugar a la izquierda). Total: ${B(fmtInt(a*m))}.`,hint:'Cada fila empieza debajo de la cifra por la que multiplicas.'};
+ },
+ function conCeros(){
+   const a=R(201,9809);const m=pick([R(1,9)*100+R(1,9),R(1,9)*100+R(1,9)*10,R(10,99)*10+0]);const am=String(a).includes('0')?a:a;
+   return {k:'Multiplicación por tres cifras',q:`Calcula: ${B(fmtInt(am)+' × '+fmtInt(m))}`,parts:[num(am*m,{wide:1})],
+     exp:`${fmtInt(am)} × ${fmtInt(m)} = ${B(fmtInt(am*m))}. Cuando el multiplicador tiene un cero, puedes saltar esa fila, pero ¡corre un lugar más!`,hint:'Cuidado con el cero del multiplicador: su fila serían todo ceros.'};
+ },
+ function decPorNat(){
+   const e=pick([1,2]);const a=decN(e,1,99);const m=R(12,98);const p=a*m;
+   return {k:'Decimal por natural',q:`Calcula: ${B(fmtS(a,e,true)+' × '+m)}`,parts:[num(p/P10(e),{dec:1,show:fmtS(p,e)})],
+     exp:`Multiplica sin coma: ${a} × ${m} = ${fmtInt(p)}. Separa ${e} cifra${e>1?'s':''} decimal${e>1?'es':''}: ${B(fmtS(p,e))}.`,hint:'Multiplica como si no hubiera coma y luego separa tantos decimales como tenga el factor.'};
+ },
+ function decPorDec(){
+   const ea=R(1,2),eb=3-ea===0?1:R(1,3-ea);const a=decN(ea,1,29),b=decN(eb,1,9);const p=a*b,e=ea+eb;
+   return {k:'Decimal por decimal',q:`Calcula: ${B(fmtS(a,ea,true)+' × '+fmtS(b,eb,true))}`,parts:[num(p/P10(e),{dec:1,show:fmtS(p,e)})],
+     exp:`Sin comas: ${a} × ${b} = ${fmtInt(p)}. Entre los dos factores hay ${e} decimales: ${B(fmtS(p,e,true))}${fmtS(p,e,true)!==fmtS(p,e)?' = '+fmtS(p,e):''}.`,hint:'Suma las cifras decimales de los dos factores: esas tendrá el producto.'};
+ },
+ function porUnidad(){
+   const k=pick([1,2,3]);const e=pick([1,2,3]);const a=decN(e,0,99);const p=a*P10(k);const t=Math.random()<.7;
+   if(t)return {k:'Multiplicar por 10, 100 y 1.000',q:`Calcula: ${B(fmtS(a,e,true)+' × '+fmtInt(P10(k)))}`,parts:[num(p/P10(e),{dec:p%P10(e)!==0,show:fmtS(p,e)})],
+     exp:`Multiplicar por ${fmtInt(P10(k))} desplaza la coma ${k} lugar${k>1?'es':''} a la derecha${k>e?' (añadiendo ceros)':''}: ${B(fmtS(p,e))}.`,hint:'La coma se mueve a la derecha tantos lugares como ceros tenga el 10, 100 o 1.000.'};
+   return {k:'Multiplicar por 10, 100 y 1.000',q:`¿Por qué número hay que multiplicar ${B(fmtS(a,e,true))} para obtener ${B(fmtS(p,e))}?`,parts:[num(P10(k))],
+     exp:`La coma se ha movido ${k} lugar${k>1?'es':''}: es × ${B(fmtInt(P10(k)))}.`,hint:'Cuenta cuántos lugares se ha movido la coma.'};
+ },
+ function dondeComa(){
+   const ea=1,eb=R(1,2);const a=decN(ea,1,49),b=decN(eb,1,9);const p=a*b;if(p%10===0)return MUL[5]();
+   const e=ea+eb;const opts=[0,1,2,3,4,5].filter(x=>x!==e&&x<=String(p).length).map(x=>fmtS(p,x,true));
+   return {k:'Decimal por decimal',q:`Sin comas, ${fmtInt(a)} × ${fmtInt(b)} = ${fmtInt(p)}. Entonces, ¿cuánto es ${B(fmtS(a,ea,true)+' × '+fmtS(b,eb,true))}?`,parts:[choice(fmtS(p,e,true),shuffle(opts).slice(0,3))],
+     exp:`${ea} + ${eb} = ${e} cifras decimales: ${B(fmtS(p,e,true))}.`,hint:'Cuenta las cifras decimales de cada factor y súmalas.'};
+ },
+ function largaDec(){
+   const a=decN(1,10,99);let m;do{m=R(123,989)}while(String(m).includes('0'));
+   const md=digitsOf(m).reverse();const parts=md.map(d=>a*d);const p=a*m;
+   return {k:'Multiplicación por tres cifras',q:`Multiplica paso a paso. Hazlo sin la coma y colócala al final.`,layout:{type:'mul',a:fmtS(a,1,true),b:String(m)},
+     parts:[...parts.map((x,i)=>num(x,{label:`${a} × ${md[i]}${i?` (corre ${i===1?'un lugar':'dos lugares'})`:''}`,alts:[x*P10(i)],show:fmtInt(x)})),num(p/10,{label:'Producto final (con coma)',dec:p%10!==0,show:fmtS(p,1)})],
+     exp:`Sin coma: ${a} × ${m} = ${fmtInt(p)}. El factor tiene 1 decimal: ${B(fmtS(p,1,true))}${p%10===0?' = '+fmtS(p,1):''}.`,hint:'Olvídate de la coma hasta el final; después separa una cifra decimal.'};
+ }
+];
+
+/* ======================= ZONA 7: DIVISIÓN ======================= */
+function divData(cLen){
+  for(;;){const d=R(12,98);const c=cLen===3?R(102,999):R(12,99);const r=R(0,d-1);const D=d*c+r;if(D>=1000&&D<=99999)return {D,d,c,r}}
+}
+const DIV=[
+ function pasoAPaso(){
+   const {D,d,c,r}=divData(pick([2,3,3]));
+   return {k:'División entre dos cifras',q:`Haz la división en tu cuaderno y completa.`,layout:{type:'div',D:fmtInt(D),d:String(d)},
+     parts:[num(String(c).length,{label:'¿Cuántas cifras tiene el cociente?'}),num(c,{label:'Cociente'}),num(r,{label:'Resto'})],
+     exp:`${fmtInt(D)} : ${d} → cociente ${B(c)}, resto ${B(r)}. Prueba: ${d} × ${c} + ${r} = ${fmtInt(D)}.`,hint:`Si ${d} no cabe en las dos primeras cifras, coge tres. Comprueba al final: divisor × cociente + resto = dividendo.`};
+ },
+ function exacta(){
+   const d=R(13,97),c=R(105,989);const D=d*c;
+   return {k:'División exacta',q:`Calcula: ${B(fmtInt(D)+' : '+d)} (es exacta)`,parts:[num(c)],
+     exp:`${fmtInt(D)} : ${d} = ${B(c)}, porque ${d} × ${c} = ${fmtInt(D)}.`,hint:'Comprueba tu resultado multiplicando el cociente por el divisor.'};
+ },
+ function restoImposible(){
+   const d=R(15,89);const t=Math.random()<.5;
+   if(t)return {k:'Propiedades de la división',q:`En una división, el divisor es ${B(d)}. ¿Cuál es el ${B('mayor resto')} posible?`,parts:[num(d-1)],
+     exp:`El resto siempre es menor que el divisor. El mayor posible es ${B(d-1)}.`,hint:'Si el resto fuera igual al divisor, ¡cabría una vez más!'};
+   const bad=d+R(0,9);
+   return {k:'Propiedades de la división',q:`En una división el divisor es ${B(d)}. ¿Cuál de estos restos es ${B('imposible')}?`,parts:[choice(String(bad),[String(d-1),String(R(1,d-2)),'0'])],
+     exp:`El resto tiene que ser menor que el divisor (${d}). ${bad} no puede ser resto.`,hint:'Compara cada resto con el divisor.'};
+ },
+ function hallarDividendo(){
+   const {D,d,c,r}=divData(pick([2,3]));
+   return {k:'Prueba de la división',q:`En una división el divisor es ${B(d)}, el cociente ${B(c)} y el resto ${B(r)}. ¿Cuál es el ${B('dividendo')}?`,parts:[num(D,{wide:1})],
+     exp:`Dividendo = divisor × cociente + resto = ${d} × ${c} + ${r} = ${B(fmtInt(D))}.`,hint:'Usa la prueba de la división.'};
+ },
+ function cifrasCociente(){
+   const {D,d,c}=divData(pick([2,3]));const L=String(c).length;
+   return {k:'División entre dos cifras',q:`Sin hacer la división, ¿cuántas cifras tendrá el cociente de ${B(fmtInt(D)+' : '+d)}?`,parts:[choice(String(L),['1','2','3','4'].filter(x=>+x!==L))],
+     exp:`${+String(D).slice(0,2)>=d?'El '+d+' cabe en '+String(D).slice(0,2)+', así que empezamos con dos cifras':'El '+d+' no cabe en '+String(D).slice(0,2)+', así que cogemos tres cifras ('+String(D).slice(0,3)+')'}. Por cada cifra que queda por bajar sale otra cifra: ${B(L)} cifras.`,hint:'Mira cuántas cifras tienes que coger al principio. Luego, cada cifra que bajas añade una al cociente.'};
+ },
+ function ceroCociente(){
+   const d=R(12,49);const c=R(1,9)*100+R(1,9);const r=R(0,d-1);const D=d*c+r;
+   return {k:'División entre dos cifras',q:`Calcula ${B(fmtInt(D)+' : '+d)}. ¡Atención al cero del cociente!`,layout:{type:'div',D:fmtInt(D),d:String(d)},
+     parts:[num(c,{label:'Cociente'}),num(r,{label:'Resto'})],
+     exp:`Cociente ${B(c)} y resto ${B(r)}. Cuando al bajar una cifra el divisor no cabe, se escribe un 0 en el cociente y se baja la siguiente.`,hint:'Si al bajar una cifra el divisor no cabe, escribe 0 en el cociente antes de bajar otra.'};
+ },
+ function repartoBolsas(){
+   const d=R(12,36),D=R(500,4999);const c=Math.floor(D/d),r=D%d;
+   return {k:'División entre dos cifras',q:`La bruja Morgana tiene ${B(fmtInt(D))} caramelos y los mete en bolsas de ${B(d)}. ¿Cuántas bolsas llena y cuántos caramelos le sobran?`,
+     parts:[num(c,{label:'Bolsas llenas'}),num(r,{label:'Caramelos que sobran'})],
+     exp:`${fmtInt(D)} : ${d} → cociente ${B(c)} (bolsas) y resto ${B(r)} (sobran).`,hint:'El cociente son las bolsas; el resto, lo que sobra.'};
+ }
+];
+
+/* ======================= ZONA 8: OPERACIONES COMBINADAS ======================= */
+const TPL=[
+  v=>`${v[0]} + ${v[1]} × ${v[2]} − ${v[3]}`,
+  v=>`${v[0]} − ${v[1]} × (${v[2]} − ${v[3]})`,
+  v=>`(${v[0]} + ${v[1]}) : ${v[2]} + ${v[3]} × ${v[4]}`,
+  v=>`${v[0]} × ${v[1]} − ${v[2]} : ${v[3]}`,
+  v=>`${v[0]} − (${v[1]} + ${v[2]}) : ${v[3]} × ${v[4]}`,
+  v=>`(${v[0]} − ${v[1]}) × (${v[2]} + ${v[3]}) : ${v[4]}`,
+  v=>`${v[0]} + ${v[1]} × ${v[2]} : ${v[3]} − ${v[4]}`,
+  v=>`${v[0]} : ${v[1]} × ${v[2]} + ${v[3]}`,
+  v=>`${v[0]} × (${v[1]} − ${v[2]} : ${v[3]}) − ${v[4]}`
+];
+function genExpr(){
+  for(let t=0;t<5000;t++){
+    const f=pick(TPL);const v=[R(10,99),R(2,15),R(2,15),R(2,12),R(2,9)];
+    if(Math.random()<.5)v[0]=R(2,15);
+    const s=f(v);const r=evalExpr(s,true);
+    if(r.ok&&r.v.d===1&&r.val>0&&r.val<=999&&r.steps.length>=3&&!r.steps.some(x=>/= [01]$/.test(x)))return {s,r};
+  }
+}
+const OPC=[
+ function combinada(){
+   const {s,r}=genExpr();
+   return {k:'Operaciones combinadas',q:`Calcula: <span class="expr">${s}</span>`,parts:[num(r.val)],
+     exp:`Orden: paréntesis → multiplicaciones y divisiones (de izquierda a derecha) → sumas y restas (de izquierda a derecha).<br>${r.steps.join('<br>')}<br>Resultado: ${B(fmtInt(r.val))}.`,hint:'Primero los paréntesis; luego × y : de izquierda a derecha; al final + y −.'};
+ },
+ function combinada2(){return OPC[0]()},
+ function primera(){
+   const T=[
+    ()=>{const a=R(10,40),b=R(2,9)*R(2,5),c=0;const bb=R(2,9),cc=R(2,9),dd=R(2,9);const B1=bb*cc;return [`${a} + ${B1} : ${cc} × ${dd}`,`${B1} : ${cc}`,[`${a} + ${B1}`,`${cc} × ${dd}`,`${a} + ${B1} : ${cc}`]]},
+    ()=>{const a=R(3,9),b=R(2,9),c=R(10,30),d=R(2,9);return [`${a} × ${b} − ${c} + ${d}`,`${a} × ${b}`,[`${c} + ${d}`,`${b} − ${c}`,`${a} × ${b} − ${c}`]]},
+    ()=>{const a=R(20,60),b=R(2,9),c=R(10,20),d=R(2,9);return [`${a} − ${b} × (${c} − ${d})`,`${c} − ${d}`,[`${a} − ${b}`,`${b} × ${c}`,`${a} − ${b} × ${c}`]]},
+    ()=>{const a=R(20,60),b=R(2,9),c=R(2,9),d=R(2,9);return [`${a} − ${b} + ${c} × ${d}`,`${c} × ${d}`,[`${a} − ${b}`,`${b} + ${c}`,`${a} − ${b} + ${c}`]]},
+    ()=>{const c=R(2,9),b=c*R(2,9),a=R(10,50),d=R(2,9);return [`${a} + ${d} × ${b} : ${c}`,`${d} × ${b}`,[`${b} : ${c}`,`${a} + ${d}`,`${a} + ${d} × ${b}`]]}
+   ];const [e,ok,wr]=pick(T)();
+   return {k:'Jerarquía de operaciones',q:`En <span class="expr">${e}</span>, ¿qué operación se hace ${B('en primer lugar')}?`,parts:[choice(ok,wr)],
+     exp:`Primero: ${B(ok)}. Los paréntesis van antes que nada; después, multiplicaciones y divisiones en el orden en que aparecen (de izquierda a derecha); al final, sumas y restas.`,hint:'Si hay × y : seguidas, gana la que está más a la izquierda.'};
+ },
+ function parentesis(){
+   for(let t=0;t<500;t++){
+     const a=R(2,12),b=R(2,12),c=R(2,12),d=R(2,9);
+     const plain=`${a} + ${b} × ${c} − ${d}`;
+     const forms=[`(${a} + ${b}) × ${c} − ${d}`,`${a} + ${b} × (${c} − ${d})`,`(${a} + ${b}) × (${c} − ${d})`,plain];
+     const ev=forms.map(f=>evalExpr(f,true));if(!ev.every(x=>x.ok&&x.val>0))continue;
+     if(new Set(ev.map(x=>x.val)).size<4)continue;
+     const target=pick([0,1,2]);const val=ev[target].val;
+     return {k:'Uso del paréntesis',q:`¿Dónde hay que poner paréntesis para que ${B(plain)} dé ${B(val)}?`,
+       parts:[choice(forms[target],forms.filter((_,i)=>i!==target).map(f=>f===plain?f+' (sin paréntesis)':f))],
+       exp:`${forms[target]}:<br>${ev[target].steps.join('<br>')}<br>= ${B(val)}. Sin paréntesis saldría ${ev[3].val}.`,hint:'Calcula cada opción. El paréntesis cambia qué se hace primero.'};
+   }
+ },
+ function decimalComb(){
+   for(let t=0;t<3000;t++){
+     const f=pick([v=>`${v[0]} × ${v[1]} + ${v[2]} : ${v[3]}`,v=>`${v[0]} − ${v[1]} × ${v[2]}`,v=>`(${v[0]} + ${v[1]}) × ${v[3]}`,v=>`${v[2]} : ${v[3]} + ${v[0]}`]);
+     const v=[fmtS(decN(1,1,9),1,true),String(R(2,9)),fmtS(decN(1,2,40),1,true),String(R(2,8))];
+     const s=f(v);const r=evalExpr(s,false);
+     if(!r.ok||r.val<=0)continue;const m=r.v.n*1000/r.v.d;if(!Number.isInteger(m))continue;
+     return {k:'Combinadas con decimales',q:`Calcula: <span class="expr">${s}</span>`,parts:[num(m/1000,{dec:1,show:fmtM(m)})],
+       exp:`${r.steps.join('<br>')}<br>Resultado: ${B(fmtM(m))}.`,hint:'Respeta la jerarquía igual que con naturales. Cuidado con la coma en cada paso.'};
+   }
+ },
+ function expresion(){
+   const name='{N}';const T=[
+    ()=>{const a=R(3,9),b=R(12,25),c=R(4,11);return [`${name} compra ${a} paquetes de ${b} caramelos y regala ${c}. ¿Qué expresión calcula los caramelos que le quedan?`,`${a} × ${b} − ${c}`,[`${a} × (${b} − ${c})`,`${a} + ${b} − ${c}`,`(${a} − ${c}) × ${b}`]]},
+    ()=>{const a=R(3,6),b=R(2,4)*a*R(2,5),c=R(2,5);return [`Hay ${b} calabazas y se reparten entre ${a} casas. Después, cada casa compra ${c} más. ¿Qué expresión indica las calabazas de cada casa?`,`${b} : ${a} + ${c}`,[`${b} : (${a} + ${c})`,`(${b} + ${c}) : ${a}`,`${b} − ${a} + ${c}`]]},
+    ()=>{const a=R(3,8),b=R(2,6),c=R(2,6);return [`Una bruja tiene ${a} gatos y ${b} murciélagos. Cada animal recibe ${c} galletas. ¿Qué expresión calcula el total de galletas?`,`(${a} + ${b}) × ${c}`,[`${a} + ${b} × ${c}`,`${a} × ${b} + ${c}`,`${a} × ${c} + ${b}`]]},
+    ()=>{const a=R(20,50),b=R(2,6),c=R(2,5);return [`${name} tiene ${a} €. Compra ${b} máscaras de ${c} € cada una. ¿Qué expresión calcula el dinero que le queda?`,`${a} − ${b} × ${c}`,[`(${a} − ${b}) × ${c}`,`${a} − ${b} + ${c}`,`${a} × ${b} − ${c}`]]}
+   ];const [q,ok,wr]=pick(T)();const ev=evalExpr(ok,true);
+   return {k:'Expresiones y problemas',q,parts:[choice(ok,wr)],
+     exp:`La expresión es ${B(ok)}${ev.ok?' = '+fmtX(ev.val):''}. ¡El paréntesis solo hace falta si una suma o resta debe hacerse antes!`,hint:'Piensa qué se calcula primero en la historia y comprueba si la jerarquía lo respeta.'};
+ }
+];
+
+/* ======================= ZONA 9: PROBLEMAS ======================= */
+// cada problema: plan (elegir) + resultados
+const PRO=[
+ function reparto(){
+   const a=R(3,6),b=R(110,190),c=R(2,4),d=R(60,95),e=R(15,32);const tot=a*b+c*d;const q=Math.floor(tot/e),r=tot%e;
+   return {k:'Resolución de problemas',prob:1,q:`Para la fiesta de Halloween, {N} compra ${B(a)} bolsas de ${B(b)} caramelos y ${B(c)} bolsas de ${B(d)} caramelos. Los reparte a partes iguales en ${B(e)} calabazas. ¿Cuántos caramelos pone en cada calabaza? ¿Cuántos le sobran?`,
+     plan:choice(`(${a} × ${b} + ${c} × ${d}) : ${e}`,[`${a} × ${b} + ${c} × ${d} : ${e}`,`(${a} + ${c}) × (${b} + ${d}) : ${e}`,`(${a} × ${b} + ${c} × ${d}) × ${e}`]),
+     parts:[num(q,{label:'Caramelos en cada calabaza'}),num(r,{label:'Caramelos que sobran'})],
+     exp:`Total: ${a} × ${b} + ${c} × ${d} = ${fmtInt(a*b)} + ${fmtInt(c*d)} = ${fmtInt(tot)} caramelos. Reparto: ${fmtInt(tot)} : ${e} = ${B(q)} y sobran ${B(r)}. Comprobación: ${e} × ${q} + ${r} = ${fmtInt(tot)}.`};
+ },
+ function vuelta(){
+   const ps=[decN(2,12,29),decN(2,4,9),decN(2,6,15)];const bill=pick([50,100]);const s=ps.reduce((x,y)=>x+y,0);if(s>=bill*100)return PRO[1]();
+   const [p1,p2,p3]=ps.map(x=>fmtS(x,2,true));
+   return {k:'Resolución de problemas',prob:1,q:`{N} compra un disfraz de {bruja|brujo} por ${B(p1+' €')}, un sombrero por ${B(p2+' €')} y una escoba por ${B(p3+' €')}. Paga con un billete de ${B(bill+' €')}. ¿Cuánto dinero le devuelven?`,
+     plan:choice(`${bill} − (${p1} + ${p2} + ${p3})`,[`${bill} − ${p1} + ${p2} + ${p3}`,`${p1} + ${p2} + ${p3} − ${bill}`,`${bill} + ${p1} + ${p2} + ${p3}`]),
+     parts:[num((bill*100-s)/100,{label:'Le devuelven (€)',dec:1,show:fmtS(bill*100-s,2,true)+' €'})],
+     exp:`Gasta ${p1} + ${p2} + ${p3} = ${fmtS(s,2,true)} €. Le devuelven ${bill} − ${fmtS(s,2,true)} = ${B(fmtS(bill*100-s,2,true)+' €')}. ¿Es razonable? Ha gastado unos ${Math.round(s/100)} €, así que le devuelven unos ${bill-Math.round(s/100)} €.`};
+ },
+ function datoSobra(){
+   const a=R(12,24),b=R(22,28),c=R(2,4);const h=`${R(17,19)}:${pick(['15','30','45'])}`;const ans=a*b*c;
+   return {k:'Resolución de problemas',prob:1,q:`En el colegio de {N} hay ${B(a)} clases de ${B(b)} alumnos. Cada alumno lleva ${B(c)} calabazas al concurso de Halloween, que empieza a las ${B(h)}. ¿Cuántas calabazas se presentan al concurso?`,
+     planQ:'¿Qué dato NO necesitas para resolverlo?',
+     plan:choice('La hora del concurso',['El número de clases','Los alumnos de cada clase','Las calabazas de cada alumno']),
+     parts:[num(ans,{label:'Calabazas en total'})],
+     exp:`La hora no influye en el número de calabazas. ${a} × ${b} = ${a*b} alumnos; ${a*b} × ${c} = ${B(fmtInt(ans))} calabazas.`};
+ },
+ function fabrica(){
+   const a=R(125,389),d=R(112,365),c=R(24,48);const tot=a*d;
+   return {k:'Resolución de problemas',prob:1,q:`Un taller fabrica ${B(a)} velas de calabaza cada día. Durante ${B(d)} días ha fabricado velas sin parar. Después las empaqueta en cajas de ${B(c)}. ¿Cuántas velas ha fabricado? ¿Cuántas cajas llena por completo?`,
+     planQ:'¿Qué estrategia sigues?',
+     plan:choice('Primero multiplico y después divido el total',['Primero divido y después multiplico','Sumo los tres números','Multiplico los tres números']),
+     parts:[num(tot,{label:'Velas fabricadas',wide:1}),num(Math.floor(tot/c),{label:'Cajas llenas'})],
+     exp:`${a} × ${d} = ${B(fmtInt(tot))} velas. ${fmtInt(tot)} : ${c} = ${B(fmtInt(Math.floor(tot/c)))} cajas llenas (sobran ${tot%c} velas).`};
+ },
+ function kilos(){
+   const ks=[decN(1,2,6),decN(1,2,6),decN(1,2,6)];const pr=decN(1,1,2);const s=ks.reduce((x,y)=>x+y,0);const t=s*pr;// escala 2
+   const [k1,k2,k3]=ks.map(x=>fmtS(x,1,true));const P=fmtS(pr,1,true);
+   return {k:'Resolución de problemas',prob:1,q:`En el mercado, el kilo de calabaza cuesta ${B(P+' €')}. {N} compra tres calabazas de ${B(k1+' kg')}, ${B(k2+' kg')} y ${B(k3+' kg')}. ¿Cuánto paga?`,
+     plan:choice(`(${k1} + ${k2} + ${k3}) × ${P}`,[`${k1} + ${k2} + ${k3} × ${P}`,`(${k1} + ${k2} + ${k3}) : ${P}`,`${k1} × ${k2} × ${k3} × ${P}`]),
+     parts:[num(t/100,{label:'Paga (€)',dec:1,show:fmtS(t,2,true)+' €'})],
+     exp:`Peso total: ${fmtS(s,1,true)} kg. Precio: ${fmtS(s,1,true)} × ${P} = ${B(fmtS(t,2,true)+' €')}. ¡Ojo! Sin paréntesis solo se multiplicaría la última calabaza.`};
+ },
+ function bolsasMin(){
+   for(;;){const need=R(11,48)*100+R(5,49);const per=pick([100,25,50]);const bags=Math.ceil(need/per);const near=Math.round(need/per);if(near===bags)continue;
+     return {k:'Resolución de problemas',prob:1,q:`Para la casa del terror se necesitan ${B(fmtInt(need))} caramelos. Solo se venden en bolsas de ${B(per)}. ¿Cuántas bolsas hay que comprar ${B('como mínimo')} para que no falte ninguno?`,
+       planQ:'¿Cómo interpretas el resultado de la división?',
+       plan:choice('Si sobra algo, hay que comprar una bolsa más',['Redondeo al número más cercano','Me quedo solo con el cociente','Multiplico el resto por las bolsas']),
+       parts:[num(bags,{label:'Bolsas'})],
+       exp:`${fmtInt(need)} : ${per} = ${Math.floor(need/per)} y sobran ${need%per}. Con ${Math.floor(need/per)} bolsas faltarían ${need%per} caramelos, así que hacen falta ${B(bags)} bolsas.`}}
+ },
+ function pesos(){
+   const base=R(10,19);const vals=shuffle([base*1000+R(1,9)*10,base*1000+R(1,9)*100,base*1000+R(1,99)]);
+   const nm=['Morgana','Brunilda','{N}'];const mx=Math.max(...vals),mn=Math.min(...vals);
+   if(new Set(vals).size<3)return PRO[6]();
+   const sh=vals.map(v=>fmtM(v));const iMx=vals.indexOf(mx),iMn=vals.indexOf(mn);
+   return {k:'Resolución de problemas',prob:1,q:`En el concurso de calabazas gigantes: la de Morgana pesa ${B(sh[0]+' kg')}, la de Brunilda ${B(sh[1]+' kg')} y la de {N} ${B(sh[2]+' kg')}. ¿Cuántos kilos le faltan a la más ligera para pesar lo mismo que la más pesada?`,
+     planQ:'¿Qué calabazas hay que restar?',
+     plan:choice(`La de ${nm[iMx]} menos la de ${nm[iMn]}`,[`La de ${nm[iMn]} menos la de ${nm[iMx]}`,...nm.filter((_,i)=>i!==iMx&&i!==iMn).map(n=>`La de ${nm[iMx]} menos la de ${n}`),'Las tres sumadas']),
+     parts:[num((mx-mn)/1000,{label:'Diferencia (kg)',dec:1,show:fmtM(mx-mn)+' kg'})],
+     exp:`Con tres decimales: ${vals.map(v=>fmtS(v,3,true)).join(', ')}. La más pesada es la de ${nm[iMx]} (${fmtM(mx)}) y la más ligera la de ${nm[iMn]} (${fmtM(mn)}). ${fmtM(mx)} − ${fmtM(mn)} = ${B(fmtM(mx-mn)+' kg')}.`};
+ },
+ function recaudacion(){
+   const n=R(800,1600),ad=R(250,600),pn=R(4,6),pa=R(7,9),g=R(30,49)*100;const tot=n*pn+ad*pa-g;if(tot<=0)return PRO[7]();
+   return {k:'Resolución de problemas',prob:1,q:`La entrada a la casa del terror cuesta ${B(pn+' €')} a los niños y ${B(pa+' €')} a los adultos. Han entrado ${B(fmtInt(n))} niños y ${B(ad)} adultos. Los gastos de la decoración fueron ${B(fmtInt(g)+' €')}. ¿Cuánto dinero han ganado?`,
+     plan:choice(`${fmtInt(n)} × ${pn} + ${ad} × ${pa} − ${fmtInt(g)}`,[`(${fmtInt(n)} + ${ad}) × (${pn} + ${pa}) − ${fmtInt(g)}`,`${fmtInt(n)} × ${pn} + ${ad} × (${pa} − ${fmtInt(g)})`,`(${fmtInt(n)} × ${pn} + ${ad}) × ${pa} − ${fmtInt(g)}`]),
+     parts:[num(tot,{label:'Ganancia (€)',wide:1})],
+     exp:`Niños: ${fmtInt(n)} × ${pn} = ${fmtInt(n*pn)} €. Adultos: ${ad} × ${pa} = ${fmtInt(ad*pa)} €. Total: ${fmtInt(n*pn+ad*pa)} €. Ganancia: ${fmtInt(n*pn+ad*pa)} − ${fmtInt(g)} = ${B(fmtInt(tot)+' €')}.`};
+ }
+];
+
+const BANKS={nat:NAT,dec:DEC,apr:APR,cmp:CMP,sum:SUM,mul:MUL,div:DIV,opc:OPC,pro:PRO};
+
+
+/* =========================================================
+   ARTE: amigos de Halloween dibujados en SVG
+   ========================================================= */
+let AID=0;
+const OL='stroke="#1a0f2e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"';
+const eyes=(x1,x2,y,r=6,c='#1a0f2e')=>`<ellipse cx="${x1}" cy="${y}" rx="${r}" ry="${r*1.15}" fill="${c}"/><ellipse cx="${x2}" cy="${y}" rx="${r}" ry="${r*1.15}" fill="${c}"/><circle cx="${x1+r*.35}" cy="${y-r*.45}" r="${r*.38}" fill="#fff"/><circle cx="${x2+r*.35}" cy="${y-r*.45}" r="${r*.38}" fill="#fff"/>`;
+const blush=(x1,x2,y)=>`<ellipse cx="${x1}" cy="${y}" rx="6" ry="3.4" fill="#ff7fa8" opacity=".55"/><ellipse cx="${x2}" cy="${y}" rx="6" ry="3.4" fill="#ff7fa8" opacity=".55"/>`;
+const smile=(x,y,w=8)=>`<path d="M${x-w} ${y} Q${x} ${y+w*.9} ${x+w} ${y}" fill="none" ${OL}/>`;
+
+const ART={
+ pumpkin(lit=true){const u='p'+(++AID);return `<svg viewBox="0 0 120 120" aria-hidden="true"><defs><radialGradient id="${u}" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ffb04a"/><stop offset="1" stop-color="#e8620c"/></radialGradient></defs>
+  <ellipse cx="60" cy="106" rx="40" ry="6" fill="#000" opacity=".25"/>
+  <path d="M58 30 Q56 18 66 12" fill="none" stroke="#3d7a2a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M64 22 Q80 12 86 24 Q74 26 64 22Z" fill="#5fb143" ${OL}/>
+  <ellipse cx="38" cy="66" rx="26" ry="36" fill="url(#${u})" ${OL}/><ellipse cx="82" cy="66" rx="26" ry="36" fill="url(#${u})" ${OL}/>
+  <ellipse cx="60" cy="66" rx="24" ry="38" fill="url(#${u})" ${OL}/>
+  ${lit?`<path d="M38 56 L48 44 L54 58Z M66 58 L72 44 L82 56Z" fill="#ffe46b" ${OL}/><path d="M36 74 Q60 96 84 74 L76 78 L70 72 L64 80 L56 72 L50 80 L44 72Z" fill="#ffe46b" ${OL}/>`
+   :`<path d="M40 60 Q45 55 50 60 M70 60 Q75 55 80 60" fill="none" ${OL}/>${smile(60,74,10)}`}
+ </svg>`},
+ ghost(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="26" ry="5" fill="#000" opacity=".25"/>
+  <path d="M26 98 L26 54 Q26 16 60 16 Q94 16 94 54 L94 98 Q88 90 82 98 Q76 106 70 98 Q64 90 58 98 Q52 106 46 98 Q40 90 34 98 Q30 104 26 98Z" fill="#fbf7ff" ${OL}/>
+  <path d="M26 64 Q14 70 16 58 Q20 52 27 56" fill="#fbf7ff" ${OL}/><path d="M94 60 Q108 52 106 66 Q100 70 93 66" fill="#fbf7ff" ${OL}/>
+  ${eyes(48,72,50,6)}${blush(40,80,64)}<ellipse cx="60" cy="68" rx="5" ry="6" fill="#1a0f2e"/></svg>`},
+ cauldron(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="38" ry="5" fill="#000" opacity=".25"/>
+  <circle cx="44" cy="30" r="8" fill="#8be36b" ${OL}/><circle cx="66" cy="20" r="6" fill="#8be36b" ${OL}/><circle cx="78" cy="34" r="5" fill="#8be36b" ${OL}/>
+  <path d="M28 104 L34 96 M92 104 L86 96" stroke="#1a0f2e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M18 52 Q16 102 60 102 Q104 102 102 52Z" fill="#3b2a5c" ${OL}/>
+  <ellipse cx="60" cy="50" rx="44" ry="10" fill="#8be36b" ${OL}/><ellipse cx="60" cy="47" rx="30" ry="5" fill="#c4ff9a" opacity=".7"/>
+  ${eyes(46,74,74,5.5,'#fff1c1')}${smile(60,84,7).replace('#1a0f2e','#fff1c1')}</svg>`},
+ bat(){return `<svg viewBox="0 0 120 120" aria-hidden="true">
+  <path d="M60 58 Q36 30 8 40 Q18 48 16 58 Q26 54 30 64 Q40 58 46 70Z" fill="#5b3f8f" ${OL}/>
+  <path d="M60 58 Q84 30 112 40 Q102 48 104 58 Q94 54 90 64 Q80 58 74 70Z" fill="#5b3f8f" ${OL}/>
+  <path d="M44 40 L42 22 L54 34Z M76 40 L78 22 L66 34Z" fill="#7a58b8" ${OL}/>
+  <ellipse cx="60" cy="58" rx="20" ry="22" fill="#7a58b8" ${OL}/>
+  ${eyes(52,68,54,5)}${blush(46,74,64)}<path d="M55 66 L58 72 L61 66 M61 66 L64 72 L66 66" fill="#fff" stroke="#1a0f2e" stroke-width="1.6"/></svg>`},
+ cat(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="32" ry="5" fill="#000" opacity=".25"/>
+  <path d="M86 100 Q112 96 104 70 Q100 60 92 66" fill="none" stroke="#1a0f2e" stroke-width="9" stroke-linecap="round"/>
+  <path d="M86 100 Q112 96 104 70 Q100 60 92 66" fill="none" stroke="#2e2347" stroke-width="5" stroke-linecap="round"/>
+  <path d="M36 104 Q30 70 46 62 L74 62 Q90 70 84 104Z" fill="#2e2347" ${OL}/>
+  <path d="M30 38 L28 10 L48 26Z M90 38 L92 10 L72 26Z" fill="#2e2347" ${OL}/><path d="M34 30 L33 18 L42 26Z M86 30 L87 18 L78 26Z" fill="#ff8fb8"/>
+  <ellipse cx="60" cy="44" rx="32" ry="26" fill="#2e2347" ${OL}/>
+  <ellipse cx="47" cy="42" rx="7.5" ry="9" fill="#ffd54a" ${OL}/><ellipse cx="73" cy="42" rx="7.5" ry="9" fill="#ffd54a" ${OL}/>
+  <ellipse cx="47" cy="43" rx="2.6" ry="7" fill="#1a0f2e"/><ellipse cx="73" cy="43" rx="2.6" ry="7" fill="#1a0f2e"/>
+  <path d="M57 54 L63 54 L60 58Z" fill="#ff8fb8"/><path d="M54 60 Q57 63 60 60 Q63 63 66 60" fill="none" stroke="#c8b8ef" stroke-width="2"/>
+  <path d="M40 54 L24 52 M40 58 L26 60 M80 54 L96 52 M80 58 L94 60" stroke="#c8b8ef" stroke-width="1.6"/>
+  <path d="M44 66 L76 66" stroke="#ff8a24" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="72" r="5" fill="#ffd54a" ${OL}/></svg>`},
+ spider(){const legs=[[-1,0],[1,0]].map(([s])=>[0,1,2,3].map(i=>{const y=56+i*8,x2=60+s*(36+(i%2)*4),y2=y+(i<2?-14:14)+i*2;return `<path d="M${60+s*14} ${y} Q${60+s*28} ${y-12+i*6} ${x2} ${y2}" fill="none" stroke="#1a0f2e" stroke-width="4" stroke-linecap="round"/>`}).join('')).join('');
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 0 L60 40" stroke="#e7dcff" stroke-width="1.6" stroke-dasharray="3 2"/>${legs}
+  <ellipse cx="60" cy="74" rx="22" ry="20" fill="#7a3fb0" ${OL}/><circle cx="60" cy="50" r="16" fill="#9b5fd6" ${OL}/>
+  ${eyes(54,66,48,4.5)}${smile(60,56,5)}<path d="M50 80 L70 80 M54 88 L66 88" stroke="#c99bff" stroke-width="3" stroke-linecap="round"/></svg>`},
+ skeleton(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="112" rx="26" ry="5" fill="#000" opacity=".25"/>
+  <path d="M60 64 L60 100" stroke="#f3eee2" stroke-width="7" stroke-linecap="round"/><path d="M60 64 L60 100" stroke="#1a0f2e" stroke-width="1.5" stroke-dasharray="1 7"/>
+  ${[70,78,86].map((y,i)=>`<path d="M${44+i*2} ${y} Q60 ${y+6} ${76-i*2} ${y}" fill="none" stroke="#f3eee2" stroke-width="5" stroke-linecap="round"/>`).join('')}
+  <path d="M46 72 L30 88 M74 72 L90 88 M52 100 L46 112 M68 100 L74 112" stroke="#f3eee2" stroke-width="6" stroke-linecap="round"/>
+  <path d="M30 40 Q30 12 60 12 Q90 12 90 40 Q90 52 80 56 L80 64 L40 64 L40 56 Q30 52 30 40Z" fill="#f3eee2" ${OL}/>
+  <ellipse cx="48" cy="40" rx="8" ry="9" fill="#2e2347"/><ellipse cx="72" cy="40" rx="8" ry="9" fill="#2e2347"/><circle cx="50" cy="37" r="3" fill="#fff"/><circle cx="74" cy="37" r="3" fill="#fff"/>
+  <path d="M58 50 L60 46 L62 50Z" fill="#2e2347"/><path d="M48 58 L48 63 M54 58 L54 64 M60 58 L60 64 M66 58 L66 64 M72 58 L72 63" stroke="#2e2347" stroke-width="1.8"/>
+  <path d="M74 14 L88 6 L86 20Z M74 14 L62 4 L62 20Z" fill="#ff6f91" ${OL}/><circle cx="74" cy="13" r="4" fill="#ff6f91" ${OL}/></svg>`},
+ owl(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M14 104 L106 104" stroke="#6b4a2b" stroke-width="8" stroke-linecap="round"/>
+  <path d="M30 98 Q22 50 40 30 L32 14 L50 24 Q60 20 70 24 L88 14 L80 30 Q98 50 90 98Z" fill="#8a6bc4" ${OL}/>
+  <ellipse cx="60" cy="76" rx="20" ry="22" fill="#d9c8ff" ${OL}/>${[0,1,2].map(i=>`<path d="M${50+i*6} ${70+i*6} q4 4 8 0" fill="none" stroke="#8a6bc4" stroke-width="2"/>`).join('')}
+  <circle cx="46" cy="46" r="13" fill="#fff1c1" ${OL}/><circle cx="74" cy="46" r="13" fill="#fff1c1" ${OL}/>${eyes(46,74,46,6)}
+  <path d="M56 56 L64 56 L60 64Z" fill="#ff8a24" ${OL}/>
+  <circle cx="46" cy="46" r="15" fill="none" stroke="#ffd54a" stroke-width="2.5"/><circle cx="74" cy="46" r="15" fill="none" stroke="#ffd54a" stroke-width="2.5"/><path d="M61 46 L59 46" stroke="#ffd54a" stroke-width="2.5"/></svg>`},
+ mummy(){return `<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="112" rx="28" ry="5" fill="#000" opacity=".25"/>
+  <path d="M36 108 L36 40 Q36 14 60 14 Q84 14 84 40 L84 108Z" fill="#efe4c8" ${OL}/>
+  ${[26,38,62,74,86,98].map((y,i)=>`<path d="M36 ${y+(i%2)*4} L84 ${y-4+(i%2)*6}" stroke="#cdbf9c" stroke-width="2.4"/>`).join('')}
+  <path d="M30 70 L36 64 M90 70 L84 64" stroke="#efe4c8" stroke-width="10" stroke-linecap="round"/>
+  <rect x="38" y="42" width="44" height="16" rx="7" fill="#2e2347"/>${eyes(50,70,50,4.6,'#8be36b')}
+  <path d="M38 44 L82 50" stroke="#efe4c8" stroke-width="6"/>${blush(46,74,64)}${smile(60,66,5)}
+  <path d="M80 100 Q96 106 92 116" fill="none" stroke="#efe4c8" stroke-width="4"/></svg>`},
+ witch(){const u='w'+(++AID);return `<svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d4fd1"/><stop offset="1" stop-color="#4a2a8a"/></linearGradient></defs>
+  <ellipse cx="60" cy="112" rx="30" ry="5" fill="#000" opacity=".25"/>
+  <path d="M34 112 Q36 80 60 78 Q84 80 86 112Z" fill="#4a2a8a" ${OL}/>
+  <path d="M30 70 Q24 92 36 98 L40 60Z M90 70 Q96 92 84 98 L80 60Z" fill="#ff6f91" ${OL}/>
+  <circle cx="60" cy="62" r="24" fill="#ffd9c2" ${OL}/>
+  ${eyes(51,69,62,4.8)}${blush(44,76,72)}${smile(60,72,6)}
+  <path d="M38 54 Q48 46 60 50 Q72 46 82 54 L82 46 L38 46Z" fill="#ff6f91" ${OL}/>
+  <path d="M14 46 Q60 30 106 46 Q60 56 14 46Z" fill="url(#${u})" ${OL}/>
+  <path d="M38 42 Q46 10 72 4 Q64 16 70 26 Q78 34 82 42Z" fill="url(#${u})" ${OL}/>
+  <path d="M38 40 Q60 34 82 40 L82 46 Q60 40 38 46Z" fill="#ff8a24" ${OL}/><rect x="54" y="36" width="12" height="9" rx="2" fill="#ffd54a" ${OL}/>
+  <path d="M72 4 l3 -3 l1 4 l4 1 l-4 2 l-1 4 l-2 -4 l-4 -1Z" fill="#ffd54a"/></svg>`},
+ candy(){return `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M10 20 L2 12 L4 28Z M30 20 L38 12 L36 28Z" fill="#ff6f91" ${OL.replace('2.4','2')}/><circle cx="20" cy="20" r="10" fill="#ff8a24" ${OL.replace('2.4','2')}/><path d="M14 14 Q20 20 26 26 M12 20 Q16 16 20 14" fill="none" stroke="#ffe46b" stroke-width="2.5" stroke-linecap="round"/></svg>`},
+ star(on){return `<svg viewBox="0 0 24 24" class="${on?'on':'off'}" aria-hidden="true"><path d="M12 2.5 L14.8 8.6 L21.5 9.3 L16.5 13.8 L18 20.5 L12 17 L6 20.5 L7.5 13.8 L2.5 9.3 L9.2 8.6Z"/></svg>`},
+ heart(on){return `<svg viewBox="0 0 24 24" class="${on?'on':'off'}" aria-hidden="true"><path d="M12 21 C5 15 2 11.5 2 8 A5 5 0 0 1 12 5.5 A5 5 0 0 1 22 8 C22 11.5 19 15 12 21Z"/></svg>`},
+ lock(){return `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11 V8 a4 4 0 0 1 8 0 V11" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>`}
+};
+
+/* mapa nocturno */
+function mapSVG(pts){
+  let stars='';let s=7;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
+  for(let i=0;i<70;i++){const x=rnd()*1000,y=rnd()*300,r=rnd()*1.6+.5;stars+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="#fff" opacity="${(.35+rnd()*.6).toFixed(2)}"/>`}
+  const P=pts.map(([x,y])=>[x*10,y*6.2]);
+  let d=`M${P[0][0]} ${P[0][1]}`;for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1]=P[i];const cx=(x0+x1)/2;d+=` Q${cx} ${(y0+y1)/2+(i%2?28:-28)} ${x1} ${y1}`}
+  const tree=(x,y,k)=>`<g transform="translate(${x} ${y}) scale(${k})" fill="none" stroke="#120a22" stroke-linecap="round"><path d="M0 0 L0 -70" stroke-width="9"/><path d="M0 -40 L-24 -64 M-14 -54 L-26 -52 M0 -52 L22 -78 M12 -66 L26 -64 M0 -70 L-8 -90" stroke-width="5"/></g>`;
+  const grave=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-12 0 L-12 -22 Q0 -36 12 -22 L12 0Z" fill="#3b2d58" stroke="#120a22" stroke-width="2"/><path d="M-5 -18 L5 -18 M0 -23 L0 -10" stroke="#5c4a85" stroke-width="2.4"/></g>`;
+  return `<svg viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f0820"/><stop offset=".55" stop-color="#2b1752"/><stop offset="1" stop-color="#4a2a6e"/></linearGradient>
+  <radialGradient id="moonglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1c1" stop-opacity=".45"/><stop offset="1" stop-color="#fff1c1" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1000" height="620" fill="url(#sky)"/>${stars}
+  <circle cx="140" cy="110" r="140" fill="url(#moonglow)"/><circle cx="140" cy="110" r="66" fill="#fff1c1"/><circle cx="118" cy="92" r="11" fill="#f1dfa3"/><circle cx="162" cy="130" r="15" fill="#f1dfa3"/><circle cx="160" cy="80" r="6" fill="#f1dfa3"/>
+  <g fill="#120a22"><path d="M560 210 L560 120 L548 120 L575 70 L602 120 L590 120 L590 150 L640 150 L640 92 L628 92 L656 36 L684 92 L672 92 L672 150 L720 150 L720 120 L708 120 L735 72 L762 120 L750 120 L750 210Z"/>
+  <rect x="584" y="160" width="10" height="16" rx="5" fill="#ffe46b"/><rect x="726" y="158" width="10" height="16" rx="5" fill="#ffe46b"/><rect x="651" y="100" width="10" height="16" rx="5" fill="#ffe46b"/></g>
+  <path d="M0 260 Q180 200 380 250 Q560 300 760 220 Q900 180 1000 230 L1000 620 L0 620Z" fill="#24133f"/>
+  <path d="M0 380 Q220 320 480 370 Q760 420 1000 350 L1000 620 L0 620Z" fill="#1c0f33"/>
+  <path d="M0 500 Q260 450 520 500 Q780 545 1000 480 L1000 620 L0 620Z" fill="#160b2a"/>
+  ${tree(60,330,1.3)}${tree(940,300,1.1)}${tree(470,610,1.2)}${tree(990,600,1.5)}${grave(880,440)}${grave(915,452)}${grave(140,560)}
+  <g fill="#120a22"><path d="M300 70 q10 -12 20 0 q6 -8 12 0 q-10 4 -16 12 q-6 -8 -16 -12Z"/><path d="M830 120 q8 -10 16 0 q5 -6 10 0 q-8 3 -13 10 q-5 -7 -13 -10Z"/><path d="M420 150 q7 -9 14 0 q4 -5 8 0 q-7 3 -11 9 q-4 -6 -11 -9Z"/></g>
+  <path d="${d}" fill="none" stroke="#ff8a24" stroke-opacity=".35" stroke-width="22" stroke-linecap="round"/>
+  <path d="${d}" fill="none" stroke="#ffd59a" stroke-width="3.5" stroke-dasharray="2 14" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/* =========================================================
+   DATOS DEL JUEGO
+   ========================================================= */
+const ZONES=[
+ {id:'nat',name:'Mansión de los Millones',topic:'Lectura y descomposición de números naturales',friend:'ghost',fname:'Fantasmín',x:9,y:84},
+ {id:'dec',name:'Caldero de las Décimas',topic:'Lectura y descomposición de números decimales',friend:'cauldron',fname:'Burbujas',x:26,y:72},
+ {id:'apr',name:'Huerto de Calabazas',topic:'Aproximaciones con naturales y decimales',friend:'pumpkin',fname:'Lucera',x:43,y:85},
+ {id:'cmp',name:'Bosque de los Murciélagos',topic:'Comparación de números decimales',friend:'bat',fname:'Murci',x:60,y:74},
+ {id:'sum',name:'Tienda de Golosinas',topic:'Sumas y restas de naturales y decimales',friend:'cat',fname:'Regaliz',x:77,y:84},
+ {id:'mul',name:'Torre de las Arañas',topic:'Multiplicación por tres cifras y por decimales',friend:'spider',fname:'Tejedora',x:91,y:62},
+ {id:'div',name:'Cripta del Reparto',topic:'División entre un número de dos cifras',friend:'skeleton',fname:'Huesitos',x:74,y:52},
+ {id:'opc',name:'Laboratorio de Pócimas',topic:'Operaciones combinadas',friend:'owl',fname:'Búho Sabio',x:54,y:57},
+ {id:'pro',name:'Baile de los Problemas',topic:'Resolución de problemas paso a paso',friend:'mummy',fname:'Vendas',x:33,y:50},
+ {id:'boss',name:'Castillo de la Luna',topic:'Gran Desafío: todos los retos mezclados',friend:'witch',fname:'la Reina Bruja',x:65.5,y:21}
+];
+const BIO={
+ nat:'Fantasmín atraviesa paredes, pero nunca se salta un orden de unidades. Cuenta millones como quien cuenta caramelos.',
+ dec:'Burbujas es un caldero parlanchín. Cada burbuja es una décima, cada gotita una centésima y cada chispa, una milésima.',
+ apr:'Lucera es la calabaza más brillante del huerto. Sabe que con un 5 o más se sube, y con menos de 5 se queda quieta.',
+ cmp:'Murci vuela de noche entre los árboles y siempre sabe qué rama está más alta: compara cifra a cifra, sin prisas.',
+ sum:'Regaliz, el gato de la tienda, coloca las comas en fila como sus bigotes. Jamás se le escapa una llevada.',
+ mul:'Tejedora teje telarañas de productos parciales: cada hilo corrido un lugar a la izquierda.',
+ div:'Huesitos reparte los huesos de la cripta a partes iguales y comprueba siempre que el resto sea menor que el divisor.',
+ opc:'El Búho Sabio mezcla pócimas en el orden correcto: paréntesis, después × y :, y al final + y −.',
+ pro:'Vendas desenrolla cada problema poco a poco: comprende, planifica, calcula y comprueba.',
+ boss:'La Reina Bruja solo baja de su castillo cuando alguien domina todos los retos de la noche. ¡Y {esa|ese} eres tú, {N}!'
+};
+const RANKS=[[0,'{Aprendiz de bruja|Aprendiz de brujo}'],[300,'{Brujita del caldero|Brujito del caldero}'],[800,'{Hechicera de los números|Hechicero de los números}'],[1500,'{Gran bruja matemática|Gran brujo matemático}'],[2400,'Leyenda de la Noche de Halloween']];
+const BOOK={
+ nat:`<h3>Los órdenes de unidades</h3><div class="tblw"><table class="pv"><tr><th colspan="3">Millones</th><th colspan="3">Millares</th><th colspan="3">Unidades</th></tr><tr><td>CMi</td><td>DMi</td><td>UMi</td><td>CM</td><td>DM</td><td>UM</td><td>C</td><td>D</td><td>U</td></tr><tr class="ex"><td></td><td>4</td><td>0</td><td>3</td><td>0</td><td>5</td><td>0</td><td>2</td><td>0</td></tr></table></div>
+ <p>Cada orden vale 10 unidades del orden anterior: 1 DM = 10 UM, 1 UMi = 10 CM…</p>
+ <h3>Leer números grandes</h3><p>Separa en grupos de tres cifras desde la derecha. Lee cada grupo y añade «millones» o «mil».<br><b class="nb">40.305.020</b> → cuarenta millones trescientos cinco mil veinte.</p>
+ <h3>Valor de una cifra</h3><p>Depende del lugar que ocupa. En 3.472.915 el 7 está en las decenas de millar: vale <b class="nb">70.000</b>.</p>
+ <h3>Descomponer</h3><p>4.305.020 = 4 U. de millón + 3 CM + 5 UM + 2 D<br>= 4.000.000 + 300.000 + 5.000 + 20</p>
+ <h3>¿Cuántas … hay en total?</h3><p>Tapa las cifras de la derecha: en 4.583.200 hay <b class="nb">45.832</b> centenas y <b class="nb">458</b> decenas de millar.</p>`,
+ dec:`<h3>Las partes de un decimal</h3><p>Parte entera, coma y parte decimal. Detrás de la coma: décimas, centésimas y milésimas.</p>
+ <p class="eq">1 unidad = 10 décimas = 100 centésimas = 1.000 milésimas<br>0,1 = una décima &nbsp; 0,01 = una centésima &nbsp; 0,001 = una milésima</p>
+ <h3>Leer un decimal</h3><p>La parte decimal se nombra por el lugar de su <b>última</b> cifra.<br><b class="nb">7,045</b> → siete unidades y cuarenta y cinco milésimas.</p>
+ <h3>Descomponer</h3><p>35,207 = 3 D + 5 U + 2 d + 7 m = 30 + 5 + 0,2 + 0,007</p>
+ <h3>Decimales equivalentes</h3><p>Los ceros al final de la parte decimal no cambian el valor: 0,4 = 0,40 = 0,400.<br>Pero 0,04 es distinto: ahí el cero ocupa un lugar.</p>`,
+ apr:`<h3>Redondear</h3><p>1. Localiza el lugar al que redondeas.<br>2. Mira la cifra de su derecha.<br>3. Si es <b>menor que 5</b>, se queda igual. Si es <b>5 o más</b>, sube uno.<br>4. Las cifras de la derecha pasan a ser ceros (o desaparecen si son decimales).</p>
+ <p class="eq">4.738.512 a las centenas de millar → 4.700.000<br>15,768 a las décimas → 15,8 &nbsp; a las centésimas → 15,77 &nbsp; a las unidades → 16</p>
+ <h3>¡Cuidado con los nueves!</h3><p>3,97 redondeado a las décimas → 4,0 (el 9 sube y se lleva una).</p>
+ <h3>Estimar</h3><p>Redondea los números antes de operar para saber más o menos el resultado: 4.682 + 2.317 ≈ 4.700 + 2.300 = 7.000.</p>
+ <h3>En los problemas</h3><p>A veces no sirve redondear al más cercano: si necesitas 1.432 caramelos y van en bolsas de 100, necesitas 15 bolsas, no 14.</p>`,
+ cmp:`<h3>Comparar decimales</h3><p>1. Compara la parte entera.<br>2. Si es igual, compara las décimas; después, centésimas; después, milésimas.</p>
+ <h3>El truco de los ceros</h3><p>Iguala las cifras decimales añadiendo ceros: 3,9 y 3,45 → 3,90 &gt; 3,45.</p>
+ <h3>¡No te dejes engañar!</h3><p>Tener más cifras no significa ser mayor: 4,07 &lt; 4,7 y 2,999 &lt; 3.</p>
+ <h3>Siempre cabe otro</h3><p>Entre dos decimales siempre hay más números. Entre 6,4 y 6,5: 6,41, 6,42… Entre 6,45 y 6,46: 6,451, 6,452…<br>El número del medio entre 7,3 y 7,4 es 7,35.</p>`,
+ sum:`<h3>Sumar y restar decimales</h3><p>Colócalos en columna con las <b>comas alineadas</b> (unidades debajo de unidades). Rellena con ceros los huecos de la derecha.</p>
+ <p class="eq">52 − 7,36 → 52,00 − 7,36 = 44,64</p>
+ <h3>Prueba de la resta</h3><p>diferencia + sustraendo = minuendo</p>
+ <h3>Término desconocido</h3><p>? + 3,75 = 10 → 10 − 3,75 = 6,25<br>15,2 − ? = 7,85 → 15,2 − 7,85 = 7,35</p>`,
+ mul:`<h3>Multiplicar por tres cifras</h3><p>Multiplica por las unidades, después por las decenas (corriendo un lugar a la izquierda) y después por las centenas (corriendo dos lugares). Suma los productos parciales.</p>
+ <p>Si el multiplicador tiene un 0 en medio, puedes saltar esa fila, pero la siguiente se corre <b>dos</b> lugares.</p>
+ <h3>Multiplicar decimales</h3><p>Multiplica sin comas. El producto lleva tantas cifras decimales como tengan los dos factores juntos.</p>
+ <p class="eq">2,6 × 1,35 → 26 × 135 = 3.510 → 1 + 2 = 3 decimales → 3,510 = 3,51</p>
+ <h3>Por 10, 100 y 1.000</h3><p>La coma se mueve a la derecha 1, 2 o 3 lugares. Si faltan cifras, se añaden ceros: 4,07 × 1.000 = 4.070.</p>`,
+ div:`<h3>Los términos</h3><p>Dividendo : divisor = cociente, y queda un resto.</p>
+ <p class="eq">Dividendo = divisor × cociente + resto<br>El resto siempre es menor que el divisor</p>
+ <p>Si el resto es 0, la división es <b>exacta</b>; si no, es <b>entera</b>.</p>
+ <h3>Dividir entre dos cifras</h3><p>1. Toma cifras del dividendo hasta que el divisor quepa (dos o tres).<br>2. Estima cuántas veces cabe, multiplica y resta.<br>3. Baja la siguiente cifra y repite.<br>4. Si al bajar una cifra el divisor no cabe, escribe <b>0</b> en el cociente.</p>
+ <h3>¿Cuántas cifras tendrá el cociente?</h3><p>Una por la primera parte que tomas y otra por cada cifra que bajas. 7.452 : 86 → empiezo con 745 → quedan por bajar 1 cifra → 2 cifras.</p>`,
+ opc:`<h3>El orden de las operaciones</h3><p>1. Primero, lo que está entre <b>paréntesis</b>.<br>2. Después, <b>multiplicaciones y divisiones</b>, de izquierda a derecha.<br>3. Al final, <b>sumas y restas</b>, de izquierda a derecha.</p>
+ <p class="eq">48 − 6 × (12 − 5) + 36 : 4<br>= 48 − 6 × 7 + 36 : 4<br>= 48 − 42 + 9<br>= 6 + 9 = 15</p>
+ <h3>El poder del paréntesis</h3><p>(8 + 4) × 3 = 36, pero 8 + 4 × 3 = 20. ¡El paréntesis cambia el resultado!</p>`,
+ pro:`<h3>Los cuatro pasos</h3><p><b>1. Comprendo.</b> Leo despacio. ¿Qué me preguntan? ¿Qué datos tengo? ¿Sobra algún dato?<br>
+ <b>2. Planifico.</b> ¿Qué operaciones necesito y en qué orden? Puedo escribirlo como una operación combinada.<br>
+ <b>3. Calculo.</b> Hago las operaciones con cuidado.<br>
+ <b>4. Compruebo.</b> ¿He respondido a la pregunta? ¿El resultado es razonable? (Estima.) ¿He puesto las unidades: €, kg, caramelos…?</p>
+ <h3>Pistas</h3><p>«Repartir a partes iguales» → división. «En total» con grupos iguales → multiplicación. «¿Cuánto le devuelven?» → resta. Si la pregunta es «como mínimo», piensa si hay que redondear por arriba.</p>`
+};
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+const KEY='mates-recurso-01-v1';
+const ZID=ZONES.map(z=>z.id);
+const DEF={name:'',gen:'',candy:0,stars:Object.fromEntries(ZID.map(k=>[k,0])),freed:{},sound:true};
+let S=(()=>{try{const v=JSON.parse(localStorage.getItem(KEY));if(!v)return JSON.parse(JSON.stringify(DEF));return {...JSON.parse(JSON.stringify(DEF)),...v,stars:{...DEF.stars,...(v.stars||{})},freed:{...(v.freed||{})}}}catch(e){return JSON.parse(JSON.stringify(DEF))}})();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let G=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NM=()=>esc(S.name||'');
+// trato elegido: g('femenino','masculino')
+const g=(a,o)=>S.gen==='o'?o:a;
+const zone=id=>ZONES.find(z=>z.id===id);
+const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rank=()=>{let r=RANKS[0][1];RANKS.forEach(([n,t])=>{if(S.candy>=n)r=t});return personal(r)};
+const allFreed=()=>ZID.filter(k=>k!=='boss').every(k=>S.stars[k]>0);
+// Sustituye {N} por el nombre y {femenino|masculino} según el trato elegido
+function personal(o){
+  if(typeof o==='string')return o.replace(/\{N\}/g,NM()).replace(/\{([^{}|]*)\|([^{}|]*)\}/g,(m,a,b)=>g(a,b));
+  if(Array.isArray(o))return o.map(personal);
+  if(o&&typeof o==='object'){const r={};for(const k in o)r[k]=typeof o[k]==='function'?o[k]:personal(o[k]);return r}
+  return o;
+}
+
+/* =========================================================
+   SONIDO
+   ========================================================= */
+let AC=null;
+function tone(f,d,t=0,type='sine',v=.12){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,AC.currentTime+t);g.gain.linearRampToValueAtTime(v,AC.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+t+d);o.connect(g);g.connect(AC.destination);o.start(AC.currentTime+t);o.stop(AC.currentTime+t+d+.05)}catch(e){}}
+const sfx={ok(){tone(660,.15);tone(990,.22,.1)},bad(){tone(220,.25,0,'triangle');tone(165,.3,.12,'triangle')},win(){[523,659,784,1047].forEach((f,i)=>tone(f,.25,i*.12))},tap(){tone(880,.05,0,'sine',.05)},spooky(){[392,370,349,330].forEach((f,i)=>tone(f,.35,i*.18,'triangle',.08))}};
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+function header(){
+  $('#brand').innerHTML=`<span class="bi">${ART.pumpkin(true)}</span><span>La Noche de los Números</span>`;
+  $('#candy').textContent=S.candy;$('#candyIco').innerHTML=ART.candy();
+  $('#soundBtn').textContent='Sonido: '+(S.sound?'sí':'no');$('#soundBtn').setAttribute('aria-pressed',S.sound);
+  const inGame=!!(S.name&&S.gen);$('#mapBtn').hidden=!inGame;$('#bookBtn').hidden=!inGame;$('#nestBtn').hidden=!inGame;
+}
+function bump(){const p=$('#candy').parentElement;p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump')}
+
+/* =========================================================
+   PANTALLA DE BIENVENIDA (nombre)
+   ========================================================= */
+function welcome(){
+  G=null;header();
+  $('#app').innerHTML=`<section class="welcome">
+   <div class="w-moon" aria-hidden="true"></div>
+   <div class="w-cast" aria-hidden="true">${['ghost','bat','pumpkin','cat','witch'].map((k,i)=>`<span class="wc wc${i}">${ART[k]()}</span>`).join('')}</div>
+   <h1>La Noche de los Números</h1>
+   <p class="lead">Números naturales y decimales. Esta noche los amigos de Halloween están atrapados en nueve lugares encantados y solo se liberan con matemáticas.</p>
+   <form class="namebox" id="nameForm" autocomplete="off">
+     <label for="nameIn">¿Cómo te llamas?</label>
+     <div class="nrow"><input id="nameIn" maxlength="20" value="${esc(S.name)}" placeholder="Escribe tu nombre" required></div>
+     <fieldset class="gen"><legend>¿Cómo quieres que te llamen esta noche?</legend>
+       <div class="gen-row">
+         <label><input type="radio" name="gen" value="a" ${S.gen==='a'?'checked':''}><span>Bruja</span></label>
+         <label><input type="radio" name="gen" value="o" ${S.gen==='o'?'checked':''}><span>Brujo</span></label>
+       </div></fieldset>
+     <div class="center"><button class="btn" type="submit">Entrar en la noche</button></div>
+     <p class="note" id="nameErr" role="alert"></p>
+   </form>
+   <p class="note">Tu progreso se guarda solo en este navegador y en este dispositivo.</p>
+  </section>`;
+  const f=$('#nameForm');setTimeout(()=>$('#nameIn').focus(),50);
+  f.onsubmit=e=>{e.preventDefault();const v=$('#nameIn').value.trim().replace(/\s+/g,' ');if(!v){$('#nameErr').textContent='Escribe tu nombre para empezar.';$('#nameIn').focus();return}
+    const r=f.querySelector('input[name="gen"]:checked');if(!r){$('#nameErr').textContent='Elige «Bruja» o «Brujo».';return}
+    const nv=v.charAt(0).toUpperCase()+v.slice(1);const isNew=!S.name;S.name=nv;S.gen=r.value;save();sfx.spooky();header();map(isNew)};
+}
+
+/* =========================================================
+   MAPA
+   ========================================================= */
+function map(first){
+  G=null;header();$('#mapBtn').hidden=true;
+  const total=ZID.reduce((a,k)=>a+S.stars[k],0);
+  const open=allFreed();
+  $('#app').innerHTML=`<section class="mapwrap">
+   <div class="maphead"><div><h1>${first?g('¡Bienvenida, ','¡Bienvenido, ')+NM()+'!':NM()+', elige tu camino'}</h1>
+     <p class="lead">${first?'Recorre el camino de calabazas. Con 4 aciertos de 8 liberas al amigo de cada lugar; con 7, consigues tres estrellas.':'Rango: <b>'+rank()+'</b>. Estrellas: '+total+' de '+ZID.length*3+'.'}</p></div>
+     <button class="linkb" id="chgName" type="button">¿No eres ${NM()}? Cambiar nombre</button></div>
+   <div class="map" role="group" aria-label="Mapa de la noche">${mapSVG(ZONES.map(z=>[z.x,z.y]))}
+    ${ZONES.map((z,i)=>{const lock=z.id==='boss'&&!open;const fr=S.stars[z.id]>0;return `<button type="button" class="pin ${fr?'freed':''} ${lock?'locked':''} ${z.id==='boss'?'boss':''}" style="left:${z.x}%;top:${z.y}%" data-z="${z.id}" aria-label="${z.name}${lock?' (bloqueado)':''}, ${S.stars[z.id]} estrellas">
+      <span class="pin-ico">${lock?ART.lock():fr?ART[z.friend]():ART.pumpkin(false)}</span>${z.id==='boss'?'':`<span class="pin-n">${i+1}</span>`}
+      <span class="pin-st">${[0,1,2].map(k=>ART.star(k<S.stars[z.id])).join('')}</span></button>`}).join('')}
+   </div>
+   <h2 class="sech">Lugares encantados</h2>
+   <div class="zones">${ZONES.map((z,i)=>{const lock=z.id==='boss'&&!open;const fr=S.stars[z.id]>0;return `<article class="zone ${lock?'locked':''} ${z.id==='boss'?'zboss':''}">
+     <div class="z-ico ${fr?'':'sil'}">${ART[z.friend]()}</div>
+     <div class="z-body"><h3>${z.id==='boss'?'':(i+1)+'. '}${z.name}</h3><p>${z.topic}</p>
+      <div class="z-foot"><span class="stars">${[0,1,2].map(k=>ART.star(k<S.stars[z.id])).join('')}</span>
+      <button class="btn sm" type="button" data-z="${z.id}" ${lock?'disabled':''}>${lock?'Libera a los 9 amigos':S.stars[z.id]?'Jugar otra vez':'Entrar'}</button></div></div></article>`}).join('')}</div>
+  </section>`;
+  document.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{const id=b.dataset.z;if(id==='boss'&&!open){toast('El Castillo se abre cuando liberes a los nueve amigos.');return}sfx.tap();start(id)});
+  $('#chgName').onclick=()=>welcome();
+}
+
+/* =========================================================
+   RONDAS
+   ========================================================= */
+function buildRound(id){
+  const qs=[];const seen=new Set();
+  if(id==='boss'){
+    const zs=shuffle(ZID.filter(k=>k!=='boss'));const list=[...zs,...shuffle(zs).slice(0,3)];
+    list.forEach(z=>{let q,t=0;do{q=pick(BANKS[z])();t++}while(seen.has(q.q)&&t<20);seen.add(q.q);q.zone=z;qs.push(q)});
+    return shuffle(qs);
+  }
+  const bank=BANKS[id];let order=[];
+  while(order.length<8){let s=shuffle(bank.map((_,i)=>i));if(order.length&&s[0]===order[order.length-1])s.push(s.shift());order=order.concat(s)}
+  order=order.slice(0,8);
+  order.forEach(i=>{let q,t=0;do{q=bank[i]();t++}while(seen.has(q.q)&&t<20);seen.add(q.q);q.zone=id;qs.push(q)});
+  return qs;
+}
+function start(id){
+  G={id,z:zone(id),qs:buildRound(id).map(personal),i:0,correct:0,streak:0,best:0,gained:0,res:[],hearts:id==='boss'?3:0};
+  $('#mapBtn').hidden=false;
+  showQ();
+}
+function progressBar(){
+  return `<div class="prog" aria-label="Progreso">${G.qs.map((_,k)=>`<span class="pp ${G.res[k]===true?'ok':G.res[k]===false?'ko':k===G.i?'cur':''}">${ART.pumpkin(G.res[k]===true)}</span>`).join('')}</div>`;
+}
+function showQ(){
+  const q=G.qs[G.i];const z=G.z;
+  const zz=zone(q.zone);
+  $('#app').innerHTML=`<section class="play">
+   <div class="playhead"><div class="ph-l"><span class="ph-ico">${ART[z.friend]()}</span><div><h1>${z.name}</h1><p>Pregunta ${G.i+1} de ${G.qs.length}${G.streak>=2?`<span class="streak">Racha: ${G.streak}</span>`:''}</p></div></div>
+    ${G.id==='boss'?`<div class="hearts" aria-label="${G.hearts} vidas">${[0,1,2].map(k=>ART.heart(k<G.hearts)).join('')}</div>`:''}</div>
+   ${progressBar()}
+   <article class="qcard ${q.prob?'isprob':''}" id="qcard">
+    <p class="qk">${G.id==='boss'?zz.name+': ':''}${q.k}</p>
+    ${q.prob?probHTML(q):`<div class="qq">${q.q}</div>${layoutHTML(q)}<div class="parts ${q.layout&&q.layout.type==='mul'?'mulparts':''}">${q.parts.map((p,k)=>partHTML(p,k,q.layout&&q.layout.type==='mul'?(k<q.parts.length-1?k:-1):null)).join('')}</div>`}
+    <div class="hintbox" id="hintbox" hidden></div>
+    <div class="fb" id="fb" role="status" aria-live="polite"></div>
+    <div class="acts"><button class="btn ghost" id="hintBtn" type="button">Pista</button><button class="btn" id="checkBtn" type="button">Comprobar</button></div>
+   </article></section>`;
+  wireParts(q);
+  $('#hintBtn').onclick=()=>{const h=$('#hintbox');h.hidden=false;h.innerHTML=`<b>Pista:</b> ${q.hint||'Sigue los cuatro pasos: comprende, planifica, calcula y comprueba. Escribe en tu cuaderno los datos y la pregunta.'}`;$('#hintBtn').disabled=true};
+  $('#checkBtn').onclick=check;
+  const first=document.querySelector('#qcard input:not([disabled]), #qcard .opt');
+  if(first&&!matchMedia('(pointer:coarse)').matches)setTimeout(()=>{const g=document.querySelector('#qcard .grid input');(g?document.querySelector('#qcard .grid tr.res td:last-child input'):first).focus({preventScroll:true})},60);
+}
+function probHTML(q){
+  return `<ol class="steps">
+   <li><span class="sn">1</span><div><h3>Comprendo</h3><div class="qq">${q.q}</div></div></li>
+   <li><span class="sn">2</span><div><h3>Planifico</h3><p class="sub">${q.planQ||'¿Qué operación resuelve el problema?'}</p>${partHTML(q.plan,'plan')}</div></li>
+   <li><span class="sn">3</span><div><h3>Calculo</h3><div class="parts">${q.parts.map((p,k)=>partHTML(p,k)).join('')}</div></div></li>
+   <li><span class="sn">4</span><div><h3>Compruebo</h3><p class="sub">Antes de pulsar «Comprobar», piensa: ¿he respondido a lo que me preguntan? ¿Es un resultado razonable?</p></div></li></ol>`;
+}
+function layoutHTML(q){
+  if(!q.layout)return '';
+  const L=q.layout;
+  if(L.type==='mul')return `<div class="mulhold"><div class="cuenta mulbox" aria-label="Multiplicación ${L.a} por ${L.b}"><div class="cr">${L.a}</div><div class="cr"><span class="op">×</span>${L.b}</div><div class="line"></div></div></div>`;
+  if(L.type==='div')return `<div class="cuenta divbox" aria-label="División ${L.D} entre ${L.d}"><div class="dd">${L.D.replace(/\./g,'')}</div><div class="ds"><div class="dv">${L.d}</div><div class="dq">?</div></div></div>`;
+  return '';
+}
+function partHTML(p,k,sh){
+  if(p.t==='c')return `<div class="opts" role="radiogroup" data-p="${k}">${p.opts.map((o,j)=>`<button type="button" class="opt" role="radio" aria-checked="false" data-j="${j}">${o}</button>`).join('')}</div>`;
+  if(p.t==='n')return `<div class="numrow ${sh===-1?'total':''}" data-p="${k}" ${sh>0?`style="--sh:${sh}"`:''}><label for="in${k}">${p.label||'Tu respuesta'}</label><span class="inw"><input id="in${k}" class="numin ${p.wide?'wide':''}" inputmode="decimal" autocomplete="off" spellcheck="false">${p.unit?`<span class="unit">${p.unit}</span>`:''}</span><span class="sol"></span></div>`;
+  if(p.t==='g')return gridHTML(p,k);
+  return '';
+}
+function digitsSplit(v,ea,e){const ip=String(Math.floor(v/Math.pow(10,ea)));const dp=ea?String(v%Math.pow(10,ea)).padStart(ea,'0'):'';return {ip,dp,ghost:e-ea}}
+function gridHTML(p,k){
+  const A=digitsSplit(p.a,p.ea,p.e),Bv=digitsSplit(p.b,p.eb,p.e);
+  const I=Math.max(A.ip.length,Bv.ip.length)+(p.op==='+'?1:0);const E=p.e;
+  const row=(D,sign)=>{let h=`<td class="sg">${sign}</td>`;const pad=I-D.ip.length;for(let i=0;i<I;i++)h+=`<td>${i<pad?'':D.ip[i-pad]}</td>`;if(E){h+=`<td class="cm">,</td>`;for(let i=0;i<E;i++)h+=i<D.dp.length?`<td>${D.dp[i]}</td>`:`<td class="gh">0</td>`}else if(D.ip)h+='';return `<tr>${h}</tr>`};
+  let res=`<td class="sg"></td>`;for(let i=0;i<I+E;i++){if(E&&i===I)res+=`<td class="cm">,</td>`;res+=`<td><input class="gc" data-c="${i}" inputmode="numeric" maxlength="1" aria-label="Cifra ${i+1} del resultado" autocomplete="off"></td>`}
+  return `<div class="gridw" data-p="${k}"><table class="grid" data-i="${I}" data-e="${E}">${row(A,'')}${row(Bv,p.op)}<tr class="ln"><td colspan="${I+E+(E?2:1)}"></td></tr><tr class="res">${res}</tr></table><p class="gnote">Los ceros grises no se ven en el número, pero ayudan a colocar bien la coma.</p><p class="sol"></p></div>`;
+}
+function wireParts(q){
+  document.querySelectorAll('#qcard .opts').forEach(g=>{g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(G.done)return;g.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-checked','false'));b.setAttribute('aria-checked','true');sfx.tap()})});
+  document.querySelectorAll('#qcard .numin').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();G.done?next():check()}}));
+  document.querySelectorAll('#qcard .grid').forEach(t=>{
+    const cells=[...t.querySelectorAll('input.gc')];
+    cells.forEach((c,i)=>{
+      c.addEventListener('input',()=>{c.value=c.value.replace(/\D/g,'').slice(-1);if(c.value&&i>0)cells[i-1].focus()});
+      c.addEventListener('keydown',e=>{
+        if(e.key==='Backspace'&&!c.value&&i<cells.length-1){e.preventDefault();cells[i+1].focus();cells[i+1].value=''}
+        else if(e.key==='ArrowLeft'&&i>0){e.preventDefault();cells[i-1].focus()}
+        else if(e.key==='ArrowRight'&&i<cells.length-1){e.preventDefault();cells[i+1].focus()}
+        else if(e.key==='Enter'){e.preventDefault();G.done?next():check()}});
+    });
+  });
+}
+function readGrid(el,p){
+  const t=el.querySelector('.grid');const I=+t.dataset.i,E=+t.dataset.e;const v=[...t.querySelectorAll('input.gc')].map(c=>c.value);
+  if(v.every(x=>!x))return null;
+  let ip=v.slice(0,I),dp=v.slice(I);
+  let s=0;while(s<ip.length&&!ip[s])s++;ip=ip.slice(s);if(ip.some(x=>!x))return NaN;
+  let e=dp.length;while(e>0&&!dp[e-1])e--;const dd=dp.slice(0,e);if(dd.some(x=>!x))return NaN;
+  const str=(ip.join('')||'0')+dd.join('').padEnd(E,'0');
+  return parseInt(str,10);
+}
+function evalPart(p,k){
+  const el=document.querySelector(`#qcard [data-p="${k}"]`);
+  if(p.t==='c'){const s=el.querySelector('.opt[aria-checked="true"]');if(!s)return {empty:true};return {ok:+s.dataset.j===p.ans,el}}
+  if(p.t==='n'){const v=el.querySelector('input').value;if(!v.trim())return {empty:true};
+    if(p.check)return {ok:p.check(v),el};
+    const n=parseNum(v,p.int);if(isNaN(n))return {ok:false,el,bad:true};return {ok:[p.ans,...p.alts].some(a=>near(n,a)),el}}
+  if(p.t==='g'){const r=readGrid(el,p);if(r===null)return {empty:true};return {ok:r===p.res,el}}
+}
+function check(){
+  if(G.done)return;
+  const q=G.qs[G.i];const all=[...(q.plan?[[q.plan,'plan']]:[]),...q.parts.map((p,k)=>[p,k])];
+  const R=all.map(([p,k])=>({p,k,...evalPart(p,k)}));
+  if(R.some(r=>r.empty)){$('#fb').className='fb warn';$('#fb').innerHTML=q.prob?'Completa todos los pasos antes de comprobar.':'Te falta responder alguna parte.';return}
+  G.done=true;const ok=R.every(r=>r.ok);
+  R.forEach(({p,k,ok:o,el})=>{
+    if(p.t==='c'){el.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===p.ans)b.classList.add('right');else if(b.getAttribute('aria-checked')==='true')b.classList.add('wrong')})}
+    if(p.t==='n'){const i=el.querySelector('input');i.disabled=true;i.classList.add(o?'right':'wrong');if(!o)el.querySelector('.sol').innerHTML=`Solución: <b class="nb">${p.show}${p.unit?' '+p.unit:''}</b>`}
+    if(p.t==='g'){el.querySelectorAll('input').forEach(i=>{i.disabled=true;i.classList.add(o?'right':'wrong')});if(!o)el.querySelector('.sol').innerHTML=`Solución: <b class="nb">${fmtS(p.res,p.e,true)}</b>`}
+  });
+  G.res[G.i]=ok;
+  if(ok){G.correct++;G.streak++;G.best=Math.max(G.best,G.streak);const g=10+(G.streak>=3?5:0);S.candy+=g;G.gained+=g;save();header();bump();sfx.ok()}
+  else{G.streak=0;if(G.id==='boss')G.hearts--;sfx.bad()}
+  const praise=['¡Hechizo perfecto!',personal('{¡Bruja-genial!|¡Brujo-genial!}'),'¡Calabaza encendida!','¡Eso es magia de la buena!','¡Exacto!','¡Brillante como la luna!'];
+  const oops=['¡Casi! Mira cómo se hace:','Este hechizo se resiste. Fíjate:','Uy, se ha escapado un murciélago. Revisa:'];
+  $('#fb').className='fb '+(ok?'good':'bad');
+  $('#fb').innerHTML=`<p class="fbt">${ok?pick(praise)+(G.streak>=3?' Racha de '+G.streak+': +5 caramelos extra.':''):pick(oops)}</p><div class="exp">${q.exp}</div>`;
+  const pr=document.querySelector('.prog');if(pr)pr.outerHTML=progressBar();
+  if(G.id==='boss'){const h=document.querySelector('.hearts');if(h)h.innerHTML=[0,1,2].map(k=>ART.heart(k<G.hearts)).join('')}
+  $('#hintBtn').hidden=true;
+  const last=G.i===G.qs.length-1||(G.id==='boss'&&G.hearts<=0);
+  const b=$('#checkBtn');b.textContent=last?'Ver resultado':'Siguiente';b.onclick=next;b.focus({preventScroll:true});
+  $('#fb').scrollIntoView({behavior:RM()?'auto':'smooth',block:'nearest'});
+}
+function next(){
+  const last=G.i===G.qs.length-1||(G.id==='boss'&&G.hearts<=0);
+  if(last){finish();return}
+  G.i++;G.done=false;showQ();window.scrollTo({top:0,behavior:'auto'});
+}
+function finish(){
+  const {id,correct,qs}=G;let stars;
+  if(id==='boss')stars=G.hearts>0?G.hearts:0;
+  else stars=correct>=7?3:correct>=5?2:correct>=4?1:0;
+  const bonus=stars*20;S.candy+=bonus;G.gained+=bonus;
+  const firstFree=stars>0&&!S.freed[id];const improved=stars>S.stars[id];
+  if(improved)S.stars[id]=stars;if(firstFree)S.freed[id]=true;save();header();
+  const z=G.z;
+  const msg=stars===3?'¡Tres estrellas! Eres pura magia matemática.':stars===2?'¡Muy bien! Te falta muy poco para las tres estrellas.':stars===1?'¡Conseguido! Vuelve otro día a por más estrellas: las preguntas cambian cada vez.':(id==='boss'?'El Castillo de la Luna es el reto más difícil. Repasa el Grimorio y vuelve a intentarlo.':(S.freed[id]?'Esta vez no has conseguido estrellas. Repasa el Grimorio y vuelve a intentarlo: ¡las preguntas cambian cada vez!':`${z.fname} sigue atrapado: necesitas 4 aciertos. Repasa el Grimorio y vuelve a intentarlo.`));
+  const showRes=()=>{
+    if(stars>0)sfx.win();
+    showOv(`<h2>${stars>0?'¡Reto superado!':'¡Casi lo tienes!'}</h2>
+    <div class="big-stars">${[0,1,2].map(i=>ART.star(i<stars)).join('')}</div>
+    <p>${id==='boss'?(G.hearts>0?`Has llegado con ${G.hearts} ${G.hearts===1?'vida':'vidas'}.`:'Te has quedado sin vidas.'):`Has acertado ${correct} de ${qs.length}.`} Mejor racha: ${G.best}. Caramelos: <b class="gain">+${G.gained}</b></p>
+    <p>${msg}${improved&&!firstFree&&stars>0?' ¡Nuevo récord de estrellas!':''}</p>
+    <div class="center"><button class="btn ghost" id="again" type="button">Otra ronda aquí</button><button class="btn" id="tomap" type="button">Volver al mapa</button></div>`);
+    $('#again').onclick=()=>{hideOv();start(id)};$('#tomap').onclick=()=>{hideOv();map()};
+  };
+  if(firstFree){
+    showOv(`<div class="free"><div class="free-art">${ART[z.friend]()}</div><h2>${id==='boss'?'¡Ha aparecido '+z.fname+'!':'¡Has liberado a '+z.fname+'!'}</h2><p>${personal(BIO[id])}</p>
+     <div class="center"><button class="btn" id="okfree" type="button">¡Genial!</button></div></div>`);
+    confetti();sfx.win();
+    $('#okfree').onclick=()=>{hideOv();setTimeout(showRes,120)};
+  }else showRes();
+}
+
+/* =========================================================
+   RINCÓN ENCANTADO (colección)
+   ========================================================= */
+function nest(){
+  G=null;header();$('#mapBtn').hidden=false;
+  const n=ZID.filter(k=>S.freed[k]).length;
+  $('#app').innerHTML=`<section class="nest"><h1>El rincón encantado de ${NM()}</h1><p class="lead">Amigos liberados: ${n} de ${ZID.length}. Caramelos: ${S.candy}. Rango: ${rank()}.</p>
+  <div class="friends">${ZONES.map(z=>{const f=S.freed[z.id];return `<article class="friend ${f?'':'sil'}"><div class="f-art">${ART[z.friend]()}</div><h3>${f?z.fname.charAt(0).toUpperCase()+z.fname.slice(1):'¿Quién será?'}</h3><p>${f?personal(BIO[z.id]):'Sigue atrapado en '+z.name+'.'}</p></article>`}).join('')}</div>
+  <div class="center"><button class="btn ghost" id="reset" type="button">Borrar mi progreso</button><button class="btn" id="back" type="button">Volver al mapa</button></div></section>`;
+  $('#back').onclick=()=>map();
+  $('#reset').onclick=()=>{showOv(`<h2>¿Borrar el progreso?</h2><p>Se perderán las estrellas, los caramelos y los amigos liberados de ${NM()}. No se puede deshacer.</p><div class="center"><button class="btn ghost" id="no" type="button">No, mejor no</button><button class="btn danger" id="yes" type="button">Sí, borrar</button></div>`);
+    $('#no').onclick=hideOv;$('#yes').onclick=()=>{const nm=S.name,gn=S.gen,snd=S.sound;S=JSON.parse(JSON.stringify(DEF));S.name=nm;S.gen=gn;S.sound=snd;save();hideOv();map(true)}};
+}
+
+/* =========================================================
+   GRIMORIO
+   ========================================================= */
+function book(tab){
+  tab=tab||(G&&G.id!=='boss'?G.id:'nat');
+  showOv(`<div class="book"><h2>El Grimorio de ${NM()}</h2><p class="center">Los conjuros de los números naturales y decimales.</p>
+  <div class="tabs" role="tablist">${ZONES.filter(z=>z.id!=='boss').map(z=>`<button class="tab" type="button" role="tab" aria-selected="${z.id===tab}" data-k="${z.id}">${['Naturales','Decimales','Aproximar','Comparar','Sumar y restar','Multiplicar','Dividir','Combinadas','Problemas'][ZID.indexOf(z.id)]}</button>`).join('')}</div>
+  <div class="bookc">${BOOK[tab]}</div>
+  <div class="center"><button class="btn" id="bookClose" type="button">Cerrar el Grimorio</button></div></div>`,true);
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>book(t.dataset.k));
+  $('#bookClose').onclick=hideOv;
+  const sel=document.querySelector('.tab[aria-selected="true"]');if(sel)sel.scrollIntoView({block:'nearest',inline:'center'});
+}
+
+/* =========================================================
+   CAPAS, AVISOS Y EFECTOS
+   ========================================================= */
+let lastFocus=null;
+function showOv(html,wide){lastFocus=document.activeElement;$('#ovRoot').innerHTML=`<div class="ov" role="dialog" aria-modal="true"><div class="ov-card ${wide?'wide':''}">${html}</div></div>`;const b=$('#ovRoot').querySelector('button');if(b)b.focus({preventScroll:true})}
+function hideOv(){$('#ovRoot').innerHTML='';if(lastFocus&&document.body.contains(lastFocus))lastFocus.focus({preventScroll:true})}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ovRoot').innerHTML&&$('#bookClose'))hideOv()});
+let tT;function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('on'),2600)}
+function confetti(){
+  if(RM())return;const c=$('#fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#ff8a24','#ffd54a','#8be36b','#b892ff','#ff6f91','#fff1c1'];
+  const L=Array.from({length:120},()=>({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-14-4,r:Math.random()*6+5,c:pick(cols),a:Math.random()*6,s:Math.random()<.4}));
+  let t=0;(function f(){x.clearRect(0,0,c.width,c.height);L.forEach(q=>{q.vy+=.35;q.x+=q.vx;q.y+=q.vy;q.a+=.2;x.save();x.globalAlpha=Math.max(0,1-t/110);x.translate(q.x,q.y);x.rotate(q.a);x.fillStyle=q.c;if(q.s){x.beginPath();x.arc(0,0,q.r/2,0,7);x.fill()}else{x.fillRect(-q.r/2,-q.r/4,q.r,q.r/2);x.beginPath();x.moveTo(-q.r/2,0);x.lineTo(-q.r,-q.r/3);x.lineTo(-q.r,q.r/3);x.fill();x.beginPath();x.moveTo(q.r/2,0);x.lineTo(q.r,-q.r/3);x.lineTo(q.r,q.r/3);x.fill()}x.restore()});if(++t<110)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})();
+}
+
+/* =========================================================
+   ARRANQUE
+   ========================================================= */
+$('#mapBtn').onclick=()=>{if(G&&(G.i>0||G.done)&&!(G.done&&G.i===G.qs.length-1)){showOv(`<h2>¿Volver al mapa?</h2><p>Si sales ahora, perderás esta ronda (los caramelos ganados se quedan).</p><div class="center"><button class="btn ghost" id="stay" type="button">Seguir jugando</button><button class="btn" id="leave" type="button">Volver al mapa</button></div>`);$('#stay').onclick=hideOv;$('#leave').onclick=()=>{hideOv();map()}}else map()};
+$('#bookBtn').onclick=()=>book();
+$('#nestBtn').onclick=()=>nest();
+$('#soundBtn').onclick=()=>{S.sound=!S.sound;save();header();sfx.tap()};
+if(S.name&&S.gen)map();else welcome();
+
+</script>
+</body>
+</html>

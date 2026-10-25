@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Actividades de primaria · 5.º y 6.º</title>
-<meta name="description" content="Actividades interactivas para repasar en casa. Quinto y sexto de primaria, Comunidad de Madrid.">
+<title>Actividades de primaria · 5.º</title>
+<meta name="description" content="Actividades interactivas para repasar en casa. Quinto de primaria, Comunidad de Madrid.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9A%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,9 +30,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);fo
 .wrap{max-width:900px;margin:0 auto;padding:32px max(18px,env(safe-area-inset-right,0px)) 48px max(18px,env(safe-area-inset-left,0px))}
 header h1{font-family:var(--f-display);font-weight:900;font-size:clamp(2rem,6vw,3rem);line-height:1.05;margin:0 0 8px}
 header p{margin:0;color:var(--soft);font-weight:700;max-width:60ch}
-.subject{margin-top:36px}
-.subject h2{font-family:var(--f-display);font-size:1.5rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
-.subject h2 .dot{width:14px;height:14px;border-radius:50%;background:var(--c)}
+.course{font-family:var(--f-display);font-size:1.9rem;margin:40px 0 0;padding-bottom:6px;border-bottom:3px solid var(--line)}
+.subject{margin-top:26px}
+.subject .sub{font-family:var(--f-display);font-size:1.4rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.subject .sub .dot{width:14px;height:14px;border-radius:50%;background:var(--c)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--paper);border:2px solid var(--line);border-left:8px solid var(--c);border-radius:18px;padding:16px 18px;transition:transform .12s,box-shadow .12s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--line)}
@@ -50,7 +51,7 @@ footer{margin-top:44px;color:var(--soft);font-size:.9rem;font-weight:600;border-
 <div class="wrap">
   <header>
     <h1>Actividades para repasar en casa</h1>
-    <p>Juegos y retos interactivos para quinto y sexto de primaria, según el currículo de la Comunidad de Madrid. Elige una actividad, escribe tu nombre y ¡a jugar!</p>
+    <p>Juegos y retos interactivos según el currículo de la Comunidad de Madrid. Elige una actividad, escribe tu nombre y ¡a jugar!</p>
   </header>
   <main id="lista"></main>
   <footer>El progreso de cada actividad se guarda solo en el navegador del dispositivo donde se juega.</footer>
@@ -61,11 +62,14 @@ footer{margin-top:44px;color:var(--soft);font-size:.9rem;font-weight:600;border-
    Para añadir uno nuevo, copia una línea y cambia los datos.
    El archivo debe llamarse  asignatura-recurso-NN.html
    Asignaturas: lengua, mates, conocimiento, ingles
+   curso: 5 (cuando haya actividades de otros cursos, se
+   mostrarán automáticamente en su propio apartado)
    ============================================================ */
 const RECURSOS=[
-  {asig:'lengua', id:'01', curso:'5.º', titulo:'Academia de Dragones', desc:'Despierta cuatro huevos de dragón superando retos de lengua.', temas:['Sinónimos y antónimos','Clases de palabras','Lexema y morfemas','Mayúsculas','Acentuación']},
-  {asig:'lengua', id:'02', curso:'5.º', titulo:'Reino Arcoíris', desc:'Viaja por el reino con tu dragoncito guía. Retos que no se repiten.', temas:['Sinónimos y antónimos','Variables e invariables','Prefijos y sufijos','Acentuación','Comprensión lectora']},
+  {curso:5, asig:'lengua', id:'01', titulo:'Academia de Dragones', desc:'Despierta cinco huevos de dragón superando retos de lengua. Los retos no se repiten hasta haberlos visto todos.', temas:['Sinónimos y antónimos','Clases de palabras','Variables e invariables','Lexema y morfemas','Mayúsculas','Acentuación','Comprensión lectora']},
+  {curso:5, asig:'mates', id:'01', titulo:'La Noche de los Números', desc:'Números naturales y decimales. Libera a los amigos de Halloween resolviendo retos. Las preguntas cambian en cada ronda.', temas:['Naturales y decimales','Aproximaciones','Comparación de decimales','Sumas y restas','Multiplicación','División','Operaciones combinadas','Problemas']},
 ];
+const CURSOS={5:'Quinto de primaria'};
 const ASIG={
   lengua:{nombre:'Lengua Castellana y Literatura',c:'var(--lengua)',cbg:'var(--lengua-bg)'},
   mates:{nombre:'Matemáticas',c:'var(--mates)',cbg:'var(--mates-bg)'},
@@ -74,12 +78,15 @@ const ASIG={
 };
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const out=[];
-Object.keys(ASIG).forEach(k=>{
-  const rs=RECURSOS.filter(r=>r.asig===k);if(!rs.length)return;
-  const a=ASIG[k];
-  out.push(`<section class="subject" style="--c:${a.c};--cbg:${a.cbg}"><h2><span class="dot" aria-hidden="true"></span>${a.nombre}</h2><div class="grid">`+
-    rs.map(r=>`<a class="card" href="${k}-recurso-${esc(r.id)}.html"><span class="id">Recurso ${esc(r.id)} · ${esc(r.curso)} de primaria</span><h3>${esc(r.titulo)}</h3><p>${esc(r.desc)}</p><div class="tags">${r.temas.map(t=>`<span>${esc(t)}</span>`).join('')}</div></a>`).join('')+
-    `</div></section>`);
+[...new Set(RECURSOS.map(r=>r.curso))].sort().forEach(cu=>{
+  out.push(`<h2 class="course">${esc(CURSOS[cu]||cu+'.º de primaria')}</h2>`);
+  Object.keys(ASIG).forEach(k=>{
+    const rs=RECURSOS.filter(r=>r.curso===cu&&r.asig===k);if(!rs.length)return;
+    const a=ASIG[k];
+    out.push(`<section class="subject" style="--c:${a.c};--cbg:${a.cbg}"><h3 class="sub"><span class="dot" aria-hidden="true"></span>${a.nombre}</h3><div class="grid">`+
+      rs.map(r=>`<a class="card" href="${k}-recurso-${esc(r.id)}.html"><span class="id">Recurso ${esc(r.id)}</span><h3>${esc(r.titulo)}</h3><p>${esc(r.desc)}</p><div class="tags">${r.temas.map(x=>`<span>${esc(x)}</span>`).join('')}</div></a>`).join('')+
+      `</div></section>`);
+  });
 });
 document.getElementById('lista').innerHTML=out.join('');
 </script>

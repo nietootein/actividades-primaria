@@ -202,6 +202,14 @@ main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding-block:20p
 #fx{position:fixed;inset:0;pointer-events:none;z-index:30}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:800;border-radius:999px;padding:8px 18px;z-index:25;animation:pop .25s}
 
+/* ===== Lectura ===== */
+.parch{background:#fffaf0;border:3px solid #f0dfb8;border-radius:20px;padding:14px 18px;margin:0 0 14px;box-shadow:inset 0 0 0 4px #fff}
+.parch h3{font-size:1.1rem;margin-bottom:6px;color:#7a5410}
+.parch p{margin:.35em 0;max-width:70ch;font-weight:600;line-height:1.6}
+.parch .pre{white-space:pre-line}
+.parch-tog{margin-top:8px;font-weight:800;font-size:.85rem;background:none;border:0;color:#7a5410;text-decoration:underline;padding:0}
+.tok.miss{outline:2px dashed var(--bad);outline-offset:2px}
+.isle-new{font-size:.82rem;font-weight:800;color:var(--ink-soft)}
 /* ===== Nombre del jugador ===== */
 .namebox{display:grid;gap:10px;justify-items:center;margin:14px 0 6px}
 .namebox>label{font-weight:800}
@@ -250,7 +258,8 @@ const PAL={
   verdin:{main:'#3fc47a',dark:'#1b6e41',light:'#d4f7e2',accent:'#ff9f43'},
   rubi:{main:'#ff5d73',dark:'#a3233a',light:'#ffe0e5',accent:'#ffd84d'},
   aurelia:{main:'#ffc83d',dark:'#9a6500',light:'#fff3c4',accent:'#ff7ab6'},
-  azul:{main:'#5bb8f0',dark:'#1f5f8f',light:'#dff2ff',accent:'#ff9bd0'}
+  azul:{main:'#5bb8f0',dark:'#1f5f8f',light:'#dff2ff',accent:'#ff9bd0'},
+  brisa:{main:'#3ccfc0',dark:'#13706a',light:'#d3f7f2',accent:'#ff9bd0'}
 };
 function dragon(p,cls=''){
   const s=`stroke="${p.dark}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"`;
@@ -293,111 +302,233 @@ const SCENE={
   voc:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#c9ecff"/><circle cx="250" cy="34" r="18" fill="#fff6b0"/><ellipse cx="150" cy="150" rx="190" ry="44" fill="#5bb8f0"/><path d="M40 140 q15-8 30 0 M200 148 q15-8 30 0 M110 158 q15-8 30 0" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/><ellipse cx="150" cy="128" rx="80" ry="12" fill="#8fd0f5"/></svg>`,
   gra:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#dff7e6"/><ellipse cx="80" cy="175" rx="140" ry="60" fill="#8ad9a6"/><ellipse cx="250" cy="180" rx="130" ry="70" fill="#5cc387"/><path d="M30 120 l18-44 18 44z M240 110 l20-50 20 50z M262 128 l14-34 14 34z" fill="#2f9e5e"/><rect x="45" y="118" width="6" height="12" fill="#8a5a2b"/><rect x="257" y="108" width="6" height="12" fill="#8a5a2b"/></svg>`,
   ort:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#ffe6dc"/><path d="M20 170 L110 60 L130 70 L150 58 L170 70 L190 60 L280 170 Z" fill="#b5654a"/><path d="M110 60 L130 70 L150 58 L170 70 L190 60 L176 82 L150 76 L124 82 Z" fill="#ff7a3d"/><circle cx="130" cy="38" r="9" fill="#ffd0b8"/><circle cx="160" cy="26" r="12" fill="#ffd0b8"/><circle cx="185" cy="44" r="7" fill="#ffd0b8"/></svg>`,
+  lec:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#e3f6ff"/><g fill="#fff"><ellipse cx="60" cy="40" rx="34" ry="12"/><ellipse cx="80" cy="32" rx="22" ry="14"/><ellipse cx="240" cy="54" rx="30" ry="10"/><ellipse cx="256" cy="46" rx="18" ry="12"/></g><g fill="#fff"><ellipse cx="150" cy="158" rx="170" ry="34"/><circle cx="40" cy="140" r="30"/><circle cx="262" cy="138" r="32"/></g><rect x="64" y="70" width="172" height="76" rx="8" fill="#b98a5e" stroke="#7a5410" stroke-width="3"/><rect x="72" y="78" width="156" height="28" fill="#f7e6cf"/><rect x="72" y="112" width="156" height="28" fill="#f7e6cf"/><g stroke="#2b2350" stroke-width="1.5"><rect x="76" y="82" width="10" height="24" fill="#ff8fab"/><rect x="88" y="86" width="9" height="20" fill="#ffd166"/><rect x="99" y="80" width="11" height="26" fill="#9b6cf0"/><rect x="112" y="84" width="9" height="22" fill="#3ccfc0"/><rect x="180" y="82" width="10" height="24" fill="#5bb8f0"/><rect x="192" y="85" width="12" height="21" fill="#ff5d73"/><rect x="206" y="81" width="9" height="25" fill="#3fc47a"/><rect x="84" y="116" width="11" height="24" fill="#3fc47a"/><rect x="97" y="119" width="9" height="21" fill="#5bb8f0"/><rect x="150" y="115" width="10" height="25" fill="#ffd166"/><rect x="162" y="118" width="12" height="22" fill="#9b6cf0"/><rect x="200" y="116" width="10" height="24" fill="#ff8fab"/></g><path d="M134 118 l10-4 l10 4 v20 l-10-4 l-10 4z" fill="#fff" stroke="#7a5410" stroke-width="2"/></svg>`,
   boss:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#fff3c4"/><circle cx="60" cy="40" r="3" fill="#ffc83d"/><circle cx="240" cy="30" r="4" fill="#ffc83d"/><circle cx="270" cy="70" r="2.5" fill="#ffc83d"/><rect x="40" y="70" width="40" height="100" fill="#d9c8f5"/><path d="M34 70 L60 36 L86 70 Z" fill="#9b6cf0"/><rect x="220" y="80" width="40" height="90" fill="#d9c8f5"/><path d="M214 80 L240 46 L266 80 Z" fill="#ff7ab6"/><ellipse cx="150" cy="170" rx="160" ry="30" fill="#f2dd8c"/></svg>`
 };
 
 /* ===================== MUNDO ===================== */
 const ISLANDS=[
   {id:'voc',name:'Lago de los Espejos',topic:'Vocabulario · Sinónimos y antónimos',pal:'lila',dragon:'Lila',total:8},
-  {id:'gra',name:'Bosque de las Raíces',topic:'Gramática · La palabra: clases y estructura',pal:'verdin',dragon:'Verdín',total:8},
+  {id:'gra',name:'Bosque de las Raíces',topic:'Gramática · Clases, estructura, variables e invariables',pal:'verdin',dragon:'Verdín',total:8},
   {id:'ort',name:'Volcán de las Tildes',topic:'Ortografía · Mayúsculas y acentuación',pal:'rubi',dragon:'Rubí',total:8},
+  {id:'lec',name:'Biblioteca de las Nubes',topic:'Lectura · Comprensión lectora',pal:'brisa',dragon:'Brisa',total:8},
   {id:'boss',name:'Torre del Huevo Dorado',topic:'Gran Desafío · Todo mezclado',pal:'aurelia',dragon:'Aurelia',total:12}
 ];
 const BIO={
   voc:'Lila es una dragoncita violeta que vive en el Lago de los Espejos. Le encanta ver su reflejo: dice que los sinónimos son como reflejos gemelos y los antónimos, como su lado contrario.',
   gra:'Verdín es un dragoncito verde del Bosque de las Raíces. Sabe que cada palabra tiene una raíz, el lexema, y que le crecen hojitas: los morfemas.',
   ort:'Rubí es una dragoncita roja del Volcán de las Tildes. Lanza chispitas de fuego justo encima de la sílaba tónica… ¡y nunca olvida una mayúscula!',
+  lec:'Brisa es una dragoncita turquesa que vive entre libros en la Biblioteca de las Nubes. Lee tan atenta que encuentra las pistas escondidas en cada texto.',
   boss:'Aurelia es la dragona dorada, reina de todos los dragoncitos. Solo nace cuando {una Guardiana|un Guardián} domina las palabras de verdad. ¡Y {esa|ese} eres tú, {N}!'
 };
-const RANKS=[[0,'Aprendiz de {Guardiana|Guardián}'],[150,'{Cuidadora|Cuidador} de Huevos'],[400,'{Domadora|Domador} de Dragones'],[750,'{Gran Maestra Dragona|Gran Maestro Dragón}']];
+const RANKS=[[0,'Aprendiz de {Guardiana|Guardián}'],[200,'{Cuidadora|Cuidador} de Huevos'],[500,'{Domadora|Domador} de Dragones'],[900,'{Gran Maestra Dragona|Gran Maestro Dragón}'],[1400,'Leyenda Dorada']];
 
-/* ===================== BANCO DE RETOS ===================== */
-// En las preguntas tipo "mc" la respuesta correcta es siempre la primera opción; se barajan al mostrarse.
+/* =========================================================
+   BANCO DE RETOS (la respuesta correcta de "mc" es siempre la primera opción; se baraja al mostrarla)
+   ========================================================= */
 const BANK={
 voc:[
- {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>veloz</i>?',o:['rápido','lento','tranquilo','pesado'],exp:'<i>Veloz</i> y <i>rápido</i> significan lo mismo: son sinónimos.'},
- {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>valiente</i>?',o:['cobarde','atrevido','osado','decidido'],exp:'<i>Cobarde</i> significa lo contrario de <i>valiente</i>. ¡Ojo! <i>Atrevido</i> y <i>osado</i> son sinónimos.'},
- {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>hermoso</i>?',o:['bello','feo','enorme','raro'],exp:'<i>Hermoso</i> y <i>bello</i> son sinónimos. <i>Feo</i> sería su antónimo.'},
- {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>generoso</i>?',o:['tacaño','amable','bondadoso','alegre'],exp:'Una persona <i>tacaña</i> no quiere compartir: es lo contrario de <i>generosa</i>.'},
- {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>comenzar</i>?',o:['empezar','terminar','seguir','parar'],exp:'<i>Comenzar</i> y <i>empezar</i> son sinónimos. <i>Terminar</i> es su antónimo.'},
- {t:'mc',k:'Antónimos con prefijo',q:'¿Cuál es el <b>antónimo</b> de <i>ordenado</i>?',o:['desordenado','limpio','organizado','recogido'],exp:'Con el prefijo <b>des-</b> formamos el antónimo: <i>ordenado → desordenado</i>.'},
- {t:'mc',k:'Antónimos con prefijo',q:'¿Cuál es el <b>antónimo</b> de <i>posible</i>?',o:['imposible','probable','posiblemente','real'],exp:'Con el prefijo <b>im-</b> (delante de p y b) formamos el antónimo: <i>posible → imposible</i>.'},
- {t:'mc',k:'Antónimos con prefijo',q:'¿Qué prefijo forma el <b>antónimo</b> de <i>responsable</i>?',o:['ir-','des-','in-','a-'],exp:'<i>Responsable → irresponsable</i>. Delante de <b>r</b> el prefijo <b>in-</b> se convierte en <b>ir-</b> (y se escribe con doble r).'},
- {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>enfadado</i>?',o:['enojado','alegre','cansado','tranquilo'],exp:'<i>Enfadado</i> y <i>enojado</i> son sinónimos.'},
- {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>ancho</i>?',o:['estrecho','amplio','largo','grande'],exp:'<i>Estrecho</i> es lo contrario de <i>ancho</i>. <i>Amplio</i> sería un sinónimo.'},
- {t:'mc',k:'Sinónimos en contexto',q:'«Chispa encontró un tesoro <u>antiguo</u>». ¿Qué palabra puede sustituir a <u>antiguo</u> sin cambiar el sentido?',o:['viejo','moderno','nuevo','brillante'],exp:'<i>Viejo</i> es sinónimo de <i>antiguo</i> en esta frase. <i>Moderno</i> y <i>nuevo</i> son antónimos.'},
- {t:'mc',k:'Antónimos en contexto',q:'«Lila es muy <u>tímida</u>». ¿Qué palabra expresa lo contrario?',o:['extrovertida','vergonzosa','callada','reservada'],exp:'Una persona <i>extrovertida</i> se relaciona con facilidad: es lo contrario de <i>tímida</i>.'},
- {t:'mc',k:'Parejas',q:'¿Qué pareja de palabras son <b>antónimos</b>?',o:['encender – apagar','subir – ascender','mirar – observar','hablar – charlar'],exp:'<i>Encender</i> y <i>apagar</i> son opuestos. Las demás parejas son sinónimos.'},
- {t:'mc',k:'Parejas',q:'¿Qué pareja de palabras son <b>sinónimos</b>?',o:['charlar – conversar','frío – caliente','día – noche','entrar – salir'],exp:'<i>Charlar</i> y <i>conversar</i> significan lo mismo. Las demás parejas son antónimos.'},
- {t:'cls',k:'Parejas',q:'¿Sinónimos o antónimos? Lleva cada pareja a su nido.',b:['Sinónimos','Antónimos'],items:[['alegre – contento',0],['subir – bajar',1],['cara – rostro',0],['lleno – vacío',1],['listo – inteligente',0],['mucho – poco',1]],exp:'Los <b>sinónimos</b> significan lo mismo o casi lo mismo; los <b>antónimos</b>, lo contrario.'},
- {t:'cls',k:'Parejas',q:'¿Sinónimos o antónimos? Lleva cada pareja a su nido.',b:['Sinónimos','Antónimos'],items:[['empezar – iniciar',0],['ganar – perder',1],['regresar – volver',0],['abrir – cerrar',1],['dormir – despertar',1],['pequeño – diminuto',0]],exp:'Los <b>sinónimos</b> significan lo mismo o casi lo mismo; los <b>antónimos</b>, lo contrario.'},
- {t:'cls',k:'Sinónimos y antónimos',q:'Lila está <i>alegre</i>. ¿Cada palabra es sinónimo o antónimo de <i>alegre</i>?',b:['Sinónimo de alegre','Antónimo de alegre'],items:[['contento',0],['triste',1],['feliz',0],['apenado',1],['risueño',0],['afligido',1]],exp:'<i>Contento, feliz, risueño</i> son sinónimos de <i>alegre</i>; <i>triste, apenado, afligido</i> son antónimos.'},
- {t:'cls',k:'Sinónimos y antónimos',q:'Verdín es muy <i>grande</i>. ¿Cada palabra es sinónimo o antónimo de <i>grande</i>?',b:['Sinónimo de grande','Antónimo de grande'],items:[['enorme',0],['pequeño',1],['gigante',0],['diminuto',1],['inmenso',0],['minúsculo',1]],exp:'<i>Enorme, gigante, inmenso</i> son sinónimos de <i>grande</i>; <i>pequeño, diminuto, minúsculo</i> son antónimos.'}
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>efímero</i>?',o:['pasajero','eterno','ligero','enorme'],exp:'Algo <i>efímero</i> dura muy poco: es <i>pasajero</i>. <i>Eterno</i> es su antónimo.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>audaz</i>?',o:['atrevido','cobarde','prudente','veloz'],exp:'Una persona <i>audaz</i> se atreve a hacer cosas difíciles: es <i>atrevida</i>.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>sosegado</i>?',o:['tranquilo','nervioso','cansado','callado'],exp:'<i>Sosegado</i> significa tranquilo, en calma.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>obsequio</i>?',o:['regalo','castigo','pedido','préstamo'],exp:'Un <i>obsequio</i> es un <i>regalo</i>.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>fatigado</i>?',o:['cansado','aburrido','enfadado','mareado'],exp:'<i>Fatigado</i> y <i>cansado</i> son sinónimos.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>hallar</i>?',o:['encontrar','buscar','perder','esconder'],exp:'<i>Hallar</i> es <i>encontrar</i>. ¡Cuidado! <i>Buscar</i> no es lo mismo: puedes buscar y no hallar.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>diminuto</i>?',o:['minúsculo','gigantesco','delgado','escaso'],exp:'<i>Diminuto</i> y <i>minúsculo</i> significan muy pequeño.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>apacible</i>?',o:['sereno','furioso','áspero','ruidoso'],exp:'Algo <i>apacible</i> es tranquilo y agradable: <i>sereno</i>.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>escaso</i>?',o:['abundante','poco','raro','insuficiente'],exp:'Lo contrario de <i>escaso</i> es <i>abundante</i>. <i>Poco</i> e <i>insuficiente</i> son sinónimos.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>humilde</i>?',o:['soberbio','modesto','sencillo','pobre'],exp:'Una persona <i>soberbia</i> se cree superior: es lo contrario de <i>humilde</i>.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>transparente</i>?',o:['opaco','claro','brillante','cristalino'],exp:'Lo <i>opaco</i> no deja pasar la luz: es lo contrario de <i>transparente</i>.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>nocturno</i>?',o:['diurno','oscuro','lunar','tardío'],exp:'<i>Nocturno</i> es de la noche; <i>diurno</i>, del día.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>aceptar</i>?',o:['rechazar','admitir','recibir','aprobar'],exp:'Lo contrario de <i>aceptar</i> es <i>rechazar</i>. Las demás son sinónimos.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>sincero</i>?',o:['falso','honrado','franco','sencillo'],exp:'<i>Falso</i> es lo contrario de <i>sincero</i>. <i>Franco</i> es un sinónimo.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>ascender</i>?',o:['descender','subir','avanzar','escalar'],exp:'<i>Ascender</i> es subir y <i>descender</i>, bajar.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cómo se escribe el <b>antónimo</b> de <i>paciente</i>?',o:['impaciente','inpaciente','despaciente','ipaciente'],exp:'Delante de <b>p</b> y <b>b</b> se escribe <b>m</b>: <i>impaciente</i>.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cómo se escribe el <b>antónimo</b> de <i>regular</i>?',o:['irregular','iregular','desregular','inregular'],exp:'Delante de <b>r</b> el prefijo es <b>ir-</b> y se escribe <b>rr</b>: <i>irregular</i>.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cómo se escribe el <b>antónimo</b> de <i>legal</i>?',o:['ilegal','inlegal','deslegal','illegal'],exp:'Delante de <b>l</b> el prefijo es <b>i-</b>: <i>ilegal</i>, <i>ilógico</i>.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cuál es el <b>antónimo</b> de <i>confiar</i>?',o:['desconfiar','inconfiar','imconfiar','anticonfiar'],exp:'Con el prefijo <b>des-</b>: <i>desconfiar</i>.'},
+ {t:'mc',k:'¡Trampa de dragón!',q:'¿Qué palabra <b>NO</b> es un antónimo formado con prefijo?',o:['inmenso','inútil','imposible','ilegal'],exp:'<i>Inmenso</i> significa muy grande; no es lo contrario de ninguna palabra «menso». Las otras sí: útil/inútil, posible/imposible, legal/ilegal.'},
+ {t:'mc',k:'Sinónimos en contexto',q:'«Brisa tiene una vista muy <u>aguda</u>». ¿Qué palabra puede sustituir a <u>aguda</u> en esta frase?',o:['penetrante','puntiaguda','chillona','redonda'],exp:'Una vista <i>aguda</i> ve muy bien: es <i>penetrante</i>. <i>Puntiaguda</i> sería para un objeto con punta.'},
+ {t:'mc',k:'Antónimos en contexto',q:'«Hace un frío muy <u>intenso</u>». ¿Qué palabra significa lo contrario?',o:['leve','fuerte','helado','enorme'],exp:'Lo contrario de un frío <i>intenso</i> es un frío <i>leve</i>, suave.'},
+ {t:'mc',k:'Antónimos en contexto',q:'«Verdín levantó una piedra <u>pesada</u>». ¿Qué palabra significa lo contrario?',o:['ligera','enorme','dura','grande'],exp:'Lo contrario de <i>pesada</i> es <i>ligera</i>.'},
+ {t:'mc',k:'Sinónimos en contexto',q:'«Rubí <u>terminó</u> el reto en un minuto». ¿Qué verbo <b>NO</b> puede sustituir a <u>terminó</u>?',o:['comenzó','acabó','finalizó','completó'],exp:'<i>Comenzó</i> es un antónimo. <i>Acabó, finalizó</i> y <i>completó</i> son sinónimos.'},
+ {t:'mc',k:'Series de palabras',q:'¿Qué serie está formada <b>solo por sinónimos</b>?',o:['contento, alegre, feliz','contento, triste, feliz','alto, bajo, mediano','rápido, lento, veloz'],exp:'<i>Contento, alegre</i> y <i>feliz</i> significan lo mismo.'},
+ {t:'mc',k:'Series de palabras',q:'¿Qué serie está formada <b>solo por antónimos</b> de <i>valiente</i>?',o:['cobarde, miedoso, temeroso','cobarde, osado, miedoso','atrevido, audaz, bravo','miedoso, intrépido, cobarde'],exp:'<i>Cobarde, miedoso</i> y <i>temeroso</i> son lo contrario de <i>valiente</i>. <i>Osado</i> e <i>intrépido</i> son sinónimos.'},
+ {t:'mc',k:'Una palabra, varios antónimos',q:'En «un color <u>claro</u>», ¿cuál es el antónimo de <u>claro</u>?',o:['oscuro','confuso','turbio','nublado'],exp:'Un color claro frente a un color <i>oscuro</i>.'},
+ {t:'mc',k:'Una palabra, varios antónimos',q:'En «una explicación <u>clara</u>», ¿cuál es el antónimo de <u>clara</u>?',o:['confusa','negra','apagada','nocturna'],exp:'Una explicación clara se entiende bien; una <i>confusa</i>, no. ¡La misma palabra puede tener distintos antónimos según la frase!'},
+ {t:'mc',k:'Antónimos en contexto',q:'«Brisa es una dragona muy <u>generosa</u>». ¿Qué palabra significa lo contrario?',o:['tacaña','espléndida','desprendida','amable'],exp:'<i>Tacaña</i> es lo contrario. ¡Ojo! <i>Espléndida</i> y <i>desprendida</i> son sinónimos de generosa.'},
+ {t:'cls',k:'Sinónimos y antónimos',q:'¿Cada palabra es sinónimo o antónimo de <i>rápido</i>?',b:['Sinónimo de rápido','Antónimo de rápido'],items:[['veloz',0],['lento',1],['ágil',0],['pausado',1],['raudo',0],['calmoso',1]],exp:'<i>Veloz, ágil, raudo</i> son sinónimos; <i>lento, pausado, calmoso</i>, antónimos.'},
+ {t:'cls',k:'Sinónimos y antónimos',q:'¿Cada palabra es sinónimo o antónimo de <i>alegre</i>?',b:['Sinónimo de alegre','Antónimo de alegre'],items:[['contento',0],['triste',1],['risueño',0],['apenado',1],['jovial',0],['afligido',1]],exp:'<i>Contento, risueño, jovial</i> son sinónimos; <i>triste, apenado, afligido</i>, antónimos.'},
+ {t:'cls',k:'Sinónimos y antónimos',q:'¿Cada palabra es sinónimo o antónimo de <i>grande</i>?',b:['Sinónimo de grande','Antónimo de grande'],items:[['enorme',0],['diminuto',1],['inmenso',0],['minúsculo',1],['colosal',0],['menudo',1]],exp:'<i>Enorme, inmenso, colosal</i> son sinónimos; <i>diminuto, minúsculo, menudo</i>, antónimos.'},
+ {t:'cls',k:'Antónimos con prefijo',q:'¿Qué prefijo forma el antónimo de cada palabra?',b:['in-','im-','i-'],items:[['útil',0],['posible',1],['legal',2],['maduro',0],['perfecto',1],['lógico',2]],exp:'<b>im-</b> delante de p y b (imposible, imperfecto); <b>i-</b> delante de l (ilegal, ilógico); <b>in-</b> en los demás casos (inútil, inmaduro).'},
+ {t:'cls',k:'Parejas',q:'¿Sinónimos o antónimos? Lleva cada pareja a su nido.',b:['Sinónimos','Antónimos'],items:[['astuto – listo',0],['ancho – estrecho',1],['cima – cumbre',0],['ganar – perder',1],['cálido – caluroso',0],['valiente – cobarde',1]],exp:'Los <b>sinónimos</b> significan lo mismo o casi lo mismo; los <b>antónimos</b>, lo contrario.'},
+ {t:'hunt',k:'Antónimos',q:'Toca los dos <b>verbos</b> que son antónimos.',s:'Lila subió a la montaña y después bajó al valle.',ans:['subió','bajó'],exp:'<i>Subió</i> y <i>bajó</i> expresan acciones contrarias.'},
+ {t:'hunt',k:'Antónimos',q:'Toca los dos <b>adjetivos</b> que son antónimos.',s:'El día era caluroso, pero la noche fue fría.',ans:['caluroso','fría'],exp:'<i>Caluroso</i> y <i>fría</i> son adjetivos antónimos. (<i>Día</i> y <i>noche</i> también son opuestos, ¡pero son sustantivos!)'},
+ {t:'hunt',k:'Sinónimos',q:'Toca las dos palabras que son <b>sinónimos</b>.',s:'Lucía estaba contenta porque su dragón parecía muy feliz.',ans:['contenta','feliz'],exp:'<i>Contenta</i> y <i>feliz</i> son sinónimos.'},
+ {t:'hunt',k:'Sinónimos',q:'Toca las dos palabras que son <b>sinónimos</b>.',s:'Rubí comenzó a leer y Verdín empezó a dibujar.',ans:['comenzó','empezó'],exp:'<i>Comenzó</i> y <i>empezó</i> son sinónimos. Así el texto no repite palabras.'}
 ],
 gra:[
- {t:'mc',k:'Clases de palabras',q:'«Los dragones <u>vuelan</u> alto». ¿Qué clase de palabra es <u>vuelan</u>?',o:['verbo','sustantivo','adjetivo','adverbio'],exp:'<i>Vuelan</i> expresa una acción y cambia de persona, número y tiempo: es un <b>verbo</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«Rubí tiene unas alas <u>enormes</u>». ¿Qué clase de palabra es <u>enormes</u>?',o:['adjetivo','sustantivo','verbo','determinante'],exp:'<i>Enormes</i> dice cómo son las alas: es un <b>adjetivo</b>. Concuerda con el sustantivo en género y número.'},
- {t:'mc',k:'Clases de palabras',q:'«<u>Ella</u> escupe fuego». ¿Qué clase de palabra es <u>ella</u>?',o:['pronombre','determinante','sustantivo','preposición'],exp:'<i>Ella</i> sustituye a un nombre (Rubí, Lila…): es un <b>pronombre personal</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«Lila vuela <u>despacio</u>». ¿Qué clase de palabra es <u>despacio</u>?',o:['adverbio','adjetivo','verbo','sustantivo'],exp:'<i>Despacio</i> indica cómo vuela (modo) y nunca cambia de forma: es un <b>adverbio</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«<u>Aquellos</u> huevos son mágicos». ¿Qué clase de palabra es <u>aquellos</u>?',o:['determinante','pronombre','adjetivo','adverbio'],exp:'<i>Aquellos</i> acompaña al sustantivo <i>huevos</i> y lo sitúa lejos: es un <b>determinante demostrativo</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«Volamos <u>sobre</u> el castillo». ¿Qué clase de palabra es <u>sobre</u>?',o:['preposición','conjunción','adverbio','sustantivo'],exp:'Aquí <i>sobre</i> une palabras e indica lugar: es una <b>preposición</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«Lila <u>y</u> Rubí son amigas». ¿Qué clase de palabra es <u>y</u>?',o:['conjunción','preposición','determinante','interjección'],exp:'<i>Y</i> une dos palabras del mismo tipo: es una <b>conjunción</b>.'},
- {t:'mc',k:'Clases de palabras',q:'«¡<u>Ay</u>, me he quemado la cola!». ¿Qué clase de palabra es <u>ay</u>?',o:['interjección','adverbio','conjunción','verbo'],exp:'<i>¡Ay!</i> expresa una emoción (dolor, sorpresa…): es una <b>interjección</b>.'},
- {t:'mc',k:'Palabras invariables',q:'¿Cuál de estas palabras es <b>invariable</b> (nunca cambia de forma)?',o:['ayer','dragón','bonito','saltar'],exp:'<i>Ayer</i> es un adverbio y los adverbios son invariables. <i>Dragón</i> cambia de número, <i>bonito</i> de género y número y <i>saltar</i> se conjuga.'},
- {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>sacapuntas</i>?',o:['compuesta','primitiva','derivada'],exp:'<i>Sacapuntas</i> = <i>saca</i> + <i>puntas</i>. Está formada por dos palabras: es <b>compuesta</b>.'},
- {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>panadería</i>?',o:['derivada','primitiva','compuesta'],exp:'<i>Panadería</i> viene de <i>pan</i> + el sufijo <b>-adería</b>: es <b>derivada</b>.'},
- {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>flor</i>?',o:['primitiva','derivada','compuesta'],exp:'<i>Flor</i> no viene de otra palabra: es <b>primitiva</b>. De ella salen <i>florero</i>, <i>floristería</i>…'},
- {t:'mc',k:'Estructura',q:'En <i>gatitas</i>, ¿qué parte nos dice que hay <b>más de una</b>?',o:['-s (morfema de número)','gat- (lexema)','-it- (sufijo)','-a (morfema de género)'],exp:'La <b>-s</b> es el morfema de <b>número</b> (plural). La <b>-a</b> indica el género femenino y <b>-it-</b> es un sufijo diminutivo.'},
- {t:'mc',k:'Familia de palabras',q:'¿Cuál es el <b>lexema</b> que comparten <i>mar, marinero, marítimo</i> y <i>submarino</i>?',o:['mar','mari','ino','sub'],exp:'Todas comparten la raíz <b>mar</b>: forman una familia de palabras.'},
- {t:'mc',k:'Familia de palabras',q:'¿Qué palabra pertenece a la <b>familia</b> de <i>pan</i>?',o:['panadero','pantalón','pantera','pantano'],exp:'<i>Panadero</i> viene de <i>pan</i>. Las otras empiezan igual, pero no tienen nada que ver con el pan: ¡son trampas de dragón!'},
- {t:'mc',k:'Prefijos',q:'En <i>submarino</i>, el prefijo <b>sub-</b> significa…',o:['debajo de','antes de','contra','muy grande'],exp:'<b>Sub-</b> significa «debajo de»: un submarino va bajo el mar.'},
- {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Sustantivo','Adjetivo','Verbo'],items:[['dragón',0],['volar',2],['valiente',1],['cueva',0],['brillante',1],['escupir',2]],exp:'<b>Sustantivo</b>: nombra. <b>Adjetivo</b>: dice cómo es. <b>Verbo</b>: expresa acción o estado.'},
- {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Sustantivo','Adjetivo','Verbo'],items:[['tesoro',0],['dormimos',2],['verde',1],['montaña',0],['juegan',2],['feroz',1]],exp:'<b>Sustantivo</b>: nombra. <b>Adjetivo</b>: dice cómo es. <b>Verbo</b>: expresa acción o estado.'},
- {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Determinante','Pronombre','Adverbio'],items:[['mis',0],['nosotros',1],['siempre',2],['unas',0],['tú',1],['aquí',2]],exp:'<b>Determinante</b>: acompaña al sustantivo. <b>Pronombre</b>: lo sustituye. <b>Adverbio</b>: indica lugar, tiempo, modo… y es invariable.'},
- {t:'cls',k:'Primitivas, derivadas y compuestas',q:'Lleva cada palabra a su nido.',b:['Primitiva','Derivada','Compuesta'],items:[['libro',0],['librería',1],['paraguas',2],['casa',0],['casita',1],['cumpleaños',2]],exp:'<b>Primitiva</b>: no viene de otra. <b>Derivada</b>: lexema + prefijo o sufijo. <b>Compuesta</b>: unión de dos palabras.'},
- {t:'split',k:'Lexema y morfemas',w:'panadero',cut:3,exp:'<b>pan</b> es el lexema (la raíz) y <b>-adero</b> el morfema.'},
- {t:'split',k:'Lexema y morfemas',w:'florero',cut:4,exp:'<b>flor</b> es el lexema y <b>-ero</b> el morfema.'},
- {t:'split',k:'Lexema y morfemas',w:'zapatero',cut:5,exp:'<b>zapat-</b> es el lexema (de <i>zapato</i>) y <b>-ero</b> el morfema.'},
- {t:'split',k:'Lexema y morfemas',w:'librería',cut:4,exp:'<b>libr-</b> es el lexema (de <i>libro</i>) y <b>-ería</b> el morfema.'},
- {t:'split',k:'Lexema y morfemas',w:'gatitos',cut:3,exp:'<b>gat-</b> es el lexema; <b>-it-</b> (diminutivo), <b>-o</b> (masculino) y <b>-s</b> (plural) son morfemas.'},
+ {t:'mc',k:'Clases de palabras',q:'«<u>Este</u> es mi huevo favorito». ¿Qué clase de palabra es <u>este</u>?',o:['pronombre','determinante','adjetivo','adverbio'],exp:'Aquí <i>este</i> va solo y sustituye al sustantivo: es un <b>pronombre</b> demostrativo.'},
+ {t:'mc',k:'Clases de palabras',q:'«<u>Este</u> huevo es mi favorito». ¿Qué clase de palabra es <u>este</u>?',o:['determinante','pronombre','adjetivo','adverbio'],exp:'Aquí <i>este</i> acompaña al sustantivo <i>huevo</i>: es un <b>determinante</b> demostrativo.'},
+ {t:'mc',k:'Clases de palabras',q:'«Los dragones vuelan <u>muy</u> alto». ¿Qué clase de palabra es <u>muy</u>?',o:['adverbio','adjetivo','determinante','preposición'],exp:'<i>Muy</i> indica cantidad y es invariable: es un <b>adverbio</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Brisa encontró <u>tres</u> plumas». ¿Qué clase de palabra es <u>tres</u>?',o:['determinante numeral','sustantivo','adjetivo','adverbio'],exp:'<i>Tres</i> acompaña a <i>plumas</i> e indica cantidad exacta: es un <b>determinante numeral</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Rubí <u>nos</u> enseñó el volcán». ¿Qué clase de palabra es <u>nos</u>?',o:['pronombre','determinante','preposición','conjunción'],exp:'<i>Nos</i> sustituye a «a nosotros»: es un <b>pronombre personal</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Volamos <u>hacia</u> la cueva». ¿Qué clase de palabra es <u>hacia</u>?',o:['preposición','adverbio','conjunción','verbo'],exp:'<i>Hacia</i> une palabras e indica dirección: es una <b>preposición</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«¿Quieres agua <u>o</u> zumo?». ¿Qué clase de palabra es <u>o</u>?',o:['conjunción','preposición','determinante','interjección'],exp:'<i>O</i> une dos palabras y presenta una elección: es una <b>conjunción</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«<u>¡Bravo!</u> Has acertado». ¿Qué clase de palabra es <u>bravo</u>?',o:['interjección','adjetivo','adverbio','verbo'],exp:'<i>¡Bravo!</i> expresa una emoción por sí sola: es una <b>interjección</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«La <u>alegría</u> del dragón contagia a todos». ¿Qué clase de palabra es <u>alegría</u>?',o:['sustantivo','adjetivo','verbo','adverbio'],exp:'<i>Alegría</i> nombra un sentimiento: es un <b>sustantivo</b> abstracto. (<i>Alegre</i> sí sería adjetivo).'},
+ {t:'mc',k:'¡Trampa de dragón!',q:'«Los dragones vuelan <u>mañana</u>». ¿Qué clase de palabra es <u>mañana</u>?',o:['adverbio','sustantivo','verbo','adjetivo'],exp:'Aquí <i>mañana</i> indica cuándo: es un <b>adverbio</b> de tiempo.'},
+ {t:'mc',k:'¡Trampa de dragón!',q:'«La <u>mañana</u> está soleada». ¿Qué clase de palabra es <u>mañana</u>?',o:['sustantivo','adverbio','verbo','adjetivo'],exp:'Aquí <i>mañana</i> lleva el determinante <i>la</i> y nombra una parte del día: es un <b>sustantivo</b>.'},
+ {t:'mc',k:'Variables e invariables',q:'¿Qué grupo está formado <b>solo por palabras invariables</b>?',o:['ayer, con, pero, ¡oh!','ayer, mesa, con, pero','bonito, hacia, y, ¡ay!','nosotros, aquí, de, o'],exp:'Adverbios, preposiciones, conjunciones e interjecciones son <b>invariables</b>. <i>Mesa, bonito</i> y <i>nosotros</i> sí cambian.'},
+ {t:'mc',k:'Variables e invariables',q:'¿Qué grupo está formado <b>solo por palabras variables</b>?',o:['dragón, azul, ellos, saltar','dragón, muy, ellos, saltar','casa, de, verde, nunca','sus, aquí, cantar, y'],exp:'Sustantivos, adjetivos, determinantes, pronombres y verbos son <b>variables</b>: <i>dragones, azules, ellas, salté</i>…'},
+ {t:'mc',k:'Variables e invariables',q:'¿Por qué <i>nosotras</i> es una palabra <b>variable</b>?',o:['Porque cambia de género y número','Porque es un adverbio','Porque nunca cambia','Porque une palabras'],exp:'<i>Nosotros, nosotras</i>…: el pronombre cambia de género y número.'},
+ {t:'mc',k:'Variables e invariables',q:'¿Qué clase de palabra es <b>siempre invariable</b>?',o:['la preposición','el sustantivo','el adjetivo','el verbo'],exp:'Las preposiciones (a, con, de, en…) nunca cambian de forma.'},
+ {t:'mc',k:'¡Trampa de dragón!',q:'Decimos «un dragón <i>verde</i>» y «una dragona <i>verde</i>». ¿Es <i>verde</i> una palabra variable?',o:['Sí, porque cambia de número: verdes','No, porque no cambia de género','No, porque es un adverbio','Sí, porque es un verbo'],exp:'Aunque no cambie de género, <i>verde</i> cambia de número (<i>verdes</i>). Por eso es <b>variable</b>.'},
+ {t:'cls',k:'Variables e invariables',q:'¿La palabra puede cambiar de forma o no?',b:['Variable','Invariable'],items:[['dragona',0],['siempre',1],['cantamos',0],['desde',1],['bonitas',0],['pero',1]],exp:'<b>Variables</b>: sustantivos, adjetivos, determinantes, pronombres y verbos. <b>Invariables</b>: adverbios, preposiciones, conjunciones e interjecciones.'},
+ {t:'cls',k:'Variables e invariables',q:'¿La palabra puede cambiar de forma o no?',b:['Variable','Invariable'],items:[['ellos',0],['aquí',1],['feliz',0],['sin',1],['mis',0],['¡ay!',1]],exp:'<i>Ellos</i> (ellas), <i>feliz</i> (felices) y <i>mis</i> (mi) cambian. <i>Aquí, sin</i> y <i>¡ay!</i> no cambian nunca.'},
+ {t:'hunt',k:'Variables e invariables',q:'Toca todas las palabras <b>invariables</b>.',s:'Ayer Lila voló muy lejos sobre el mar.',ans:['ayer','muy','lejos','sobre'],exp:'<i>Ayer, muy, lejos</i> son adverbios y <i>sobre</i> es una preposición: no cambian nunca.'},
+ {t:'hunt',k:'Variables e invariables',q:'Toca todas las palabras <b>invariables</b>.',s:'Rubí y Brisa juegan siempre con sus amigas.',ans:['y','siempre','con'],exp:'<i>Y</i> (conjunción), <i>siempre</i> (adverbio) y <i>con</i> (preposición) son invariables.'},
+ {t:'hunt',k:'Clases de palabras',q:'Toca todos los <b>adjetivos</b>.',s:'La pequeña dragona tenía unas alas blancas y suaves.',ans:['pequeña','blancas','suaves'],exp:'<i>Pequeña, blancas</i> y <i>suaves</i> dicen cómo son la dragona y sus alas.'},
+ {t:'hunt',k:'Clases de palabras',q:'Toca todos los <b>verbos</b>.',s:'Verdín come, duerme y después juega en el bosque.',ans:['come','duerme','juega'],exp:'<i>Come, duerme</i> y <i>juega</i> expresan acciones.'},
+ {t:'hunt',k:'Clases de palabras',q:'Toca todos los <b>determinantes</b>.',s:'Aquellos dragones guardan mis tres tesoros.',ans:['aquellos','mis','tres'],exp:'<i>Aquellos</i> (demostrativo), <i>mis</i> (posesivo) y <i>tres</i> (numeral) acompañan a sustantivos.'},
+ {t:'hunt',k:'Clases de palabras',q:'Toca todos los <b>pronombres</b>.',s:'Ella me dijo que nosotros ganaríamos.',ans:['ella','me','nosotros'],exp:'<i>Ella, me</i> y <i>nosotros</i> son pronombres personales. (<i>Que</i> aquí une dos partes de la oración).'},
+ {t:'hunt',k:'Clases de palabras',q:'Toca todos los <b>adverbios</b>.',s:'Hoy Rubí vuela despacio, pero mañana irá rápidamente.',ans:['hoy','despacio','mañana','rápidamente'],exp:'<i>Hoy, mañana</i> (tiempo) y <i>despacio, rápidamente</i> (modo) son adverbios.'},
+ {t:'mc',k:'Estructura',q:'¿Cuál es el <b>lexema</b> de <i>desordenado</i>?',o:['orden','des','ordenado','ado'],exp:'<b>des-</b> es un prefijo, <b>orden</b> el lexema y <b>-ado</b> un sufijo.'},
+ {t:'mc',k:'Estructura',q:'¿Qué palabra tiene <b>prefijo y sufijo</b> a la vez?',o:['desordenado','ordenar','desorden','ordenador'],exp:'<i>Des-orden-ado</i> tiene prefijo y sufijo. <i>Desorden</i> solo prefijo; <i>ordenador</i> solo sufijo.'},
+ {t:'mc',k:'Familia de palabras',q:'¿Qué palabra <b>NO</b> pertenece a la familia de <i>flor</i>?',o:['flotar','florero','floristería','florecer'],exp:'<i>Flotar</i> empieza parecido, pero no tiene que ver con las flores.'},
+ {t:'mc',k:'Familia de palabras',q:'¿Qué palabra <b>NO</b> pertenece a la familia de <i>mar</i>?',o:['marcar','marino','marea','submarino'],exp:'<i>Marcar</i> no tiene relación con el mar. <i>Marea</i> sí: es el movimiento del mar.'},
+ {t:'mc',k:'Estructura',q:'Los morfemas que van <b>delante</b> del lexema se llaman…',o:['prefijos','sufijos','desinencias','raíces'],exp:'Delante: <b>prefijos</b> (re-, des-, sub-). Detrás: <b>sufijos</b> (-ero, -ito).'},
+ {t:'mc',k:'Prefijos',q:'¿Qué significa el prefijo <b>re-</b> en <i>releer</i>?',o:['volver a','antes de','contra','sin'],exp:'<i>Releer</i> es volver a leer.'},
+ {t:'mc',k:'Prefijos',q:'¿Qué significa el prefijo <b>sub-</b> en <i>subterráneo</i>?',o:['debajo de','encima de','después de','dos veces'],exp:'Lo <i>subterráneo</i> está debajo de la tierra.'},
+ {t:'mc',k:'Sufijos',q:'<i>Dragonazo</i> lleva un sufijo…',o:['aumentativo','diminutivo','de oficio','de lugar'],exp:'<b>-azo</b> hace las cosas más grandes: es <b>aumentativo</b>. <b>-ito</b> sería diminutivo.'},
+ {t:'mc',k:'Sufijos',q:'¿Qué sufijo indica <b>oficio</b> o profesión?',o:['-ero (zapatero)','-ito (perrito)','-azo (golpazo)','-mente (rápidamente)'],exp:'<b>-ero</b> forma nombres de oficios: zapatero, panadero, jardinero.'},
+ {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cuál es una palabra <b>compuesta</b>?',o:['abrelatas','abridor','abierto','reabrir'],exp:'<i>Abrelatas</i> = <i>abre</i> + <i>latas</i>. Las demás son derivadas.'},
+ {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>arenoso</i>?',o:['derivada','primitiva','compuesta'],exp:'<i>Aren-oso</i>: lexema de <i>arena</i> + sufijo <b>-oso</b>. Es <b>derivada</b>.'},
+ {t:'cls',k:'Primitivas, derivadas y compuestas',q:'Lleva cada palabra a su nido.',b:['Primitiva','Derivada','Compuesta'],items:[['sol',0],['soleado',1],['girasol',2],['pan',0],['panera',1],['pelirrojo',2]],exp:'<b>Primitiva</b>: no viene de otra. <b>Derivada</b>: lexema + prefijo o sufijo. <b>Compuesta</b>: unión de dos palabras.'},
+ {t:'cls',k:'Primitivas, derivadas y compuestas',q:'Lleva cada palabra a su nido.',b:['Primitiva','Derivada','Compuesta'],items:[['mar',0],['marinero',1],['rompecabezas',2],['libro',0],['librería',1],['lavavajillas',2]],exp:'<b>Primitiva</b>: no viene de otra. <b>Derivada</b>: lexema + prefijo o sufijo. <b>Compuesta</b>: unión de dos palabras.'},
+ {t:'split',k:'Lexema y morfemas',w:'carnicero',cut:4,exp:'<b>carn-</b> es el lexema (de <i>carne</i>) y <b>-icero</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'leñador',cut:3,exp:'<b>leñ-</b> es el lexema (de <i>leña</i>) y <b>-ador</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'perrazo',cut:4,exp:'<b>perr-</b> es el lexema y <b>-azo</b> un sufijo aumentativo.'},
+ {t:'split',k:'Lexema y morfemas',w:'cristalero',cut:7,exp:'<b>cristal</b> es el lexema y <b>-ero</b> el morfema.'},
  {t:'split',k:'Lexema y morfemas',w:'pastelería',cut:6,exp:'<b>pastel</b> es el lexema y <b>-ería</b> el morfema.'},
- {t:'split',k:'Lexema y morfemas',w:'marinero',cut:3,exp:'<b>mar</b> es el lexema y <b>-inero</b> el morfema.'}
+ {t:'split',k:'Lexema y morfemas',w:'zapatillas',cut:5,exp:'<b>zapat-</b> es el lexema; <b>-ill-</b>, <b>-a</b> y <b>-s</b> son morfemas.'}
 ],
 ort:[
- {t:'caps',k:'Mayúsculas',s:'El dragón Verdín vive en Madrid con su amiga Lucía.',exp:'Mayúscula al <b>empezar</b> y en los <b>nombres propios</b> de personas, animales y lugares.'},
- {t:'caps',k:'Mayúsculas',s:'Ayer, lunes, visitamos el Museo del Prado. ¡Qué bonito!',exp:'Los <b>días de la semana</b> van en minúscula. Los nombres de <b>museos e instituciones</b> llevan mayúscula, y también la palabra que va <b>después de punto</b>.'},
- {t:'caps',k:'Mayúsculas',s:'En verano viajaremos a Francia y aprenderemos francés.',exp:'Los <b>países</b> llevan mayúscula; las <b>estaciones</b> y los <b>idiomas</b>, minúscula.'},
- {t:'caps',k:'Mayúsculas',s:'Mi dragona se llama Chispa y nació en octubre.',exp:'Los <b>nombres de animales</b> llevan mayúscula; los <b>meses</b>, minúscula.'},
- {t:'caps',k:'Mayúsculas',s:'¿Has leído el libro El dragón azul? Me encantó.',exp:'Tras <b>¿</b> la primera palabra va en mayúscula. En los <b>títulos de libros</b> solo la primera palabra. Después de <b>?</b> que cierra la oración, mayúscula.'},
- {t:'caps',k:'Mayúsculas',s:'Lila y Rubí cruzaron el río Tajo. Después, durmieron en Toledo.',exp:'<b>Tajo</b> y <b>Toledo</b> son nombres propios de lugar; <i>río</i> es un nombre común y va en minúscula. Tras punto, mayúscula.'},
- {t:'acc',k:'Acentuación',w:'arbol',i:0,exp:'<b>Árbol</b> es llana y acaba en <b>l</b> (no en n, s ni vocal): lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'cancion',i:5,exp:'<b>Canción</b> es aguda y acaba en <b>n</b>: lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'murcielago',i:5,exp:'<b>Murciélago</b> es esdrújula: las esdrújulas llevan tilde <b>siempre</b>.'},
- {t:'acc',k:'Acentuación',w:'lapiz',i:1,exp:'<b>Lápiz</b> es llana y acaba en <b>z</b>: lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'sofa',i:3,exp:'<b>Sofá</b> es aguda y acaba en <b>vocal</b>: lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'examen',i:-1,exp:'<b>Examen</b> es llana y acaba en <b>n</b>: no lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'reloj',i:-1,exp:'<b>Reloj</b> es aguda y acaba en <b>j</b>: no lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'pajaro',i:1,exp:'<b>Pájaro</b> es esdrújula: lleva tilde siempre.'},
- {t:'acc',k:'Acentuación',w:'azucar',i:2,exp:'<b>Azúcar</b> es llana y acaba en <b>r</b>: lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'feliz',i:-1,exp:'<b>Feliz</b> es aguda y acaba en <b>z</b>: no lleva tilde.'},
+ {t:'caps',k:'Mayúsculas',s:'La reina Aurelia vive en el castillo de Peñaluz, cerca del mar Mediterráneo.',exp:'Los <b>títulos</b> como <i>reina</i> van en minúscula. <i>Aurelia, Peñaluz</i> y <i>Mediterráneo</i> son nombres propios; <i>castillo</i> y <i>mar</i>, nombres comunes.'},
+ {t:'caps',k:'Mayúsculas',s:'El sábado iremos a Toledo con la profesora Marta y su perro Toby.',exp:'<i>Sábado</i> y <i>profesora</i> van en minúscula. <i>Toledo, Marta</i> y <i>Toby</i> son nombres propios.'},
+ {t:'caps',k:'Mayúsculas',s:'Mi libro favorito es Las aventuras de la dragona Brisa.',exp:'En los <b>títulos de libros</b> solo va en mayúscula la primera palabra… ¡y los nombres propios que haya dentro, como <i>Brisa</i>!'},
+ {t:'caps',k:'Mayúsculas',s:'¡Qué susto! ¿Has visto ese dragón? Creo que se llama Chispitas.',exp:'Tras <b>¡</b> y <b>¿</b> al empezar la oración, mayúscula. Después de <b>!</b> o <b>?</b> que cierra la oración, la siguiente palabra también.'},
+ {t:'caps',k:'Mayúsculas',s:'Los españoles celebran la Navidad en diciembre.',exp:'Los <b>gentilicios</b> (españoles) y los <b>meses</b> van en minúscula. Las <b>festividades</b> como <i>Navidad</i>, en mayúscula.'},
+ {t:'caps',k:'Mayúsculas',s:'Lucía habla inglés y francés, y vive en la Comunidad de Madrid.',exp:'Los <b>idiomas</b> van en minúscula. <i>Comunidad de Madrid</i> es un nombre propio de lugar.'},
+ {t:'caps',k:'Mayúsculas',s:'En verano, Lila y Rubí cruzaron el río Tajo. Después, durmieron en Aranjuez.',exp:'Las <b>estaciones</b> y la palabra <i>río</i> van en minúscula; <i>Tajo</i> y <i>Aranjuez</i>, en mayúscula. Tras punto, mayúscula.'},
+ {t:'caps',k:'Mayúsculas',s:'Ayer, lunes, visitamos el Museo del Prado. ¡Qué bonito!',exp:'Los <b>días</b> van en minúscula. Los nombres de <b>museos</b> llevan mayúscula, y también lo que va después de punto.'},
+ {t:'acc',k:'Acentuación',w:'huesped',i:2,exp:'<b>Huésped</b> es llana y acaba en <b>d</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'carcel',i:1,exp:'<b>Cárcel</b> es llana y acaba en <b>l</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'imagen',i:-1,exp:'<b>Imagen</b> es llana (i-<b>ma</b>-gen) y acaba en <b>n</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'imagenes',i:2,exp:'<b>Imágenes</b> es esdrújula (i-<b>má</b>-ge-nes): lleva tilde siempre. ¡Al pasar al plural cambia la regla!'},
+ {t:'acc',k:'Acentuación',w:'joven',i:-1,exp:'<b>Joven</b> es llana y acaba en <b>n</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'jovenes',i:1,exp:'<b>Jóvenes</b> es esdrújula: lleva tilde siempre.'},
+ {t:'acc',k:'Acentuación',w:'album',i:0,exp:'<b>Álbum</b> es llana y acaba en <b>m</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'caracter',i:3,exp:'<b>Carácter</b> es llana (ca-<b>rác</b>-ter) y acaba en <b>r</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'ciempies',i:6,exp:'<b>Ciempiés</b> es aguda y acaba en <b>s</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'debil',i:1,exp:'<b>Débil</b> es llana y acaba en <b>l</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'autobus',i:5,exp:'<b>Autobús</b> es aguda y acaba en <b>s</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'marmol',i:1,exp:'<b>Mármol</b> es llana y acaba en <b>l</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'crater',i:2,exp:'<b>Cráter</b> es llana y acaba en <b>r</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'pared',i:-1,exp:'<b>Pared</b> es aguda y acaba en <b>d</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'resumen',i:-1,exp:'<b>Resumen</b> es llana y acaba en <b>n</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'matematicas',i:5,exp:'<b>Matemáticas</b> es esdrújula: lleva tilde siempre.'},
  {t:'acc',k:'Acentuación',w:'explicamelo',i:4,exp:'<b>Explícamelo</b> es sobresdrújula: lleva tilde siempre.'},
- {t:'acc',k:'Acentuación',w:'raton',i:3,exp:'<b>Ratón</b> es aguda y acaba en <b>n</b>: lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'mesa',i:-1,exp:'<b>Mesa</b> es llana y acaba en <b>vocal</b>: no lleva tilde.'},
- {t:'acc',k:'Acentuación',w:'cesped',i:1,exp:'<b>Césped</b> es llana y acaba en <b>d</b>: lleva tilde.'},
- {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['canción',0],['lápiz',1],['música',2],['café',0],['árbol',1],['pájaro',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
- {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['reloj',0],['mesa',1],['brújula',2],['sofá',0],['examen',1],['murciélago',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
- {t:'mc',k:'Reglas de acentuación',q:'¿Cuándo llevan tilde las palabras <b>agudas</b>?',o:['Cuando acaban en vocal, n o s','Siempre','Nunca','Cuando no acaban en vocal, n ni s'],exp:'Las <b>agudas</b> llevan tilde si terminan en <b>vocal, n o s</b>: <i>sofá, ratón, compás</i>.'},
- {t:'mc',k:'Reglas de acentuación',q:'¿Cuándo llevan tilde las palabras <b>llanas</b>?',o:['Cuando no acaban en vocal, n ni s','Cuando acaban en vocal, n o s','Siempre','Nunca'],exp:'Las <b>llanas</b> llevan tilde si <b>no</b> terminan en vocal, n o s: <i>árbol, lápiz, césped</i>.'},
- {t:'mc',k:'Reglas de acentuación',q:'¿Qué palabras llevan tilde <b>siempre</b>?',o:['Esdrújulas y sobresdrújulas','Agudas','Llanas','Monosílabas'],exp:'Las <b>esdrújulas</b> y <b>sobresdrújulas</b> llevan tilde siempre: <i>pájaro, dímelo, explícamelo</i>.'},
- {t:'mc',k:'Reglas de acentuación',q:'<i>Examen</i> no lleva tilde porque…',o:['es llana y acaba en n','es aguda y acaba en n','es esdrújula','es monosílaba'],exp:'<i>E-<b>xa</b>-men</i>: la tónica es la penúltima, es llana y acaba en n, así que no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'bondad',i:-1,exp:'<b>Bondad</b> es aguda y acaba en <b>d</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'tunel',i:1,exp:'<b>Túnel</b> es llana y acaba en <b>l</b>: lleva tilde.'},
+ {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['pared',0],['cárcel',1],['exámenes',2],['compás',0],['imagen',1],['matemáticas',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
+ {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['salud',0],['joven',1],['jóvenes',2],['ciempiés',0],['carácter',1],['sábado',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
+ {t:'cls',k:'Acentuación',q:'Estas palabras están escritas sin tilde. ¿Cuáles la necesitan?',b:['Necesita tilde','Está bien sin tilde'],items:[['camion',0],['origen',1],['lampara',0],['reloj',1],['fragil',0],['ciudad',1]],exp:'<i>Camión</i> (aguda en n), <i>lámpara</i> (esdrújula) y <i>frágil</i> (llana en l) llevan tilde. <i>Origen, reloj</i> y <i>ciudad</i> no.'},
+ {t:'cls',k:'Acentuación',q:'Estas palabras están escritas sin tilde. ¿Cuáles la necesitan?',b:['Necesita tilde','Está bien sin tilde'],items:[['volcan',0],['volumen',1],['pajaro',0],['feliz',1],['azucar',0],['cantar',1]],exp:'<i>Volcán</i> (aguda en n), <i>pájaro</i> (esdrújula) y <i>azúcar</i> (llana en r) llevan tilde.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Cuál de estas palabras es <b>llana</b> y lleva tilde?',o:['fácil','café','pájaro','canción'],exp:'<i>Fá-cil</i> es llana y acaba en l. <i>Café</i> y <i>canción</i> son agudas; <i>pájaro</i>, esdrújula.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Cuál de estas palabras es <b>aguda</b> y <b>NO</b> lleva tilde?',o:['pared','sofá','árbol','música'],exp:'<i>Pa-<b>red</b></i> es aguda y acaba en d: sin tilde.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Por qué <i>exámenes</i> lleva tilde y <i>examen</i> no?',o:['Exámenes es esdrújula; examen es llana acabada en n','Porque los plurales siempre llevan tilde','Porque exámenes acaba en s','Porque examen es aguda'],exp:'Al añadir <b>-es</b>, la tónica queda en la antepenúltima sílaba: <i>e-<b>xá</b>-me-nes</i> es esdrújula.'},
+ {t:'mc',k:'Detective de tildes',q:'¿Qué palabra está <b>mal escrita</b>?',o:['jovén','joven','jóvenes','origen'],exp:'<i>Joven</i> es llana acabada en n: no lleva tilde.'},
+ {t:'mc',k:'Detective de tildes',q:'¿Qué palabra está <b>mal escrita</b>?',o:['cancíon','canción','ratón','avión'],exp:'La tilde va sobre la vocal de la sílaba tónica: <i>can-<b>ción</b></i>, sobre la <b>o</b>.'},
+ {t:'mc',k:'Detective de tildes',q:'¿Qué palabra está <b>mal escrita</b>?',o:['arból','árbol','lápiz','fácil'],exp:'<i>Ár-bol</i> es llana: la tilde va en la <b>a</b>.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Qué palabras llevan tilde <b>siempre</b>?',o:['Esdrújulas y sobresdrújulas','Agudas','Llanas','Monosílabas'],exp:'Esdrújulas y sobresdrújulas llevan tilde siempre: <i>pájaro, explícamelo</i>.'},
  {t:'mc',k:'Mayúsculas',q:'¿Qué oración está <b>bien escrita</b>?',o:['El 12 de octubre es fiesta en España.','El 12 de Octubre es fiesta en España.','el 12 de octubre es fiesta en españa.','El 12 de octubre es fiesta en españa.'],exp:'Los <b>meses</b> van en minúscula y los <b>países</b>, en mayúscula.'},
- {t:'mc',k:'Mayúsculas',q:'¿Qué oración está <b>bien escrita</b>?',o:['Los madrileños viven en Madrid.','Los Madrileños viven en Madrid.','los madrileños viven en madrid.','Los madrileños viven en madrid.'],exp:'Los <b>gentilicios</b> (madrileño, español…) van en minúscula; el nombre de la ciudad, en mayúscula.'}
+ {t:'mc',k:'Mayúsculas',q:'¿Qué oración está <b>bien escrita</b>?',o:['Los madrileños viven en Madrid.','Los Madrileños viven en Madrid.','los madrileños viven en madrid.','Los madrileños viven en madrid.'],exp:'Los <b>gentilicios</b> van en minúscula; la ciudad, en mayúscula.'},
+ {t:'mc',k:'Mayúsculas',q:'En el título <i>el dragón de colores</i>, ¿qué debe ir en mayúscula?',o:['Solo la primera palabra: El','Todas las palabras','Dragón y Colores','Ninguna'],exp:'En los títulos de libros, películas o canciones solo va en mayúscula la primera palabra (y los nombres propios).'},
+ {t:'mc',k:'Mayúsculas',q:'¿Qué palabra debe escribirse con <b>minúscula</b>?',o:['primavera','Sevilla','Brisa','Navidad'],exp:'Las estaciones del año van en minúscula.'}
 ]};
 
+/* Comprensión lectora: 10 textos cortos, 4 preguntas cada uno */
+const TEXTS=[
+ {id:'presento',title:'Me presento',kind:'Texto descriptivo',body:'¡Hola! Me llamo Nora y estudio quinto de primaria en un colegio de la Comunidad de Madrid. Lo que más me gusta del mundo son los dragoncitos de colores. Tengo uno articulado, hecho con una impresora 3D, que es rosa, lila y azul clarito, con alas blancas que parecen plumas. Cuando lo muevo, su cuerpo se dobla como una serpiente.\nPor las tardes leo cuentos de aventuras y, si tengo tiempo, dibujo castillos para mis dragones. De mayor me gustaría escribir un libro sobre un reino mágico lleno de dragones arcoíris.',
+  qs:[
+   {q:'¿Qué curso estudia Nora?',o:['Quinto de primaria','Cuarto de primaria','Sexto de primaria','Primero de ESO'],exp:'El texto dice: «estudio quinto de primaria».'},
+   {q:'¿Cómo son las alas de su dragoncito?',o:['Blancas, parecen plumas','Rosas y lilas','Azules y brillantes','De fuego'],exp:'«Con alas blancas que parecen plumas».'},
+   {q:'En el texto, que el dragón sea <i>articulado</i> significa que…',o:['tiene piezas unidas que se mueven','es muy antiguo','habla como una persona','vuela de verdad'],exp:'Por eso «su cuerpo se dobla como una serpiente».'},
+   {q:'¿Por qué crees que Nora dibuja castillos?',o:['Para que sus dragones tengan dónde vivir en sus historias','Porque se lo manda su profesora','Porque no le gustan los dragones','Para venderlos'],exp:'El texto dice que dibuja castillos «para mis dragones». Es una pista para deducirlo.'}]},
+ {id:'huevo',title:'El huevo del lago',kind:'Texto narrativo',body:'Una mañana de niebla, Lila paseaba junto al Lago de los Espejos cuando vio algo brillar entre los juncos. Era un huevo enorme, de color lila y azul, y estaba templado, como si alguien lo hubiera estado cuidando. Lila miró a su alrededor, pero no había nadie.\nEntonces decidió llevarlo a su cueva y envolverlo en una manta de algas. Durante tres noches no se separó de él. A la cuarta, escuchó un «cric» muy suave… y una patita asomó por la cáscara.',
+  qs:[
+   {q:'¿Dónde encontró Lila el huevo?',o:['Entre los juncos del lago','En su cueva','En el bosque','En la cima del volcán'],exp:'«Vio algo brillar entre los juncos».'},
+   {q:'¿Qué ocurrió en <b>último</b> lugar?',o:['Asomó una patita por la cáscara','Lila envolvió el huevo en algas','Lila vio algo brillar','Lila miró a su alrededor'],exp:'Lo último es la patita que asoma la cuarta noche.'},
+   {q:'«El huevo estaba <u>templado</u>». Un sinónimo de <u>templado</u> es…',o:['tibio','helado','roto','pesado'],exp:'Templado: ni frío ni caliente, <i>tibio</i>.'},
+   {q:'¿Qué nos dice el texto sobre cómo es Lila?',o:['Que es cuidadosa y responsable','Que es perezosa','Que le da miedo el agua','Que no le gustan los huevos'],exp:'Cuida el huevo tres noches sin separarse de él.'}]},
+ {id:'carrera',title:'Gran Carrera de Dragones',kind:'Cartel',body:'GRAN CARRERA DE DRAGONES DEL REINO ARCOÍRIS\nFecha: sábado 14 de noviembre, a las 11:00.\nSalida: Bosque de las Raíces. Llegada: Volcán de las Tildes.\n¿Quién puede participar? Dragones y dragonas de todos los colores, con su guardiana o guardián.\nQué traer: botella de agua, casco de vuelo y muchas ganas de divertirse.\nPremios: una pluma dorada para el primer dragón en llegar y una medalla para todos los participantes.\nInscripciones en la Biblioteca de las Nubes hasta el jueves 12.',
+  qs:[
+   {q:'¿Qué tipo de texto es?',o:['Un cartel o anuncio','Un cuento','Un poema','Una carta'],exp:'Da información breve y organizada para anunciar un evento.'},
+   {q:'¿Dónde termina la carrera?',o:['En el Volcán de las Tildes','En el Bosque de las Raíces','En la Biblioteca de las Nubes','En el Lago de los Espejos'],exp:'«Llegada: Volcán de las Tildes».'},
+   {q:'Si un dragón llega en <b>tercer</b> lugar, ¿qué recibe?',o:['Una medalla','Una pluma dorada','Nada','Un casco de vuelo'],exp:'La pluma dorada es solo para el primero; la medalla, para todos.'},
+   {q:'¿Hasta cuándo te puedes inscribir?',o:['Hasta el jueves 12','Hasta el sábado 14','Hasta el viernes 13','Hasta el domingo 15'],exp:'«Inscripciones… hasta el jueves 12».'}]},
+ {id:'galletas',title:'Galletas de chispas de fuego',kind:'Receta',body:'Receta de Rubí\nIngredientes: 200 g de harina, 100 g de mantequilla, 80 g de azúcar, 1 huevo y un puñado de pepitas de chocolate.\n1. Pide a un adulto que encienda el horno a 180 grados.\n2. Mezcla la mantequilla con el azúcar hasta que quede cremosa.\n3. Añade el huevo y, después, la harina poco a poco.\n4. Incorpora las pepitas de chocolate: ¡son las chispas de fuego!\n5. Haz bolitas, aplástalas un poco y hornéalas durante 12 minutos.\nConsejo de Rubí: déjalas enfriar antes de comerlas, aunque cueste esperar.',
+  qs:[
+   {q:'¿Para qué sirve este texto?',o:['Para explicar cómo hacer algo','Para contar una aventura','Para dar una opinión','Para describir un dragón'],exp:'Es un texto instructivo: da pasos ordenados.'},
+   {q:'¿Qué se hace <b>justo después</b> de mezclar la mantequilla con el azúcar?',o:['Añadir el huevo','Encender el horno','Hacer bolitas','Añadir el chocolate'],exp:'Paso 3: «Añade el huevo y, después, la harina».'},
+   {q:'¿Qué son las «chispas de fuego»?',o:['Las pepitas de chocolate','Las llamas del horno','Trocitos de azúcar','Chispas del volcán'],exp:'El paso 4 lo explica.'},
+   {q:'¿Por qué el primer paso dice «pide a un adulto»?',o:['Porque el horno puede ser peligroso','Porque los niños no saben leer','Para que el adulto se coma las galletas','Porque así se hace más rápido'],exp:'El horno quema: es una medida de seguridad.'}]},
+ {id:'poema',title:'Canción del dragón arcoíris',kind:'Poema',body:'Tengo escamas de colores,\nrosa, lila, azul y añil;\ncuando vuelo entre las flores,\npinto el cielo de abril.\n\nNo echo fuego, echo alegría,\nrisas, chispas y canción;\ny si alguien llora un día,\nle presto mi corazón.',pre:true,
+  qs:[
+   {q:'¿Qué tipo de texto es?',o:['Un poema','Una receta','Una noticia','Un cartel'],exp:'Está escrito en versos y estrofas, con rima.'},
+   {q:'¿Cuántas estrofas tiene?',o:['Dos','Cuatro','Ocho','Una'],exp:'Tiene dos estrofas de cuatro versos cada una.'},
+   {q:'¿Con qué palabra rima <i>colores</i>?',o:['flores','escamas','cielo','añil'],exp:'<i>Col-ores</i> y <i>fl-ores</i> terminan igual.'},
+   {q:'¿Qué echa el dragón en lugar de fuego?',o:['Alegría','Humo','Agua','Hielo'],exp:'«No echo fuego, echo alegría».'}]},
+ {id:'carta',title:'Una carta para {N}',kind:'Carta',body:'Bosque de las Raíces, 3 de noviembre\n{Querida|Querido} {N}:\nTe escribo desde mi rincón favorito, debajo del roble más viejo del bosque. Quería darte las gracias por ayudarme a ordenar las palabras de la biblioteca: ¡ahora todos los sustantivos están juntos y los verbos ya no se escapan! Mis hermanas dicen que eres {la guardiana más lista|el guardián más listo} del reino, y yo estoy de acuerdo.\nEl próximo sábado celebramos una fiesta con hojas de colores. ¿Vendrás?\nUn abrazo con olor a pino,\nVerdín',pre:true,
+  qs:[
+   {q:'¿Quién escribe la carta?',o:['Verdín','{N}','Rubí','La reina Aurelia'],exp:'La firma, al final, es de Verdín.'},
+   {q:'¿Por qué da las gracias Verdín?',o:['Porque {N} le ayudó a ordenar las palabras','Porque {N} le regaló un roble','Porque {N} ganó una carrera','Porque {N} le hizo galletas'],exp:'«Por ayudarme a ordenar las palabras de la biblioteca».'},
+   {q:'¿Qué parte de la carta es «{Querida|Querido} {N}:»?',o:['El saludo','La despedida','La firma','La fecha'],exp:'El saludo va al principio, después del lugar y la fecha.'},
+   {q:'¿Qué quiere saber Verdín al final?',o:['Si {N} irá a la fiesta','Dónde vive {N}','Cuántos años tiene {N}','Qué libro lee {N}'],exp:'«¿Vendrás?».'}]},
+ {id:'impresora',title:'¿Cómo nace un dragón de impresora 3D?',kind:'Texto informativo',body:'Una impresora 3D no imprime en papel: fabrica objetos de verdad. Primero, alguien diseña el dragón en el ordenador. Después, la impresora calienta un hilo de plástico, llamado filamento, y lo va colocando en capas finísimas, una encima de otra, como si construyera una tarta muy delgada.\nPor eso, si miras de cerca un dragón impreso, verás pequeñas rayitas. Algunos filamentos cambian de color poco a poco y crean dragones arcoíris. Los dragones articulados se imprimen con las piezas ya enganchadas, así que salen de la impresora listos para moverse.',
+  qs:[
+   {q:'¿Cuál es la idea principal del texto?',o:['Cómo se fabrica un dragón con una impresora 3D','Cómo se hace una tarta','Por qué los dragones son de colores','Cómo se usa un ordenador'],exp:'Todo el texto explica el proceso de fabricación.'},
+   {q:'¿Qué es el <i>filamento</i>?',o:['Un hilo de plástico que la impresora calienta','Un tipo de papel','Un dibujo en el ordenador','Una pieza del dragón'],exp:'«Un hilo de plástico, llamado filamento».'},
+   {q:'¿Por qué se ven rayitas en un dragón impreso?',o:['Porque se fabrica capa a capa','Porque lo pintan con pincel','Porque está roto','Porque es de papel'],exp:'Cada rayita es una de las capas finísimas.'},
+   {q:'¿Qué tipo de texto es?',o:['Informativo: explica cómo funciona algo','Un cuento','Un poema','Una carta'],exp:'Da información real y la explica con orden.'}]},
+ {id:'tormenta',title:'Verdín y la tormenta',kind:'Texto narrativo',body:'Aquella tarde, el cielo del bosque se volvió gris oscuro. Verdín estaba lejos de casa cuando empezaron a caer gotas enormes. Intentó volar, pero el viento soplaba tan fuerte que lo empujaba hacia atrás. Asustado, se refugió bajo una roca.\nAllí descubrió a un erizo que temblaba de frío. Verdín abrió sus alas y lo cubrió como si fueran un paraguas. Cuando la tormenta pasó, el erizo le enseñó un atajo secreto para volver a casa. «Ayudar a otros también te ayuda a ti», pensó Verdín.',
+  qs:[
+   {q:'¿Cuál es el <b>problema</b> de Verdín?',o:['Una tormenta le impide volver a casa','Ha perdido sus alas','Un erizo le ataca','No encuentra a sus hermanas'],exp:'El viento no le deja volar y está lejos de casa.'},
+   {q:'¿Cómo ayuda Verdín al erizo?',o:['Lo tapa con sus alas','Le da comida','Lo lleva volando a casa','Le enciende un fuego'],exp:'«Lo cubrió como si fueran un paraguas».'},
+   {q:'¿Cómo se soluciona el problema de Verdín?',o:['El erizo le enseña un atajo','Sale el sol y vuela','Sus hermanas lo buscan','Se queda a vivir bajo la roca'],exp:'El erizo le devuelve el favor con un atajo secreto.'},
+   {q:'¿Cuál es la enseñanza del cuento?',o:['Ayudar a los demás también nos ayuda','Hay que quedarse siempre en casa','Los erizos son peligrosos','Volar con lluvia es divertido'],exp:'Lo dice Verdín al final.'}]},
+ {id:'diario',title:'El diario de Rubí',kind:'Diario',body:'Martes\nHoy ha sido un día rarísimo. Por la mañana he intentado escribir «canción» y se me ha olvidado la tilde. ¡Qué vergüenza! La maestra Aurelia me ha explicado que es una palabra aguda que acaba en n.\nPor la tarde he practicado con veinte palabras y solo he fallado una: «árbol». Mañana voy a repasar las llanas. Antes de dormir he mirado las estrellas desde la boca del volcán. Me he sentido orgullosa de no rendirme.',pre:true,
+  qs:[
+   {q:'¿Qué tipo de texto es?',o:['Un diario','Una noticia','Una receta','Un cartel'],exp:'Rubí cuenta lo que le ha pasado hoy, con el día de la semana al principio.'},
+   {q:'¿Qué palabra falló Rubí por la tarde?',o:['árbol','canción','volcán','estrella'],exp:'«Solo he fallado una: árbol».'},
+   {q:'¿Qué va a hacer Rubí mañana?',o:['Repasar las palabras llanas','Repasar las agudas','Mirar las estrellas','Escribir una carta'],exp:'«Mañana voy a repasar las llanas». Tiene sentido: <i>árbol</i> es llana.'},
+   {q:'¿Cómo se siente Rubí al final del día?',o:['Orgullosa','Triste','Enfadada','Aburrida'],exp:'«Me he sentido orgullosa de no rendirme».'}]},
+ {id:'normas',title:'Normas para cuidar un huevo de dragón',kind:'Texto instructivo',body:'1. Mantén el huevo en un lugar templado, nunca al lado de una ventana abierta.\n2. Gíralo un poquito cada mañana para que se caliente por igual.\n3. Háblale con cariño: los dragoncitos reconocen la voz de quien los cuida.\n4. No lo pintes ni le pongas pegatinas; la cáscara necesita respirar.\n5. Si escuchas un «cric», ¡no lo abras tú! Espera con paciencia: el dragoncito sabe cuándo salir.',pre:true,
+  qs:[
+   {q:'¿Cuál de estas acciones <b>NO</b> se debe hacer?',o:['Pintar el huevo','Girarlo cada mañana','Hablarle con cariño','Tenerlo en un lugar templado'],exp:'Norma 4: «No lo pintes».'},
+   {q:'¿Para qué hay que girar el huevo cada mañana?',o:['Para que se caliente por igual','Para que no se aburra','Para que se rompa antes','Para limpiarlo'],exp:'Norma 2.'},
+   {q:'Según el texto, ¿por qué hay que hablarle?',o:['Porque reconocen la voz de quien los cuida','Porque así crece más','Porque se asusta si no','Porque lo dice la reina'],exp:'Norma 3.'},
+   {q:'Si oyes un «cric», ¿qué debes hacer?',o:['Esperar con paciencia','Abrir el huevo','Pintar la grieta','Ponerlo junto a la ventana'],exp:'Norma 5: «el dragoncito sabe cuándo salir».'}]}
+];
+// identificadores
+['voc','gra','ort'].forEach(k=>BANK[k].forEach((q,i)=>{q.id=k+i;q.src=k}));
+TEXTS.forEach(T=>T.qs.forEach((q,i)=>{q.t='mc';q.k='Comprensión lectora · '+T.kind;q.txt=T.id;q.src='lec';q.id=T.id+i}));
+
 /* ===================== ESTADO ===================== */
-const KEY='lengua-recurso-01-v1';
-const DEF={gems:0,stars:{voc:0,gra:0,ort:0,boss:0},hatched:{},sound:true,seenIntro:false,name:'',gen:''};
-let S=(()=>{try{const v=JSON.parse(localStorage.getItem(KEY));return v?{...DEF,...v,stars:{...DEF.stars,...(v.stars||{})},hatched:{...(v.hatched||{})}}:structuredClone(DEF)}catch(e){return structuredClone(DEF)}})();
+const KEY='lengua-recurso-01-v2';
+const DEF={gems:0,stars:{voc:0,gra:0,ort:0,lec:0,boss:0},hatched:{},seen:{voc:[],gra:[],ort:[],lec:[]},sound:true,seenIntro:false,name:'',gen:''};
+let S=(()=>{try{const v=JSON.parse(localStorage.getItem(KEY));if(!v)return structuredClone(DEF);return {...structuredClone(DEF),...v,stars:{...DEF.stars,...(v.stars||{})},seen:{...structuredClone(DEF.seen),...(v.seen||{})},hatched:{...(v.hatched||{})}}}catch(e){return structuredClone(DEF)}})();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 let G=null;
 const $=s=>document.querySelector(s);
@@ -464,7 +595,11 @@ function toast(msg){const t=document.createElement('div');t.className='toast';t.
 function showOv(html){$('#ovRoot').innerHTML=`<div class="ov" role="dialog" aria-modal="true"><div class="ov-card">${html}</div></div>`;const f=$('#ovRoot').querySelector('button');if(f)f.focus()}
 function hideOv(){$('#ovRoot').innerHTML=''}
 const starsHTML=n=>[0,1,2].map(i=>ICON.star(i<n)).join('');
-const unlockedBoss=()=>['voc','gra','ort'].every(id=>S.stars[id]>0);
+const unlockedBoss=()=>['voc','gra','ort','lec'].every(id=>S.stars[id]>0);
+function leftCount(id){
+  if(id==='lec')return TEXTS.filter(T=>!S.seen.lec.includes(T.id)).length*4;
+  return BANK[id].filter(q=>!S.seen[id].includes(q.id)).length;
+}
 
 /* ===================== MAPA ===================== */
 function renderMap(){
@@ -478,7 +613,7 @@ function renderMap(){
     <div>
       <h1>${S.name?`¡Hola, ${pers('{Guardiana|Guardián}')} ${NM()}!`:'¡Hola!'}</h1>
       <button class="linkbtn" id="nmBtn" type="button">Cambiar nombre</button>
-      <p>${hatchedCount===0?'La Reina Dragona ha escondido cuatro huevos mágicos en el reino. Solo se abren con el poder de las palabras. Supera los retos de cada isla para que nazcan los dragoncitos.':hatchedCount<4?`Ya has despertado a ${hatchedCount} ${hatchedCount===1?'dragoncito':'dragoncitos'}. ¡Quedan huevos por abrir!`:'¡Has despertado a todos los dragones del reino! Puedes volver a jugar para conseguir más gemas y estrellas.'}</p>
+      <p>${hatchedCount===0?'La Reina Dragona ha escondido cinco huevos mágicos en el reino. Solo se abren con el poder de las palabras. Supera los retos de cada isla para que nazcan los dragoncitos.':hatchedCount<5?`Ya has despertado a ${hatchedCount} ${hatchedCount===1?'dragoncito':'dragoncitos'}. ¡Quedan huevos por abrir!`:'¡Has despertado a todos los dragones del reino! Puedes volver a jugar para conseguir más gemas y estrellas.'}</p>
       <div class="rank"><span>${pers(cur[1])}</span><span class="rank-bar" aria-hidden="true"><i style="width:${pct}%"></i></span><small>${next?`${next[0]-S.gems} gemas para «${pers(next[1])}»`:'¡Rango máximo!'}</small></div>
     </div>
   </section>
@@ -495,15 +630,16 @@ function isleCard(i){
   const hatched=S.hatched[i.id];
   return `<button class="isle" type="button" data-id="${i.id}" ${locked?'disabled':''} aria-label="${i.name}. ${i.topic}">
     <div class="isle-art">${SCENE[i.id]}<div class="hero-ico ${hatched?'bob':''}">${hatched?dragon(PAL[i.pal]):egg(PAL[i.pal],0)}</div>
-    ${locked?`<div class="lock">${ICON.lock}Se abre cuando despiertes a Lila, Verdín y Rubí</div>`:''}</div>
+    ${locked?`<div class="lock">${ICON.lock}Se abre cuando despiertes a Lila, Verdín, Rubí y Brisa</div>`:''}</div>
     <div class="isle-body"><h3>${i.name}</h3><span class="isle-topic">${i.topic}</span>
     <div class="stars">${starsHTML(S.stars[i.id])}</div>
+    ${i.id!=='boss'?`<span class="isle-new">${leftCount(i.id)} retos sin estrenar</span>`:''}
     ${locked?'':`<span class="isle-cta">${S.stars[i.id]?'Volver a jugar':'¡A la aventura!'}</span>`}</div></button>`;
 }
 function intro(){
   showOv(`<div class="hatch-stage">${egg(PAL.aurelia,0,'egg-shake')}</div>
   <h2>¡Te necesitamos!</h2>
-  <p>Soy Azulón, el mensajero de la Reina Dragona. En el reino hay cuatro huevos mágicos: violeta, verde, rojo y dorado. Para que nazcan los dragoncitos hay que resolver retos de <b>vocabulario</b>, <b>gramática</b> y <b>ortografía</b>.</p>
+  <p>Soy Azulón, el mensajero de la Reina Dragona. En el reino hay cinco huevos mágicos: violeta, verde, rojo, turquesa y dorado. Para que nazcan los dragoncitos hay que resolver retos de <b>vocabulario</b>, <b>gramática</b>, <b>ortografía</b> y <b>comprensión lectora</b>. Son retos difíciles y no se repiten hasta que los hayas visto todos.</p>
   <p>Cada acierto da <b>gemas</b>. Tres aciertos seguidos encienden una <b>racha de fuego</b> con gemas extra. ¿Aceptas el encargo? Antes, dime quién eres.</p>
   ${nameForm()}
   <button class="btn gold" id="go" type="button">¡Acepto!</button>`);
@@ -512,15 +648,16 @@ function intro(){
 }
 
 /* ===================== PARTIDA ===================== */
-function start(id){
-  const I=isle(id);
-  let qs;
-  if(id==='boss'){qs=shuffle([...shuffle(BANK.voc).slice(0,4),...shuffle(BANK.gra).slice(0,4),...shuffle(BANK.ort).slice(0,4)])}
-  else{qs=balanced(BANK[id],I.total)}
-  G={id,I,qs,idx:0,correct:0,results:[],streak:0,best:0,hearts:id==='boss'?3:null,gained:0,locked:false};
-  renderQ();
+function drawFrom(id,n,silent){
+  let pool=BANK[id].filter(q=>!S.seen[id].includes(q.id));
+  if(pool.length<n){S.seen[id]=[];pool=BANK[id].slice();if(!silent)setTimeout(()=>toast('¡Has visto todos los retos de esta isla! Los barajamos de nuevo.'),600);save()}
+  return balanced(pool,n);
 }
-// Mezcla tipos: no más de 2 del mismo tipo seguidas y variedad garantizada
+function drawTexts(n,silent){
+  let pool=TEXTS.filter(T=>!S.seen.lec.includes(T.id));
+  if(pool.length<n){S.seen.lec=[];pool=TEXTS.slice();if(!silent)setTimeout(()=>toast('¡Has leído todos los textos! Los barajamos de nuevo.'),600);save()}
+  return shuffle(pool).slice(0,n);
+}
 function balanced(bank,n){
   const byType={};bank.forEach(q=>(byType[q.t]=byType[q.t]||[]).push(q));
   Object.keys(byType).forEach(t=>byType[t]=shuffle(byType[t]));
@@ -533,7 +670,24 @@ function balanced(bank,n){
   }
   return out;
 }
-const TYPE_LABEL={mc:'Elige la respuesta',cls:'Clasifica',split:'Zarpazo de lexema',acc:'Chispa de tilde',caps:'Caza de mayúsculas'};
+function start(id){
+  const I=isle(id);let qs;
+  if(id==='boss'){
+    const T=drawTexts(1,true)[0];
+    qs=[...shuffle([...drawFrom('voc',3,true),...drawFrom('gra',3,true),...drawFrom('ort',3,true)]),...shuffle(T.qs).slice(0,3)];
+  }else if(id==='lec'){qs=drawTexts(2).flatMap(T=>T.qs)}
+  else qs=drawFrom(id,I.total);
+  G={id,I,qs,idx:0,correct:0,results:[],streak:0,best:0,hearts:id==='boss'?3:null,gained:0,locked:false};
+  renderQ();
+}
+const TYPE_LABEL={mc:'Elige la respuesta',cls:'Clasifica',split:'Zarpazo de lexema',acc:'Chispa de tilde',caps:'Caza de mayúsculas',hunt:'Caza de palabras'};
+const SRC_PAL={voc:'lila',gra:'verdin',ort:'rubi',lec:'brisa'};
+function passage(id,open=true){
+  const T=TEXTS.find(x=>x.id===id);
+  const body=pers(T.body);
+  const paras=T.pre?`<p class="pre">${body}</p>`:body.split('\n').map(p=>`<p>${p}</p>`).join('');
+  return `<div class="parch" id="parch"><h3>${pers(T.title)}</h3><div id="parchBody" ${open?'':'hidden'}>${paras}</div><button class="parch-tog" id="parchTog" type="button">${open?'Ocultar el texto':'Volver a leer el texto'}</button></div>`;
+}
 function renderQ(){
   const {I,qs,idx}=G;const q=qs[idx];G.locked=false;
   const p=PAL[I.pal];
@@ -549,19 +703,26 @@ function renderQ(){
     </div>
     <article class="qcard">
       <div class="qmeta"><span>Reto ${idx+1} de ${qs.length} · ${TYPE_LABEL[q.t]}</span><span>${q.k}</span></div>
+      ${q.txt?passage(q.txt):''}
       <div class="qhead"><div class="mini">${dragon(PAL[srcPal(q)])}</div><div class="q" id="qtext"></div></div>
       <div class="area" id="area"></div>
       <div id="fb"></div>
     </article>
   </div>`;
   $('#exit').onclick=()=>{showOv(`<h2>¿Volver al mapa?</h2><p>Si sales ahora, perderás el progreso de esta partida (las gemas ganadas se quedan).</p><div class="center"><button class="btn ghost" id="stay" type="button">Seguir jugando</button><button class="btn" id="leave" type="button">Volver al mapa</button></div>`);$('#stay').onclick=hideOv;$('#leave').onclick=()=>{hideOv();renderMap()}};
-  ({mc:rMC,cls:rCLS,split:rSPLIT,acc:rACC,caps:rCAPS})[q.t](q);
+  const tog=$('#parchTog');if(tog)tog.onclick=()=>{const b=$('#parchBody');b.hidden=!b.hidden;tog.textContent=b.hidden?'Volver a leer el texto':'Ocultar el texto'};
+  ({mc:rMC,cls:rCLS,split:rSPLIT,acc:rACC,caps:rCAPS,hunt:rHUNT})[q.t](q);
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function srcPal(q){if(G.id!=='boss')return G.I.pal;return BANK.voc.includes(q)?'lila':BANK.gra.includes(q)?'verdin':'rubi'}
+function srcPal(q){return SRC_PAL[q.src]}
+function markSeen(q){
+  if(q.src==='lec'){if(!S.seen.lec.includes(q.txt))S.seen.lec.push(q.txt)}
+  else if(!S.seen[q.src].includes(q.id))S.seen[q.src].push(q.id);
+}
 
 function answer(ok,exp){
   if(G.locked)return;G.locked=true;
+  markSeen(G.qs[G.idx]);
   G.results[G.idx]=ok;
   let gain=0,extra='';
   if(ok){G.correct++;G.streak++;G.best=Math.max(G.best,G.streak);gain=10;if(G.streak>=3){gain+=5;extra=' ¡Racha de fuego!'}sfx.ok();const e=$('#hudEgg');if(e){const p=PAL[G.I.pal];e.innerHTML=egg(p,Math.min(4,Math.ceil(G.correct/(G.I.total/4))));e.classList.remove('wob');void e.offsetWidth;e.classList.add('wob')}}
@@ -580,10 +741,10 @@ function answer(ok,exp){
   const h=document.querySelector('.hearts');if(h)h.innerHTML=[0,1,2].map(i=>ICON.heart(i<G.hearts)).join('');
 }
 
-/* --- tipo: opción múltiple --- */
+/* --- opción múltiple --- */
 function rMC(q){
-  $('#qtext').innerHTML=q.q;
-  const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));
+  $('#qtext').innerHTML=pers(q.q);
+  const opts=shuffle(q.o.map((t,i)=>({t:pers(t),ok:i===0})));
   const area=$('#area');
   area.innerHTML=`<div class="opts">${opts.map((o,i)=>`<button class="opt" type="button" data-i="${i}">${o.t}</button>`).join('')}</div>`;
   const btns=[...area.querySelectorAll('.opt')];
@@ -591,16 +752,16 @@ function rMC(q){
     if(G.locked)return;const o=opts[+b.dataset.i];
     b.classList.add(o.ok?'ok':'no');
     btns.forEach((bb,j)=>{bb.disabled=true;if(opts[j].ok)bb.classList.add('ok')});
-    answer(o.ok,q.exp);
+    answer(o.ok,pers(q.exp));
   });
 }
-/* --- tipo: clasificar en nidos --- */
+/* --- clasificar en nidos --- */
 function rCLS(q){
   $('#qtext').innerHTML=q.q;
   const items=shuffle(q.items.map(([t,c])=>({t,c})));
   let sel=null,errors=0,placed=0;
   const area=$('#area');
-  area.innerHTML=`<p class="hint">Toca una tarjeta y después el nido donde va.</p>
+  area.innerHTML=`<p class="hint">Toca una tarjeta y después el nido donde va. Para ganar el reto, ¡todas a la primera!</p>
     <div class="chips">${items.map((it,i)=>`<button class="chip" type="button" data-i="${i}">${it.t}</button>`).join('')}</div>
     <div class="nests">${q.b.map((b,j)=>`<button class="nest" type="button" data-j="${j}"><span class="nest-label">${b}</span><span class="nest-items"></span></button>`).join('')}</div>`;
   const chips=[...area.querySelectorAll('.chip')];
@@ -619,29 +780,29 @@ function rCLS(q){
     }
   });
 }
-/* --- tipo: separar lexema y morfemas --- */
+/* --- separar lexema y morfemas --- */
 function rSPLIT(q){
-  $('#qtext').innerHTML=`Separa el <b>lexema</b> (la raíz) de los <b>morfemas</b> de <i>${q.w}</i>. Toca el hueco entre dos letras para dar el zarpazo.`;
+  $('#qtext').innerHTML=`Separa el <b>lexema</b> (la raíz) de los <b>morfemas</b> en <i>${q.w}</i>. Toca el hueco entre dos letras para dar el zarpazo.`;
   const L=[...q.w];let cut=null,done=false;
   const area=$('#area');
   const draw=(show)=>{
-    const lockedNow=done;
+    const c=show??cut;
     area.innerHTML=`<div class="legend"><span><b style="background:#d4f7e2;border:2px solid #11663a"></b>Lexema</span><span><b style="background:#ffe7c7;border:2px solid #9a4b00"></b>Morfemas</span></div>
-    <div class="word">${L.map((ch,i)=>{const c=(show??cut);const cls=c===null?'':(i<c?'lex':'mor');return `<span class="let ${cls}">${ch}</span>${i<L.length-1?`<button class="gap ${cut===i+1?'on':''}" type="button" data-c="${i+1}" aria-label="Cortar entre ${ch} y ${L[i+1]}" ${lockedNow?'disabled':''}></button>`:''}`}).join('')}</div>
-    <div class="center"><button class="btn" id="chk" type="button" ${cut===null||lockedNow?'disabled':''}>¡Zarpazo!</button></div>`;
+    <div class="word">${L.map((ch,i)=>`<span class="let ${c===null?'':(i<c?'lex':'mor')}">${ch}</span>${i<L.length-1?`<button class="gap ${cut===i+1?'on':''}" type="button" data-c="${i+1}" aria-label="Cortar entre ${ch} y ${L[i+1]}" ${done?'disabled':''}></button>`:''}`).join('')}</div>
+    <div class="center"><button class="btn" id="chk" type="button" ${cut===null||done?'disabled':''}>¡Zarpazo!</button></div>`;
     area.querySelectorAll('.gap').forEach(g=>g.onclick=()=>{if(done)return;sfx.tap();cut=+g.dataset.c;draw()});
-    const c=$('#chk');if(c)c.onclick=()=>{if(done)return;const ok=cut===q.cut;done=true;draw(q.cut);answer(ok,(ok?'':`Se corta así: <b>${q.w.slice(0,q.cut)}</b> | ${q.w.slice(q.cut)}. `)+q.exp)};
+    const b=$('#chk');if(b)b.onclick=()=>{if(done)return;const ok=cut===q.cut;done=true;draw(q.cut);answer(ok,(ok?'':`Se corta así: <b>${q.w.slice(0,q.cut)}</b> | ${q.w.slice(q.cut)}. `)+q.exp)};
   };
   draw();
 }
-/* --- tipo: ¿dónde va la tilde? --- */
+/* --- ¿dónde va la tilde? --- */
 const TILDE={a:'á',e:'é',i:'í',o:'ó',u:'ú'};
 function rACC(q){
   $('#qtext').innerHTML=`Rubí quiere lanzar una chispa de tilde. ¿Sobre qué vocal de <i>${q.w}</i> cae? Si no lleva tilde, pulsa «No lleva tilde».`;
   const L=[...q.w];
   const right=q.i<0?q.w:q.w.slice(0,q.i)+TILDE[q.w[q.i]]+q.w.slice(q.i+1);
   const area=$('#area');
-  area.innerHTML=`<div class="word">${L.map((ch,i)=>'aeiou'.includes(ch)?`<button class="vow" type="button" data-i="${i}">${ch}</button>`:`<span class="let">${ch}</span>`).join('')}</div>
+  area.innerHTML=`<div class="word">${L.map((ch,i)=>'aeiou'.includes(ch)?`<button class="vow" type="button" data-i="${i}" aria-label="Vocal ${ch}">${ch}</button>`:`<span class="let">${ch}</span>`).join('')}</div>
   <div class="center"><button class="btn ghost" id="none" type="button">No lleva tilde</button></div>`;
   const vows=[...area.querySelectorAll('.vow')];
   const done=(i,el)=>{
@@ -654,7 +815,7 @@ function rACC(q){
   vows.forEach(v=>v.onclick=()=>done(+v.dataset.i,v));
   $('#none').onclick=e=>done(-1,e.currentTarget);
 }
-/* --- tipo: caza de mayúsculas --- */
+/* --- caza de mayúsculas --- */
 const firstL=t=>t.search(/[a-záéíóúüñ]/i);
 const capT=t=>{const k=firstL(t);return k<0?t:t.slice(0,k)+t[k].toUpperCase()+t.slice(k+1)};
 function rCAPS(q){
@@ -678,27 +839,52 @@ function rCAPS(q){
     answer(ok,(ok?'':`Así queda bien: «${q.s}» `)+q.exp);
   };
 }
+/* --- caza de palabras en una frase --- */
+const norm=t=>t.toLowerCase().replace(/[¿?¡!.,;:«»"]/g,'');
+function rHUNT(q){
+  $('#qtext').innerHTML=q.q+' Después pulsa «Comprobar».';
+  const toks=q.s.split(' ');
+  const need=toks.map(t=>q.ans.includes(norm(t)));
+  const st=toks.map(()=>false);
+  const area=$('#area');
+  area.innerHTML=`<div class="sent">${toks.map((t,i)=>`<button class="tok" type="button" data-i="${i}" aria-pressed="false">${t}</button>`).join('')}</div>
+  <div class="center"><button class="btn" id="chk" type="button">Comprobar</button></div>`;
+  const tb=[...area.querySelectorAll('.tok')];
+  tb.forEach(b=>b.onclick=()=>{if(G.locked)return;sfx.tap();const i=+b.dataset.i;st[i]=!st[i];b.classList.toggle('up',st[i]);b.setAttribute('aria-pressed',st[i])});
+  $('#chk').onclick=()=>{
+    if(G.locked)return;
+    if(!st.some(Boolean)){toast('Toca al menos una palabra');return}
+    let ok=true;
+    tb.forEach((b,i)=>{b.disabled=true;b.classList.remove('up');
+      if(need[i]&&st[i])b.classList.add('ok');
+      else if(need[i]&&!st[i]){b.classList.add('miss');ok=false}
+      else if(!need[i]&&st[i]){b.classList.add('extra');ok=false}
+    });
+    $('#chk').disabled=true;
+    answer(ok,(ok?'':'Las palabras con borde punteado eran las que faltaban. ')+q.exp);
+  };
+}
 
 /* ===================== FINAL DE PARTIDA ===================== */
 function finish(){
   const {id,I,correct,qs}=G;
   let stars;
   if(id==='boss'){stars=G.hearts>0?G.hearts:0}
-  else{stars=correct>=7?3:correct>=5?2:correct>=3?1:0}
+  else{stars=correct>=7?3:correct>=5?2:correct>=4?1:0}
   const bonus=stars*20;S.gems+=bonus;G.gained+=bonus;
   const firstHatch=stars>0&&!S.hatched[id];
   const improved=stars>S.stars[id];
   if(improved)S.stars[id]=stars;
   if(firstHatch)S.hatched[id]=true;
   save();header();
-  const msg=stars===3?'¡Puntuación perfecta de dragón!':stars===2?'¡Muy bien! Estás muy cerca de las tres estrellas.':stars===1?'¡Conseguido! Vuelve a intentarlo para ganar más estrellas.':(id==='boss'?'La Torre es dura. Repasa el Grimorio y vuelve a intentarlo: ¡tú puedes!':'El huevo aún no se ha abierto. Repasa el Grimorio y vuelve a intentarlo.');
+  const msg=stars===3?'¡Puntuación perfecta de dragón!':stars===2?'¡Muy bien! Estás muy cerca de las tres estrellas.':stars===1?'¡Conseguido! Vuelve a intentarlo para ganar más estrellas.':(id==='boss'?'La Torre es dura. Repasa el Grimorio y vuelve a intentarlo: ¡tú puedes!':'El huevo aún no se ha abierto: necesitas 4 aciertos. Repasa el Grimorio y vuelve a intentarlo.');
   const show=()=>{
     if(stars>0)sfx.win();
     showOv(`<h2>${stars>0?'¡Reto superado!':'¡Casi lo tienes!'}</h2>
     <div class="big-stars">${[0,1,2].map(i=>ICON.star(i<stars).replace('class="on"',`class="on" style="animation-delay:${i*.2}s"`)).join('')}</div>
     <p>${id==='boss'?`Has llegado con ${G.hearts} ${G.hearts===1?'vida':'vidas'}`:`Has acertado ${correct} de ${qs.length}`}. Mejor racha: ${G.best}. Gemas ganadas: <b class="gain">+${G.gained}</b></p>
     <p>${msg}${improved&&!firstHatch&&stars>0?' ¡Nuevo récord de estrellas!':''}</p>
-    <div class="center"><button class="btn ghost" id="again" type="button">Jugar otra vez</button><button class="btn" id="tomap" type="button">Volver al mapa</button></div>`);
+    <div class="center"><button class="btn ghost" id="again" type="button">Más retos aquí</button><button class="btn" id="tomap" type="button">Volver al mapa</button></div>`);
     $('#again').onclick=()=>{hideOv();start(id)};
     $('#tomap').onclick=()=>{hideOv();renderMap();if(id!=='boss'&&unlockedBoss()&&firstHatch)setTimeout(()=>toast('¡La Torre del Huevo Dorado se ha abierto!'),400)};
   };
@@ -724,8 +910,8 @@ function diploma(after){
     <p>La Reina Dragona Aurelia otorga el título de</p>
     <h2>${pers('Gran {Guardiana|Guardián} de las Palabras')}</h2>
     <p>a</p><div class="name">${NM()}</div>
-    <p>por dominar los sinónimos y antónimos, las clases y la estructura de las palabras, las mayúsculas y las reglas de acentuación.</p>
-    <div class="row">${['lila','verdin','rubi','aurelia'].map(k=>dragon(PAL[k])).join('')}</div>
+    <p>por dominar los sinónimos y antónimos, las clases y la estructura de las palabras, las palabras variables e invariables, las mayúsculas, las reglas de acentuación y la comprensión lectora.</p>
+    <div class="row">${['lila','verdin','rubi','brisa','aurelia'].map(k=>dragon(PAL[k])).join('')}</div>
     <p style="margin-bottom:0">${d}</p></div>
     <div class="center" style="margin-top:16px"><button class="btn gold" id="dipOk" type="button">¡Gracias, Aurelia!</button></div>`);
   confetti(PAL.aurelia);
@@ -734,31 +920,35 @@ function diploma(after){
 
 /* ===================== GRIMORIO (repaso) ===================== */
 const BOOK={
- voc:`<h3>Sinónimos</h3><div class="rule-box">Palabras que significan <b>lo mismo o casi lo mismo</b>: <i>rápido – veloz</i>, <i>bello – hermoso</i>, <i>empezar – comenzar</i>. Sirven para no repetir palabras.</div>
- <h3>Antónimos</h3><div class="rule-box">Palabras que significan <b>lo contrario</b>: <i>alto – bajo</i>, <i>valiente – cobarde</i>. Muchos se forman con prefijos:
- <ul><li><b>des-</b>: hacer → deshacer, ordenado → desordenado</li><li><b>in-</b>: útil → inútil</li><li><b>im-</b> (delante de p, b): posible → imposible</li><li><b>i-</b> (delante de l): legal → ilegal</li><li><b>ir-</b> (delante de r): responsable → irresponsable</li></ul></div>`,
+ voc:`<h3>Sinónimos</h3><div class="rule-box">Palabras que significan <b>lo mismo o casi lo mismo</b>: <i>rápido – veloz</i>, <i>hallar – encontrar</i>. Sirven para no repetir palabras. ¡Ojo! Una palabra puede tener sinónimos distintos según la frase: una vista <i>aguda</i> es <i>penetrante</i>; un lápiz <i>agudo</i> es <i>puntiagudo</i>.</div>
+ <h3>Antónimos</h3><div class="rule-box">Palabras que significan <b>lo contrario</b>: <i>escaso – abundante</i>. Muchos se forman con prefijos:
+ <ul><li><b>des-</b>: confiar → desconfiar</li><li><b>in-</b>: útil → inútil</li><li><b>im-</b> (delante de p, b): posible → imposible</li><li><b>i-</b> (delante de l): legal → ilegal</li><li><b>ir-</b> (delante de r): regular → irregular</li></ul></div>`,
  gra:`<h3>Clases de palabras</h3><div class="rule-box"><ul>
- <li><b>Sustantivo</b>: nombra personas, animales, cosas o ideas (dragón, cueva).</li>
- <li><b>Adjetivo</b>: dice cómo es el sustantivo (verde, feroz).</li>
- <li><b>Determinante</b>: acompaña y presenta al sustantivo (el, una, mis, aquellos).</li>
- <li><b>Pronombre</b>: sustituye al sustantivo (yo, tú, ella, nosotros).</li>
- <li><b>Verbo</b>: expresa acciones o estados (volar, es).</li>
- <li><b>Adverbio</b>: indica lugar, tiempo, modo, cantidad… (aquí, ayer, despacio). Es invariable.</li>
- <li><b>Preposición</b>: une palabras (a, con, de, en, sobre…).</li>
- <li><b>Conjunción</b>: une palabras u oraciones (y, o, pero).</li>
- <li><b>Interjección</b>: expresa emociones (¡ay!, ¡oh!).</li></ul>
- Son <b>variables</b> (cambian de forma): sustantivo, adjetivo, determinante, pronombre y verbo. Son <b>invariables</b>: adverbio, preposición, conjunción e interjección.</div>
- <h3>Estructura de la palabra</h3><div class="rule-box"><b>Lexema</b>: la raíz, la parte que da el significado (<i>pan</i>-adero). <b>Morfemas</b>: lo que se le añade. Pueden indicar género y número (gat-<b>a</b>-<b>s</b>) o formar palabras nuevas: <b>prefijos</b> delante (<b>sub</b>marino) y <b>sufijos</b> detrás (flor<b>ero</b>).</div>
- <h3>Primitivas, derivadas y compuestas</h3><div class="rule-box"><b>Primitiva</b>: no viene de otra (libro). <b>Derivada</b>: lexema + prefijo o sufijo (librería). <b>Compuesta</b>: unión de dos palabras (paraguas). Las palabras con el mismo lexema forman una <b>familia de palabras</b>.</div>`,
- ort:`<h3>Mayúsculas</h3><div class="rule-box"><b>Sí</b> llevan mayúscula: la primera palabra de un escrito, después de punto, después de ? o ! si termina la oración, los nombres propios (Lucía, Madrid, Tajo), las instituciones y museos (Museo del Prado) y la primera palabra de un título (El dragón azul).<br><b>No</b> llevan mayúscula: los días, los meses, las estaciones, los idiomas y los gentilicios (lunes, octubre, verano, francés, madrileño).</div>
+ <li><b>Sustantivo</b>: nombra (dragón, alegría).</li><li><b>Adjetivo</b>: dice cómo es el sustantivo (verde, feroz).</li>
+ <li><b>Determinante</b>: acompaña al sustantivo (el, una, mis, este, tres).</li><li><b>Pronombre</b>: sustituye al sustantivo (ella, nos, este cuando va solo).</li>
+ <li><b>Verbo</b>: acción o estado (volar, es).</li><li><b>Adverbio</b>: lugar, tiempo, modo, cantidad (aquí, mañana, despacio, muy).</li>
+ <li><b>Preposición</b>: a, ante, bajo, con, contra, de, desde, en, entre, hacia, hasta, para, por, según, sin, sobre, tras.</li>
+ <li><b>Conjunción</b>: une (y, o, pero). <b>Interjección</b>: emoción (¡ay!, ¡bravo!).</li></ul>
+ Truco: una misma palabra puede cambiar de clase según la frase. «<i>Este</i> huevo» (determinante) / «<i>Este</i> es mío» (pronombre).</div>
+ <h3>Variables e invariables</h3><div class="rule-box"><b>Variables</b> (cambian de género, número, persona o tiempo): sustantivo, adjetivo, determinante, pronombre y verbo.<br><b>Invariables</b> (nunca cambian): adverbio, preposición, conjunción e interjección.<br>Si una palabra cambia aunque sea solo de número (verde → verdes), ya es variable.</div>
+ <h3>Estructura de la palabra</h3><div class="rule-box"><b>Lexema</b>: la raíz, que da el significado (<i>carn</i>-icero). <b>Morfemas</b>: lo que se añade. De género y número (gat-<b>a</b>-<b>s</b>), <b>prefijos</b> delante (<b>re</b>leer, <b>sub</b>terráneo) y <b>sufijos</b> detrás (zapat<b>ero</b>, perr<b>azo</b>, gat<b>ito</b>).</div>
+ <h3>Primitivas, derivadas y compuestas</h3><div class="rule-box"><b>Primitiva</b>: no viene de otra (sol). <b>Derivada</b>: lexema + prefijo o sufijo (soleado). <b>Compuesta</b>: dos palabras unidas (girasol). Las que comparten lexema forman una <b>familia de palabras</b>.</div>`,
+ ort:`<h3>Mayúsculas</h3><div class="rule-box"><b>Sí</b>: al empezar un escrito, después de punto, después de ? o ! si termina la oración, nombres propios (Lucía, Tajo, Aranjuez), instituciones y museos (Museo del Prado), festividades (Navidad) y la primera palabra de un título (Las aventuras de la dragona Brisa).<br><b>No</b>: días, meses, estaciones, idiomas, gentilicios y títulos como rey, reina o profesora.</div>
  <h3>Reglas generales de acentuación</h3><div class="rule-box"><ul>
- <li><b>Agudas</b> (tónica en la última sílaba): tilde si acaban en <b>vocal, n o s</b>. Sofá, ratón, compás. Reloj, feliz: sin tilde.</li>
- <li><b>Llanas</b> (tónica en la penúltima): tilde si <b>no</b> acaban en vocal, n ni s. Árbol, lápiz, césped. Mesa, examen: sin tilde.</li>
- <li><b>Esdrújulas</b> (antepenúltima) y <b>sobresdrújulas</b>: tilde <b>siempre</b>. Pájaro, murciélago, explícamelo.</li></ul></div>`
+ <li><b>Agudas</b> (última sílaba): tilde si acaban en <b>vocal, n o s</b>. Autobús, ciempiés. Pared, bondad: sin tilde.</li>
+ <li><b>Llanas</b> (penúltima): tilde si <b>no</b> acaban en vocal, n ni s. Cárcel, álbum, carácter. Imagen, joven: sin tilde.</li>
+ <li><b>Esdrújulas</b> y <b>sobresdrújulas</b>: tilde <b>siempre</b>. Jóvenes, imágenes, explícamelo.</li></ul>
+ Truco: al pasar al plural, algunas palabras cambian de grupo: joven (llana) → jóvenes (esdrújula).</div>`,
+ lec:`<h3>Trucos para comprender un texto</h3><div class="rule-box"><ul>
+ <li>Lee el título y piensa de qué tratará.</li><li>Lee todo el texto una vez, sin prisa.</li>
+ <li>Lee la pregunta y vuelve al texto a buscar la pista.</li>
+ <li>Algunas respuestas están escritas en el texto; otras hay que <b>deducirlas</b> con las pistas.</li>
+ <li>Si una palabra es difícil, fíjate en las de alrededor para adivinar su significado.</li></ul></div>
+ <h3>Tipos de texto</h3><div class="rule-box"><b>Narrativo</b>: cuenta una historia (cuento). <b>Descriptivo</b>: cuenta cómo es algo o alguien. <b>Informativo</b>: explica cosas reales. <b>Instructivo</b>: da pasos u órdenes (receta, normas). <b>Poema</b>: versos y estrofas, a menudo con rima. También hay <b>cartas</b> (fecha, saludo, cuerpo, despedida y firma), <b>diarios</b> y <b>carteles</b>.</div>`
 };
 function book(tab='voc'){
   showOv(`<div class="book"><h2 style="text-align:center">El Grimorio de ${NM()}</h2><p style="text-align:center">Las reglas mágicas para despertar a los dragones.</p>
-  <div class="tabs" role="tablist">${[['voc','Vocabulario'],['gra','Gramática'],['ort','Ortografía']].map(([k,l])=>`<button class="tab" type="button" role="tab" aria-selected="${k===tab}" data-k="${k}">${l}</button>`).join('')}</div>
+  <div class="tabs" role="tablist">${[['voc','Vocabulario'],['gra','Gramática'],['ort','Ortografía'],['lec','Lectura']].map(([k,l])=>`<button class="tab" type="button" role="tab" aria-selected="${k===tab}" data-k="${k}">${l}</button>`).join('')}</div>
   <div>${BOOK[tab]}</div>
   <div class="center" style="margin-top:16px"><button class="btn" id="bookClose" type="button">Cerrar el Grimorio</button></div></div>`);
   document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>book(t.dataset.k));
