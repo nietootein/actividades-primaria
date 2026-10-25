@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Academia de Dragones · Lengua 5.º</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800;900&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: a storybook sky with four floating islands on the map; play happens in one centred "spell card". Deliberate single bright theme. */
+:root{
+  --sky1:#8fd3ff; --sky2:#eaf6ff; --ink:#2b2350; --ink-soft:#5d5487; --card:#ffffff; --card-2:#f6f3ff; --line:#ddd5f5;
+  --gold:#ffc83d; --gold-dk:#a86f00; --good:#1f9d5a; --good-bg:#dcf7e8; --bad:#d63a52; --bad-bg:#ffe3e8;
+  --lila:#9b6cf0; --verdin:#2fb36c; --rubi:#ff5d73; --water:#5bb8f0;
+  --f-display:'Grandstander','Trebuchet MS',system-ui,sans-serif;
+  --f-body:'Nunito','Segoe UI',system-ui,sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 55%,#fdf4ff 100%);background-attachment:fixed;color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--card)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--lila);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+
+/* clouds */
+.clouds{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.75;filter:blur(1px);animation:drift linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:55%;height:160%;left:15%;bottom:20%}
+.cloud::after{width:40%;height:130%;right:12%;bottom:15%}
+@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);box-shadow:0 2px 0 var(--line)}
+.top-in{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:12px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:900;font-size:1.15rem;margin-right:auto;min-width:0}
+.brand svg{width:38px;height:38px;flex:none}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card-2);border:2px solid var(--line);border-radius:999px;padding:4px 12px 4px 6px;font-weight:900;font-variant-numeric:tabular-nums}
+.pill svg{width:24px;height:24px}
+.icon-btn{background:var(--card-2);border:2px solid var(--line);border-radius:12px;padding:6px 10px;font-weight:800;font-size:.9rem}
+
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--card);border-radius:28px;padding:18px 22px;box-shadow:0 6px 0 var(--line)}
+.hero .queen{width:120px;height:120px}
+.hero h1{font-size:clamp(1.5rem,4vw,2.2rem);color:var(--ink)}
+.hero p{margin:.4rem 0 0;color:var(--ink-soft);max-width:60ch}
+.rank{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-weight:800}
+.rank-bar{flex:1 1 180px;height:14px;background:var(--card-2);border:2px solid var(--line);border-radius:999px;overflow:hidden;min-width:140px}
+.rank-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#ff9bd0);border-radius:999px;transition:width .6s}
+.rank small{color:var(--ink-soft);font-weight:700}
+@media (max-width:560px){.hero{grid-template-columns:1fr;text-align:center}.hero .queen{margin:0 auto}.rank{justify-content:center}}
+
+/* map */
+.map-title{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:26px 4px 12px;flex-wrap:wrap}
+.map-title h2{font-size:1.5rem}
+.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:18px}
+.isle{position:relative;text-align:left;border:0;padding:0;background:var(--card);border-radius:26px;box-shadow:0 6px 0 var(--line);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s}
+.isle:hover:not(:disabled){transform:translateY(-4px) rotate(-.5deg)}
+.isle:disabled{cursor:not-allowed}
+.isle-art{position:relative;height:170px}
+.isle-art .scene{position:absolute;inset:0;width:100%;height:100%}
+.isle-art .hero-ico{position:absolute;left:50%;bottom:14px;width:110px;height:110px;transform:translateX(-50%)}
+.isle-body{padding:12px 16px 16px;display:flex;flex-direction:column;gap:4px}
+.isle-body h3{font-size:1.2rem}
+.isle-topic{color:var(--ink-soft);font-weight:700;font-size:.95rem}
+.stars{display:flex;gap:2px;margin-top:4px}
+.stars svg{width:24px;height:24px}
+.isle-cta{margin-top:8px;align-self:flex-start;background:var(--ink);color:#fff;font-weight:900;border-radius:999px;padding:4px 14px;font-size:.9rem}
+.lock{position:absolute;inset:0;background:rgba(43,35,80,.55);display:grid;place-items:center;color:#fff;font-weight:900;text-align:center;padding:16px;font-size:.95rem}
+.lock svg{width:44px;height:44px;display:block;margin:0 auto 6px}
+
+.nest-row{margin-top:28px;background:var(--card);border-radius:26px;padding:16px 20px;box-shadow:0 6px 0 var(--line)}
+.nest-row h2{font-size:1.3rem;margin-bottom:8px}
+.nest-list{display:flex;flex-wrap:wrap;gap:14px}
+.nest-slot{width:120px;text-align:center;font-weight:800;font-size:.9rem}
+.nest-slot svg{width:96px;height:96px}
+.nest-slot .who{color:var(--ink-soft);font-weight:700;font-size:.8rem;display:block}
+
+/* buttons */
+.btn{border:0;border-radius:16px;padding:12px 22px;font-weight:900;font-size:1.05rem;background:var(--lila);color:#fff;box-shadow:0 5px 0 #6a43c2;transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #6a43c2}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.gold{background:var(--gold);color:var(--ink);box-shadow:0 5px 0 var(--gold-dk)}
+.btn.ghost{background:var(--card-2);color:var(--ink);box-shadow:0 5px 0 var(--line)}
+.btn.green{background:var(--verdin);box-shadow:0 5px 0 #1d7a48}
+
+/* play */
+.play{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.hud{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dots{display:flex;gap:6px;flex:1;min-width:150px}
+.dots i{flex:1;height:12px;border-radius:999px;background:var(--card);border:2px solid var(--line)}
+.dots i.ok{background:var(--good);border-color:var(--good)}
+.dots i.no{background:var(--bad);border-color:var(--bad)}
+.dots i.now{background:var(--gold);border-color:var(--gold-dk)}
+.hud-egg{width:56px;height:66px}
+.hud-egg.wob{animation:wob .5s}
+@keyframes wob{25%{transform:rotate(-12deg)}50%{transform:rotate(10deg)}75%{transform:rotate(-6deg)}}
+.hearts{display:flex;gap:3px}.hearts svg{width:26px;height:26px}
+.streak{display:inline-flex;align-items:center;gap:4px;font-weight:900;color:#e2541f;background:#fff1e4;border:2px solid #ffc9a3;border-radius:999px;padding:2px 10px 2px 4px}
+.streak svg{width:22px;height:22px}
+
+.qcard{background:var(--card);border-radius:28px;padding:22px;box-shadow:0 6px 0 var(--line)}
+.qmeta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:800;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.qhead{display:flex;gap:14px;align-items:flex-start;margin-top:10px}
+.qhead .mini{width:70px;height:70px;flex:none}
+.q{font-family:var(--f-body);font-weight:800;font-size:clamp(1.1rem,3.2vw,1.35rem);background:var(--card-2);border-radius:18px;padding:12px 16px;position:relative;min-width:0}
+.q::before{content:"";position:absolute;left:-10px;top:20px;border:10px solid transparent;border-right-color:var(--card-2);border-left:0}
+.q u{text-decoration-color:var(--rubi);text-decoration-thickness:3px;text-underline-offset:3px}
+.area{margin-top:18px}
+.hint{color:var(--ink-soft);font-weight:700;margin:0 0 10px;font-size:.95rem}
+
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.opt{text-align:left;border:3px solid var(--line);background:var(--card);border-radius:18px;padding:12px 16px;font-weight:800;font-size:1.05rem;box-shadow:0 4px 0 var(--line);transition:transform .1s}
+.opt:hover:not(:disabled){border-color:var(--lila)}
+.opt.ok{background:var(--good-bg);border-color:var(--good);box-shadow:0 4px 0 var(--good)}
+.opt.no{background:var(--bad-bg);border-color:var(--bad);box-shadow:0 4px 0 var(--bad);animation:shake .4s}
+.opt:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+.chip{border:3px solid var(--line);background:var(--card);border-radius:14px;padding:8px 14px;font-weight:800;box-shadow:0 3px 0 var(--line)}
+.chip.sel{border-color:var(--lila);background:#efe6ff;transform:translateY(-3px)}
+.chip.shake{animation:shake .4s;border-color:var(--bad)}
+.chip.gone{display:none}
+.nests{display:grid;gap:10px;margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+.nest{border:3px dashed #c9b98f;background:#fff8e6;border-radius:22px;padding:10px;min-height:110px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.nest:hover{border-color:var(--gold-dk)}
+.nest.shake{animation:shake .4s}
+.nest-label{font-family:var(--f-display);font-weight:800;font-size:1.05rem}
+.nest-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.nest-items span{background:var(--good-bg);border:2px solid var(--good);border-radius:10px;padding:1px 8px;font-size:.85rem;font-weight:800}
+
+.word{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px;margin:10px 0 18px}
+.let{font-family:var(--f-display);font-size:clamp(1.8rem,7vw,2.8rem);font-weight:800;min-width:.6em;text-align:center;border-radius:10px;padding:0 2px}
+.let.lex{background:#d4f7e2;color:#11663a}
+.let.mor{background:#ffe7c7;color:#9a4b00}
+.gap{width:18px;height:52px;border:0;border-radius:8px;background:transparent;position:relative}
+.gap::after{content:"";position:absolute;left:50%;top:8px;bottom:8px;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--line)}
+.gap:hover::after{background:var(--lila)}
+.gap.on::after{background:var(--rubi);width:5px;margin-left:-2.5px;top:0;bottom:0}
+.vow{font-family:var(--f-display);font-size:clamp(1.8rem,7vw,2.8rem);font-weight:800;border:3px solid var(--line);background:var(--card);border-radius:12px;min-width:1.1em;padding:0 4px;box-shadow:0 4px 0 var(--line);line-height:1.3}
+.vow:hover:not(:disabled){border-color:var(--rubi)}
+.vow.ok{background:var(--good-bg);border-color:var(--good)}
+.vow.no{background:var(--bad-bg);border-color:var(--bad)}
+.center{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-weight:800;font-size:.9rem;margin-bottom:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend b{width:16px;height:16px;border-radius:5px;display:inline-block}
+
+.sent{display:flex;flex-wrap:wrap;gap:6px;line-height:1.2;margin-bottom:16px}
+.tok{border:3px solid var(--line);background:var(--card);border-radius:12px;padding:6px 10px;font-weight:800;font-size:1.15rem;box-shadow:0 3px 0 var(--line)}
+.tok.up{border-color:var(--lila);background:#efe6ff}
+.tok.ok{border-color:var(--good);background:var(--good-bg)}
+.tok.miss{border-color:var(--bad);background:var(--bad-bg)}
+.tok.extra{border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through}
+
+.feedback{margin-top:18px;border-radius:22px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.feedback.good{background:var(--good-bg);border:3px solid var(--good)}
+.feedback.bad{background:var(--bad-bg);border:3px solid var(--bad)}
+.feedback .mini{width:64px;height:64px}
+.feedback h3{font-size:1.25rem}
+.feedback p{margin:.2rem 0 0;font-weight:700}
+.feedback .btn{grid-column:1/-1;justify-self:end}
+.gain{font-weight:900;color:var(--gold-dk)}
+
+/* overlay */
+.ov{position:fixed;inset:0;z-index:20;background:rgba(43,35,80,.6);display:grid;place-items:center;padding:20px;overflow:auto}
+.ov-card{background:var(--card);border-radius:30px;padding:24px;max-width:560px;width:100%;text-align:center;box-shadow:0 8px 0 var(--line);animation:pop .35s}
+.ov-card h2{font-size:clamp(1.5rem,5vw,2rem)}
+.ov-card p{color:var(--ink-soft);font-weight:700}
+.ov-card .big-stars{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.ov-card .big-stars svg{width:54px;height:54px}
+.ov-card .big-stars svg.on{animation:pop .5s backwards}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.hatch-stage{height:200px;display:grid;place-items:center}
+.hatch-stage svg{width:180px;height:180px}
+.egg-shake{animation:eggshake .5s infinite}
+@keyframes eggshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.dragon-pop{animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+.bob{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+
+.book{text-align:left;max-width:720px}
+.book h3{font-size:1.2rem;margin:16px 0 6px}
+.book ul{margin:0;padding-left:1.2em}
+.book li{margin:.25em 0}
+.book .tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tab{border:3px solid var(--line);background:var(--card-2);border-radius:999px;padding:6px 14px;font-weight:900}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rule-box{background:var(--card-2);border-radius:16px;padding:10px 14px;margin-top:8px}
+
+.diploma{border:6px double var(--gold-dk);border-radius:24px;padding:24px 18px;background:linear-gradient(#fffbea,#fff3c4)}
+.diploma .name{font-family:var(--f-display);font-size:clamp(2rem,8vw,3rem);font-weight:900;color:var(--gold-dk)}
+.diploma .row{display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
+.diploma .row svg{width:clamp(54px,16vw,70px);height:clamp(54px,16vw,70px)}
+@media (max-width:480px){.brand span{font-size:.95rem}.brand svg{width:30px;height:30px}.top-in{gap:8px}.icon-btn{padding:4px 8px;font-size:.8rem}.pill{padding:2px 10px 2px 4px}}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:800;border-radius:999px;padding:8px 18px;z-index:25;animation:pop .25s}
+
+/* ===== Nombre del jugador ===== */
+.namebox{display:grid;gap:10px;justify-items:center;margin:14px 0 6px}
+.namebox>label{font-weight:800}
+.namebox input[type=text]{font:inherit;font-weight:800;font-size:1.1rem;border-radius:14px;border:3px solid #bdb2ff;padding:8px 14px;width:min(100%,280px);text-align:center;color:#2b2350;background:#fff}
+.namebox input[type=text]:focus{outline:3px solid var(--lila);outline-offset:2px}
+.gen{border:0;padding:0;margin:0;min-width:0}
+.gen legend{font-weight:800;margin:0 auto 8px;padding:0}
+.gen-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.gen-row label{position:relative;cursor:pointer}
+.gen-row input{position:absolute;opacity:0;width:1px;height:1px}
+.gen-row span{display:inline-block;padding:8px 18px;border-radius:999px;background:#fff;color:#2b2350;border:3px solid #bdb2ff;font-weight:900}
+.gen-row input:checked+span{background:#ffc83d;border-color:#a86f00}
+.gen-row input:focus-visible+span{outline:3px solid var(--lila);outline-offset:2px}
+.nm-err{margin:0;min-height:1.3em;font-weight:800;color:#d63a52}
+.portal .nm-err{color:#ffb3c1}
+.linkbtn{background:none;border:0;padding:2px 0;font:inherit;font-size:.92rem;font-weight:800;color:#5f37b5;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.portal .linkbtn{color:#e9e2ff}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="clouds" aria-hidden="true">
+  <div class="cloud" style="top:12%;width:140px;height:40px;animation-duration:80s;animation-delay:-20s"></div>
+  <div class="cloud" style="top:38%;width:200px;height:55px;animation-duration:110s;animation-delay:-70s"></div>
+  <div class="cloud" style="top:70%;width:120px;height:34px;animation-duration:95s;animation-delay:-40s"></div>
+</div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand" id="brand"></div>
+    <span class="pill" title="Gemas"><span id="gemIco"></span><span id="gems">0</span></span>
+    <button class="icon-btn" id="bookBtn" type="button">Grimorio</button>
+    <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true">Sonido: sí</button>
+  </div>
+</header>
+<main id="app"></main>
+<div id="ovRoot"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+/* ===================== ARTE ===================== */
+const PAL={
+  lila:{main:'#9b6cf0',dark:'#4f2a9e',light:'#e8dcff',accent:'#ffd84d'},
+  verdin:{main:'#3fc47a',dark:'#1b6e41',light:'#d4f7e2',accent:'#ff9f43'},
+  rubi:{main:'#ff5d73',dark:'#a3233a',light:'#ffe0e5',accent:'#ffd84d'},
+  aurelia:{main:'#ffc83d',dark:'#9a6500',light:'#fff3c4',accent:'#ff7ab6'},
+  azul:{main:'#5bb8f0',dark:'#1f5f8f',light:'#dff2ff',accent:'#ff9bd0'}
+};
+function dragon(p,cls=''){
+  const s=`stroke="${p.dark}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"`;
+  const wing=`<path d="M40 70 C18 60 10 42 18 32 C22 42 28 44 32 42 C30 50 33 56 38 58 C34 62 36 66 42 66 Z" fill="${p.light}" ${s}/>`;
+  return `<svg class="${cls}" viewBox="0 0 120 120" aria-hidden="true">
+  <path d="M80 90 C98 102 114 92 108 72 L118 66 L104 64 C106 80 98 88 84 80 Z" fill="${p.main}" ${s}/>
+  ${wing}<g transform="translate(120 0) scale(-1 1)">${wing}</g>
+  <ellipse cx="46" cy="104" rx="9" ry="5.5" fill="${p.main}" ${s}/><ellipse cx="74" cy="104" rx="9" ry="5.5" fill="${p.main}" ${s}/>
+  <ellipse cx="60" cy="82" rx="26" ry="24" fill="${p.main}" ${s}/>
+  <ellipse cx="60" cy="88" rx="16" ry="15" fill="${p.light}" ${s}/>
+  <path d="M48 84 H72 M47 91 H73 M50 98 H70" stroke="${p.dark}" stroke-width="1.6" opacity=".35" fill="none"/>
+  <path d="M44 30 L38 10 L54 24 Z" fill="${p.accent}" ${s}/><path d="M76 30 L82 10 L66 24 Z" fill="${p.accent}" ${s}/>
+  <circle cx="60" cy="46" r="24" fill="${p.main}" ${s}/>
+  <path d="M55 23 L60 14 L65 23 Z" fill="${p.accent}" ${s}/>
+  <circle cx="50.5" cy="45" r="7.5" fill="#fff"/><circle cx="69.5" cy="45" r="7.5" fill="#fff"/>
+  <circle cx="52" cy="46.5" r="4.4" fill="#2b2350"/><circle cx="71" cy="46.5" r="4.4" fill="#2b2350"/>
+  <circle cx="53.8" cy="44.6" r="1.7" fill="#fff"/><circle cx="72.8" cy="44.6" r="1.7" fill="#fff"/>
+  <ellipse cx="43" cy="55" rx="4.5" ry="2.8" fill="#ff8fb0" opacity=".75"/><ellipse cx="77" cy="55" rx="4.5" ry="2.8" fill="#ff8fb0" opacity=".75"/>
+  <path d="M54 57 Q60 63 66 57" fill="none" stroke="${p.dark}" stroke-width="2.6" stroke-linecap="round"/>
+</svg>`;
+}
+const CRACKS=['M30 44 L40 52 L34 58 L44 64','M70 36 L62 46 L70 52 L62 60','M28 78 L40 74 L46 82 L56 76','M72 72 L64 82 L74 88'];
+function egg(p,cracks=0,cls=''){
+  return `<svg class="${cls}" viewBox="0 0 100 120" aria-hidden="true">
+  <ellipse cx="50" cy="112" rx="30" ry="5" fill="#2b2350" opacity=".12"/>
+  <path d="M50 8 C76 8 90 50 90 72 C90 96 72 110 50 110 C28 110 10 96 10 72 C10 50 24 8 50 8 Z" fill="${p.light}" stroke="${p.dark}" stroke-width="3"/>
+  <circle cx="36" cy="40" r="7" fill="${p.main}" opacity=".7"/><circle cx="64" cy="58" r="9" fill="${p.main}" opacity=".7"/>
+  <circle cx="40" cy="86" r="8" fill="${p.main}" opacity=".7"/><circle cx="70" cy="90" r="5" fill="${p.accent}"/><circle cx="56" cy="28" r="4" fill="${p.accent}"/>
+  ${CRACKS.slice(0,cracks).map(d=>`<path d="${d}" fill="none" stroke="${p.dark}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}
+</svg>`;
+}
+const ICON={
+  gem:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z" fill="#5bd0f0" stroke="#1f6f8f" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 9h20M9 3 7.5 9 12 21 16.5 9 15 3" fill="none" stroke="#1f6f8f" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+  star:on=>`<svg viewBox="0 0 24 24" class="${on?'on':''}" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="${on?'#ffc83d':'#e7e2f5'}" stroke="${on?'#a86f00':'#c9c0e6'}" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  heart:on=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z" fill="${on?'#ff5d73':'#e7e2f5'}" stroke="${on?'#a3233a':'#c9c0e6'}" stroke-width="1.6"/></svg>`,
+  flame:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3-1-6 1-9z" fill="#ff8a3d" stroke="#c2410c" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 13c1 1.5 3 2.5 3 4.5a3 3 0 0 1-6 0c0-1.5 1-2.5 2-3 0 1 .5 1.5 1 1.5z" fill="#ffd84d"/></svg>`,
+  lock:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3" fill="#ffc83d" stroke="#fff" stroke-width="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2"/></svg>`
+};
+const SCENE={
+  voc:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#c9ecff"/><circle cx="250" cy="34" r="18" fill="#fff6b0"/><ellipse cx="150" cy="150" rx="190" ry="44" fill="#5bb8f0"/><path d="M40 140 q15-8 30 0 M200 148 q15-8 30 0 M110 158 q15-8 30 0" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/><ellipse cx="150" cy="128" rx="80" ry="12" fill="#8fd0f5"/></svg>`,
+  gra:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#dff7e6"/><ellipse cx="80" cy="175" rx="140" ry="60" fill="#8ad9a6"/><ellipse cx="250" cy="180" rx="130" ry="70" fill="#5cc387"/><path d="M30 120 l18-44 18 44z M240 110 l20-50 20 50z M262 128 l14-34 14 34z" fill="#2f9e5e"/><rect x="45" y="118" width="6" height="12" fill="#8a5a2b"/><rect x="257" y="108" width="6" height="12" fill="#8a5a2b"/></svg>`,
+  ort:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#ffe6dc"/><path d="M20 170 L110 60 L130 70 L150 58 L170 70 L190 60 L280 170 Z" fill="#b5654a"/><path d="M110 60 L130 70 L150 58 L170 70 L190 60 L176 82 L150 76 L124 82 Z" fill="#ff7a3d"/><circle cx="130" cy="38" r="9" fill="#ffd0b8"/><circle cx="160" cy="26" r="12" fill="#ffd0b8"/><circle cx="185" cy="44" r="7" fill="#ffd0b8"/></svg>`,
+  boss:`<svg class="scene" viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice"><rect width="300" height="170" fill="#fff3c4"/><circle cx="60" cy="40" r="3" fill="#ffc83d"/><circle cx="240" cy="30" r="4" fill="#ffc83d"/><circle cx="270" cy="70" r="2.5" fill="#ffc83d"/><rect x="40" y="70" width="40" height="100" fill="#d9c8f5"/><path d="M34 70 L60 36 L86 70 Z" fill="#9b6cf0"/><rect x="220" y="80" width="40" height="90" fill="#d9c8f5"/><path d="M214 80 L240 46 L266 80 Z" fill="#ff7ab6"/><ellipse cx="150" cy="170" rx="160" ry="30" fill="#f2dd8c"/></svg>`
+};
+
+/* ===================== MUNDO ===================== */
+const ISLANDS=[
+  {id:'voc',name:'Lago de los Espejos',topic:'Vocabulario · Sinónimos y antónimos',pal:'lila',dragon:'Lila',total:8},
+  {id:'gra',name:'Bosque de las Raíces',topic:'Gramática · La palabra: clases y estructura',pal:'verdin',dragon:'Verdín',total:8},
+  {id:'ort',name:'Volcán de las Tildes',topic:'Ortografía · Mayúsculas y acentuación',pal:'rubi',dragon:'Rubí',total:8},
+  {id:'boss',name:'Torre del Huevo Dorado',topic:'Gran Desafío · Todo mezclado',pal:'aurelia',dragon:'Aurelia',total:12}
+];
+const BIO={
+  voc:'Lila es una dragoncita violeta que vive en el Lago de los Espejos. Le encanta ver su reflejo: dice que los sinónimos son como reflejos gemelos y los antónimos, como su lado contrario.',
+  gra:'Verdín es un dragoncito verde del Bosque de las Raíces. Sabe que cada palabra tiene una raíz, el lexema, y que le crecen hojitas: los morfemas.',
+  ort:'Rubí es una dragoncita roja del Volcán de las Tildes. Lanza chispitas de fuego justo encima de la sílaba tónica… ¡y nunca olvida una mayúscula!',
+  boss:'Aurelia es la dragona dorada, reina de todos los dragoncitos. Solo nace cuando {una Guardiana|un Guardián} domina las palabras de verdad. ¡Y {esa|ese} eres tú, {N}!'
+};
+const RANKS=[[0,'Aprendiz de {Guardiana|Guardián}'],[150,'{Cuidadora|Cuidador} de Huevos'],[400,'{Domadora|Domador} de Dragones'],[750,'{Gran Maestra Dragona|Gran Maestro Dragón}']];
+
+/* ===================== BANCO DE RETOS ===================== */
+// En las preguntas tipo "mc" la respuesta correcta es siempre la primera opción; se barajan al mostrarse.
+const BANK={
+voc:[
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>veloz</i>?',o:['rápido','lento','tranquilo','pesado'],exp:'<i>Veloz</i> y <i>rápido</i> significan lo mismo: son sinónimos.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>valiente</i>?',o:['cobarde','atrevido','osado','decidido'],exp:'<i>Cobarde</i> significa lo contrario de <i>valiente</i>. ¡Ojo! <i>Atrevido</i> y <i>osado</i> son sinónimos.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>hermoso</i>?',o:['bello','feo','enorme','raro'],exp:'<i>Hermoso</i> y <i>bello</i> son sinónimos. <i>Feo</i> sería su antónimo.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>generoso</i>?',o:['tacaño','amable','bondadoso','alegre'],exp:'Una persona <i>tacaña</i> no quiere compartir: es lo contrario de <i>generosa</i>.'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>comenzar</i>?',o:['empezar','terminar','seguir','parar'],exp:'<i>Comenzar</i> y <i>empezar</i> son sinónimos. <i>Terminar</i> es su antónimo.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cuál es el <b>antónimo</b> de <i>ordenado</i>?',o:['desordenado','limpio','organizado','recogido'],exp:'Con el prefijo <b>des-</b> formamos el antónimo: <i>ordenado → desordenado</i>.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Cuál es el <b>antónimo</b> de <i>posible</i>?',o:['imposible','probable','posiblemente','real'],exp:'Con el prefijo <b>im-</b> (delante de p y b) formamos el antónimo: <i>posible → imposible</i>.'},
+ {t:'mc',k:'Antónimos con prefijo',q:'¿Qué prefijo forma el <b>antónimo</b> de <i>responsable</i>?',o:['ir-','des-','in-','a-'],exp:'<i>Responsable → irresponsable</i>. Delante de <b>r</b> el prefijo <b>in-</b> se convierte en <b>ir-</b> (y se escribe con doble r).'},
+ {t:'mc',k:'Sinónimos',q:'¿Cuál es un <b>sinónimo</b> de <i>enfadado</i>?',o:['enojado','alegre','cansado','tranquilo'],exp:'<i>Enfadado</i> y <i>enojado</i> son sinónimos.'},
+ {t:'mc',k:'Antónimos',q:'¿Cuál es el <b>antónimo</b> de <i>ancho</i>?',o:['estrecho','amplio','largo','grande'],exp:'<i>Estrecho</i> es lo contrario de <i>ancho</i>. <i>Amplio</i> sería un sinónimo.'},
+ {t:'mc',k:'Sinónimos en contexto',q:'«Chispa encontró un tesoro <u>antiguo</u>». ¿Qué palabra puede sustituir a <u>antiguo</u> sin cambiar el sentido?',o:['viejo','moderno','nuevo','brillante'],exp:'<i>Viejo</i> es sinónimo de <i>antiguo</i> en esta frase. <i>Moderno</i> y <i>nuevo</i> son antónimos.'},
+ {t:'mc',k:'Antónimos en contexto',q:'«Lila es muy <u>tímida</u>». ¿Qué palabra expresa lo contrario?',o:['extrovertida','vergonzosa','callada','reservada'],exp:'Una persona <i>extrovertida</i> se relaciona con facilidad: es lo contrario de <i>tímida</i>.'},
+ {t:'mc',k:'Parejas',q:'¿Qué pareja de palabras son <b>antónimos</b>?',o:['encender – apagar','subir – ascender','mirar – observar','hablar – charlar'],exp:'<i>Encender</i> y <i>apagar</i> son opuestos. Las demás parejas son sinónimos.'},
+ {t:'mc',k:'Parejas',q:'¿Qué pareja de palabras son <b>sinónimos</b>?',o:['charlar – conversar','frío – caliente','día – noche','entrar – salir'],exp:'<i>Charlar</i> y <i>conversar</i> significan lo mismo. Las demás parejas son antónimos.'},
+ {t:'cls',k:'Parejas',q:'¿Sinónimos o antónimos? Lleva cada pareja a su nido.',b:['Sinónimos','Antónimos'],items:[['alegre – contento',0],['subir – bajar',1],['cara – rostro',0],['lleno – vacío',1],['listo – inteligente',0],['mucho – poco',1]],exp:'Los <b>sinónimos</b> significan lo mismo o casi lo mismo; los <b>antónimos</b>, lo contrario.'},
+ {t:'cls',k:'Parejas',q:'¿Sinónimos o antónimos? Lleva cada pareja a su nido.',b:['Sinónimos','Antónimos'],items:[['empezar – iniciar',0],['ganar – perder',1],['regresar – volver',0],['abrir – cerrar',1],['dormir – despertar',1],['pequeño – diminuto',0]],exp:'Los <b>sinónimos</b> significan lo mismo o casi lo mismo; los <b>antónimos</b>, lo contrario.'},
+ {t:'cls',k:'Sinónimos y antónimos',q:'Lila está <i>alegre</i>. ¿Cada palabra es sinónimo o antónimo de <i>alegre</i>?',b:['Sinónimo de alegre','Antónimo de alegre'],items:[['contento',0],['triste',1],['feliz',0],['apenado',1],['risueño',0],['afligido',1]],exp:'<i>Contento, feliz, risueño</i> son sinónimos de <i>alegre</i>; <i>triste, apenado, afligido</i> son antónimos.'},
+ {t:'cls',k:'Sinónimos y antónimos',q:'Verdín es muy <i>grande</i>. ¿Cada palabra es sinónimo o antónimo de <i>grande</i>?',b:['Sinónimo de grande','Antónimo de grande'],items:[['enorme',0],['pequeño',1],['gigante',0],['diminuto',1],['inmenso',0],['minúsculo',1]],exp:'<i>Enorme, gigante, inmenso</i> son sinónimos de <i>grande</i>; <i>pequeño, diminuto, minúsculo</i> son antónimos.'}
+],
+gra:[
+ {t:'mc',k:'Clases de palabras',q:'«Los dragones <u>vuelan</u> alto». ¿Qué clase de palabra es <u>vuelan</u>?',o:['verbo','sustantivo','adjetivo','adverbio'],exp:'<i>Vuelan</i> expresa una acción y cambia de persona, número y tiempo: es un <b>verbo</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Rubí tiene unas alas <u>enormes</u>». ¿Qué clase de palabra es <u>enormes</u>?',o:['adjetivo','sustantivo','verbo','determinante'],exp:'<i>Enormes</i> dice cómo son las alas: es un <b>adjetivo</b>. Concuerda con el sustantivo en género y número.'},
+ {t:'mc',k:'Clases de palabras',q:'«<u>Ella</u> escupe fuego». ¿Qué clase de palabra es <u>ella</u>?',o:['pronombre','determinante','sustantivo','preposición'],exp:'<i>Ella</i> sustituye a un nombre (Rubí, Lila…): es un <b>pronombre personal</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Lila vuela <u>despacio</u>». ¿Qué clase de palabra es <u>despacio</u>?',o:['adverbio','adjetivo','verbo','sustantivo'],exp:'<i>Despacio</i> indica cómo vuela (modo) y nunca cambia de forma: es un <b>adverbio</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«<u>Aquellos</u> huevos son mágicos». ¿Qué clase de palabra es <u>aquellos</u>?',o:['determinante','pronombre','adjetivo','adverbio'],exp:'<i>Aquellos</i> acompaña al sustantivo <i>huevos</i> y lo sitúa lejos: es un <b>determinante demostrativo</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Volamos <u>sobre</u> el castillo». ¿Qué clase de palabra es <u>sobre</u>?',o:['preposición','conjunción','adverbio','sustantivo'],exp:'Aquí <i>sobre</i> une palabras e indica lugar: es una <b>preposición</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«Lila <u>y</u> Rubí son amigas». ¿Qué clase de palabra es <u>y</u>?',o:['conjunción','preposición','determinante','interjección'],exp:'<i>Y</i> une dos palabras del mismo tipo: es una <b>conjunción</b>.'},
+ {t:'mc',k:'Clases de palabras',q:'«¡<u>Ay</u>, me he quemado la cola!». ¿Qué clase de palabra es <u>ay</u>?',o:['interjección','adverbio','conjunción','verbo'],exp:'<i>¡Ay!</i> expresa una emoción (dolor, sorpresa…): es una <b>interjección</b>.'},
+ {t:'mc',k:'Palabras invariables',q:'¿Cuál de estas palabras es <b>invariable</b> (nunca cambia de forma)?',o:['ayer','dragón','bonito','saltar'],exp:'<i>Ayer</i> es un adverbio y los adverbios son invariables. <i>Dragón</i> cambia de número, <i>bonito</i> de género y número y <i>saltar</i> se conjuga.'},
+ {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>sacapuntas</i>?',o:['compuesta','primitiva','derivada'],exp:'<i>Sacapuntas</i> = <i>saca</i> + <i>puntas</i>. Está formada por dos palabras: es <b>compuesta</b>.'},
+ {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>panadería</i>?',o:['derivada','primitiva','compuesta'],exp:'<i>Panadería</i> viene de <i>pan</i> + el sufijo <b>-adería</b>: es <b>derivada</b>.'},
+ {t:'mc',k:'Primitivas, derivadas y compuestas',q:'¿Cómo es la palabra <i>flor</i>?',o:['primitiva','derivada','compuesta'],exp:'<i>Flor</i> no viene de otra palabra: es <b>primitiva</b>. De ella salen <i>florero</i>, <i>floristería</i>…'},
+ {t:'mc',k:'Estructura',q:'En <i>gatitas</i>, ¿qué parte nos dice que hay <b>más de una</b>?',o:['-s (morfema de número)','gat- (lexema)','-it- (sufijo)','-a (morfema de género)'],exp:'La <b>-s</b> es el morfema de <b>número</b> (plural). La <b>-a</b> indica el género femenino y <b>-it-</b> es un sufijo diminutivo.'},
+ {t:'mc',k:'Familia de palabras',q:'¿Cuál es el <b>lexema</b> que comparten <i>mar, marinero, marítimo</i> y <i>submarino</i>?',o:['mar','mari','ino','sub'],exp:'Todas comparten la raíz <b>mar</b>: forman una familia de palabras.'},
+ {t:'mc',k:'Familia de palabras',q:'¿Qué palabra pertenece a la <b>familia</b> de <i>pan</i>?',o:['panadero','pantalón','pantera','pantano'],exp:'<i>Panadero</i> viene de <i>pan</i>. Las otras empiezan igual, pero no tienen nada que ver con el pan: ¡son trampas de dragón!'},
+ {t:'mc',k:'Prefijos',q:'En <i>submarino</i>, el prefijo <b>sub-</b> significa…',o:['debajo de','antes de','contra','muy grande'],exp:'<b>Sub-</b> significa «debajo de»: un submarino va bajo el mar.'},
+ {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Sustantivo','Adjetivo','Verbo'],items:[['dragón',0],['volar',2],['valiente',1],['cueva',0],['brillante',1],['escupir',2]],exp:'<b>Sustantivo</b>: nombra. <b>Adjetivo</b>: dice cómo es. <b>Verbo</b>: expresa acción o estado.'},
+ {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Sustantivo','Adjetivo','Verbo'],items:[['tesoro',0],['dormimos',2],['verde',1],['montaña',0],['juegan',2],['feroz',1]],exp:'<b>Sustantivo</b>: nombra. <b>Adjetivo</b>: dice cómo es. <b>Verbo</b>: expresa acción o estado.'},
+ {t:'cls',k:'Clases de palabras',q:'Lleva cada palabra a su nido.',b:['Determinante','Pronombre','Adverbio'],items:[['mis',0],['nosotros',1],['siempre',2],['unas',0],['tú',1],['aquí',2]],exp:'<b>Determinante</b>: acompaña al sustantivo. <b>Pronombre</b>: lo sustituye. <b>Adverbio</b>: indica lugar, tiempo, modo… y es invariable.'},
+ {t:'cls',k:'Primitivas, derivadas y compuestas',q:'Lleva cada palabra a su nido.',b:['Primitiva','Derivada','Compuesta'],items:[['libro',0],['librería',1],['paraguas',2],['casa',0],['casita',1],['cumpleaños',2]],exp:'<b>Primitiva</b>: no viene de otra. <b>Derivada</b>: lexema + prefijo o sufijo. <b>Compuesta</b>: unión de dos palabras.'},
+ {t:'split',k:'Lexema y morfemas',w:'panadero',cut:3,exp:'<b>pan</b> es el lexema (la raíz) y <b>-adero</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'florero',cut:4,exp:'<b>flor</b> es el lexema y <b>-ero</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'zapatero',cut:5,exp:'<b>zapat-</b> es el lexema (de <i>zapato</i>) y <b>-ero</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'librería',cut:4,exp:'<b>libr-</b> es el lexema (de <i>libro</i>) y <b>-ería</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'gatitos',cut:3,exp:'<b>gat-</b> es el lexema; <b>-it-</b> (diminutivo), <b>-o</b> (masculino) y <b>-s</b> (plural) son morfemas.'},
+ {t:'split',k:'Lexema y morfemas',w:'pastelería',cut:6,exp:'<b>pastel</b> es el lexema y <b>-ería</b> el morfema.'},
+ {t:'split',k:'Lexema y morfemas',w:'marinero',cut:3,exp:'<b>mar</b> es el lexema y <b>-inero</b> el morfema.'}
+],
+ort:[
+ {t:'caps',k:'Mayúsculas',s:'El dragón Verdín vive en Madrid con su amiga Lucía.',exp:'Mayúscula al <b>empezar</b> y en los <b>nombres propios</b> de personas, animales y lugares.'},
+ {t:'caps',k:'Mayúsculas',s:'Ayer, lunes, visitamos el Museo del Prado. ¡Qué bonito!',exp:'Los <b>días de la semana</b> van en minúscula. Los nombres de <b>museos e instituciones</b> llevan mayúscula, y también la palabra que va <b>después de punto</b>.'},
+ {t:'caps',k:'Mayúsculas',s:'En verano viajaremos a Francia y aprenderemos francés.',exp:'Los <b>países</b> llevan mayúscula; las <b>estaciones</b> y los <b>idiomas</b>, minúscula.'},
+ {t:'caps',k:'Mayúsculas',s:'Mi dragona se llama Chispa y nació en octubre.',exp:'Los <b>nombres de animales</b> llevan mayúscula; los <b>meses</b>, minúscula.'},
+ {t:'caps',k:'Mayúsculas',s:'¿Has leído el libro El dragón azul? Me encantó.',exp:'Tras <b>¿</b> la primera palabra va en mayúscula. En los <b>títulos de libros</b> solo la primera palabra. Después de <b>?</b> que cierra la oración, mayúscula.'},
+ {t:'caps',k:'Mayúsculas',s:'Lila y Rubí cruzaron el río Tajo. Después, durmieron en Toledo.',exp:'<b>Tajo</b> y <b>Toledo</b> son nombres propios de lugar; <i>río</i> es un nombre común y va en minúscula. Tras punto, mayúscula.'},
+ {t:'acc',k:'Acentuación',w:'arbol',i:0,exp:'<b>Árbol</b> es llana y acaba en <b>l</b> (no en n, s ni vocal): lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'cancion',i:5,exp:'<b>Canción</b> es aguda y acaba en <b>n</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'murcielago',i:5,exp:'<b>Murciélago</b> es esdrújula: las esdrújulas llevan tilde <b>siempre</b>.'},
+ {t:'acc',k:'Acentuación',w:'lapiz',i:1,exp:'<b>Lápiz</b> es llana y acaba en <b>z</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'sofa',i:3,exp:'<b>Sofá</b> es aguda y acaba en <b>vocal</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'examen',i:-1,exp:'<b>Examen</b> es llana y acaba en <b>n</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'reloj',i:-1,exp:'<b>Reloj</b> es aguda y acaba en <b>j</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'pajaro',i:1,exp:'<b>Pájaro</b> es esdrújula: lleva tilde siempre.'},
+ {t:'acc',k:'Acentuación',w:'azucar',i:2,exp:'<b>Azúcar</b> es llana y acaba en <b>r</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'feliz',i:-1,exp:'<b>Feliz</b> es aguda y acaba en <b>z</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'explicamelo',i:4,exp:'<b>Explícamelo</b> es sobresdrújula: lleva tilde siempre.'},
+ {t:'acc',k:'Acentuación',w:'raton',i:3,exp:'<b>Ratón</b> es aguda y acaba en <b>n</b>: lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'mesa',i:-1,exp:'<b>Mesa</b> es llana y acaba en <b>vocal</b>: no lleva tilde.'},
+ {t:'acc',k:'Acentuación',w:'cesped',i:1,exp:'<b>Césped</b> es llana y acaba en <b>d</b>: lleva tilde.'},
+ {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['canción',0],['lápiz',1],['música',2],['café',0],['árbol',1],['pájaro',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
+ {t:'cls',k:'Acentuación',q:'Clasifica según su sílaba tónica.',b:['Aguda','Llana','Esdrújula'],items:[['reloj',0],['mesa',1],['brújula',2],['sofá',0],['examen',1],['murciélago',2]],exp:'<b>Aguda</b>: tónica en la última sílaba. <b>Llana</b>: en la penúltima. <b>Esdrújula</b>: en la antepenúltima.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Cuándo llevan tilde las palabras <b>agudas</b>?',o:['Cuando acaban en vocal, n o s','Siempre','Nunca','Cuando no acaban en vocal, n ni s'],exp:'Las <b>agudas</b> llevan tilde si terminan en <b>vocal, n o s</b>: <i>sofá, ratón, compás</i>.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Cuándo llevan tilde las palabras <b>llanas</b>?',o:['Cuando no acaban en vocal, n ni s','Cuando acaban en vocal, n o s','Siempre','Nunca'],exp:'Las <b>llanas</b> llevan tilde si <b>no</b> terminan en vocal, n o s: <i>árbol, lápiz, césped</i>.'},
+ {t:'mc',k:'Reglas de acentuación',q:'¿Qué palabras llevan tilde <b>siempre</b>?',o:['Esdrújulas y sobresdrújulas','Agudas','Llanas','Monosílabas'],exp:'Las <b>esdrújulas</b> y <b>sobresdrújulas</b> llevan tilde siempre: <i>pájaro, dímelo, explícamelo</i>.'},
+ {t:'mc',k:'Reglas de acentuación',q:'<i>Examen</i> no lleva tilde porque…',o:['es llana y acaba en n','es aguda y acaba en n','es esdrújula','es monosílaba'],exp:'<i>E-<b>xa</b>-men</i>: la tónica es la penúltima, es llana y acaba en n, así que no lleva tilde.'},
+ {t:'mc',k:'Mayúsculas',q:'¿Qué oración está <b>bien escrita</b>?',o:['El 12 de octubre es fiesta en España.','El 12 de Octubre es fiesta en España.','el 12 de octubre es fiesta en españa.','El 12 de octubre es fiesta en españa.'],exp:'Los <b>meses</b> van en minúscula y los <b>países</b>, en mayúscula.'},
+ {t:'mc',k:'Mayúsculas',q:'¿Qué oración está <b>bien escrita</b>?',o:['Los madrileños viven en Madrid.','Los Madrileños viven en Madrid.','los madrileños viven en madrid.','Los madrileños viven en madrid.'],exp:'Los <b>gentilicios</b> (madrileño, español…) van en minúscula; el nombre de la ciudad, en mayúscula.'}
+]};
+
+/* ===================== ESTADO ===================== */
+const KEY='lengua-recurso-01-v1';
+const DEF={gems:0,stars:{voc:0,gra:0,ort:0,boss:0},hatched:{},sound:true,seenIntro:false,name:'',gen:''};
+let S=(()=>{try{const v=JSON.parse(localStorage.getItem(KEY));return v?{...DEF,...v,stars:{...DEF.stars,...(v.stars||{})},hatched:{...(v.hatched||{})}}:structuredClone(DEF)}catch(e){return structuredClone(DEF)}})();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let G=null;
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const isle=id=>ISLANDS.find(x=>x.id===id);
+
+/* ===================== NOMBRE DEL JUGADOR ===================== */
+const escN=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NM=()=>escN(S.name||'');
+const g=(a,o)=>S.gen==='o'?o:a;
+// Sustituye {N} por el nombre y {femenino|masculino} según la elección
+const pers=s=>String(s).replace(/\{N\}/g,NM()).replace(/\{([^{}|]*)\|([^{}|]*)\}/g,(m,a,o)=>g(a,o));
+function nameForm(){
+  return `<div class="namebox">
+    <label for="nmIn">¿Cómo te llamas?</label>
+    <input id="nmIn" type="text" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Escribe tu nombre" value="${NM()}">
+    <fieldset class="gen"><legend>¿Cómo quieres que te llamen los dragones?</legend>
+      <div class="gen-row">
+        <label><input type="radio" name="gen" value="a" ${S.gen==='a'?'checked':''}><span>Guardiana</span></label>
+        <label><input type="radio" name="gen" value="o" ${S.gen==='o'?'checked':''}><span>Guardián</span></label>
+      </div></fieldset>
+    <p class="nm-err" id="nmErr" role="alert"></p>
+  </div>`;
+}
+function readName(){
+  const v=($('#nmIn').value||'').replace(/\s+/g,' ').trim();
+  const r=document.querySelector('input[name="gen"]:checked');
+  const err=$('#nmErr');
+  if(!v){err.textContent='Escribe tu nombre para empezar.';$('#nmIn').focus();return false}
+  if(!r){err.textContent='Elige «Guardiana» o «Guardián».';return false}
+  S.name=v;S.gen=r.value;save();return true;
+}
+function bindNameEnter(go){const i=$('#nmIn');if(i){i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}});setTimeout(()=>i.focus(),50)}}
+function changeName(after){
+  showOv(`<h2>Cambiar nombre</h2>${nameForm()}<p>Tu progreso se mantiene. Se guarda solo en este navegador.</p>
+  <div class="center"><button class="btn ghost" id="nmCancel" type="button">Cancelar</button><button class="btn gold" id="nmSave" type="button">Guardar</button></div>`);
+  const ok=()=>{if(!readName())return;hideOv();after()};
+  $('#nmCancel').onclick=hideOv;$('#nmSave').onclick=ok;bindNameEnter(ok);
+}
+
+/* ===================== SONIDO ===================== */
+let AC=null;
+function tone(f,d=.12,type='sine',when=0,vol=.15){
+  if(!S.sound)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,AC.currentTime+when);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+when+d);o.connect(g).connect(AC.destination);o.start(AC.currentTime+when);o.stop(AC.currentTime+when+d+.02)}catch(e){}
+}
+const sfx={
+  ok:()=>{tone(660,.1,'triangle');tone(880,.15,'triangle',.09)},
+  no:()=>{tone(220,.18,'sawtooth',0,.08);tone(180,.2,'sawtooth',.12,.08)},
+  tap:()=>tone(520,.05,'square',0,.05),
+  win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.2,'triangle',i*.12)),
+  hatch:()=>[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.22,'triangle',i*.1))
+};
+
+/* ===================== UI GENERAL ===================== */
+function rankInfo(){let cur=RANKS[0],next=null;for(let i=0;i<RANKS.length;i++){if(S.gems>=RANKS[i][0]){cur=RANKS[i];next=RANKS[i+1]||null}}return{cur,next}}
+function header(){
+  $('#brand').innerHTML=`${dragon(PAL.lila)}<span>Academia de Dragones</span>`;
+  $('#gemIco').innerHTML=ICON.gem;$('#gems').textContent=S.gems;
+  const b=$('#soundBtn');b.textContent='Sonido: '+(S.sound?'sí':'no');b.setAttribute('aria-pressed',S.sound);
+}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
+function showOv(html){$('#ovRoot').innerHTML=`<div class="ov" role="dialog" aria-modal="true"><div class="ov-card">${html}</div></div>`;const f=$('#ovRoot').querySelector('button');if(f)f.focus()}
+function hideOv(){$('#ovRoot').innerHTML=''}
+const starsHTML=n=>[0,1,2].map(i=>ICON.star(i<n)).join('');
+const unlockedBoss=()=>['voc','gra','ort'].every(id=>S.stars[id]>0);
+
+/* ===================== MAPA ===================== */
+function renderMap(){
+  G=null;header();
+  const {cur,next}=rankInfo();
+  const pct=next?Math.round((S.gems-cur[0])/(next[0]-cur[0])*100):100;
+  const hatchedCount=Object.keys(S.hatched).length;
+  $('#app').innerHTML=`
+  <section class="hero">
+    <div class="queen bob">${S.hatched.boss?dragon(PAL.aurelia):dragon(PAL.azul)}</div>
+    <div>
+      <h1>${S.name?`¡Hola, ${pers('{Guardiana|Guardián}')} ${NM()}!`:'¡Hola!'}</h1>
+      <button class="linkbtn" id="nmBtn" type="button">Cambiar nombre</button>
+      <p>${hatchedCount===0?'La Reina Dragona ha escondido cuatro huevos mágicos en el reino. Solo se abren con el poder de las palabras. Supera los retos de cada isla para que nazcan los dragoncitos.':hatchedCount<4?`Ya has despertado a ${hatchedCount} ${hatchedCount===1?'dragoncito':'dragoncitos'}. ¡Quedan huevos por abrir!`:'¡Has despertado a todos los dragones del reino! Puedes volver a jugar para conseguir más gemas y estrellas.'}</p>
+      <div class="rank"><span>${pers(cur[1])}</span><span class="rank-bar" aria-hidden="true"><i style="width:${pct}%"></i></span><small>${next?`${next[0]-S.gems} gemas para «${pers(next[1])}»`:'¡Rango máximo!'}</small></div>
+    </div>
+  </section>
+  <div class="map-title"><h2>Mapa del reino</h2>${S.hatched.boss?'<button class="btn gold" id="dipBtn" type="button">Ver mi diploma</button>':''}</div>
+  <div class="map">${ISLANDS.map(isleCard).join('')}</div>
+  <section class="nest-row"><h2>Mi nido de dragones</h2><div class="nest-list">${ISLANDS.map(i=>`<div class="nest-slot">${S.hatched[i.id]?dragon(PAL[i.pal],'bob'):egg(PAL[i.pal],0)}<div>${S.hatched[i.id]?i.dragon:'Huevo sin abrir'}</div><span class="who">${i.name}</span></div>`).join('')}</div></section>`;
+  document.querySelectorAll('.isle').forEach(b=>b.onclick=()=>{sfx.tap();start(b.dataset.id)});
+  const d=$('#dipBtn');if(d)d.onclick=diploma;
+  $('#nmBtn').onclick=()=>changeName(renderMap);
+  if(!S.seenIntro||!S.name)intro();
+}
+function isleCard(i){
+  const locked=i.id==='boss'&&!unlockedBoss();
+  const hatched=S.hatched[i.id];
+  return `<button class="isle" type="button" data-id="${i.id}" ${locked?'disabled':''} aria-label="${i.name}. ${i.topic}">
+    <div class="isle-art">${SCENE[i.id]}<div class="hero-ico ${hatched?'bob':''}">${hatched?dragon(PAL[i.pal]):egg(PAL[i.pal],0)}</div>
+    ${locked?`<div class="lock">${ICON.lock}Se abre cuando despiertes a Lila, Verdín y Rubí</div>`:''}</div>
+    <div class="isle-body"><h3>${i.name}</h3><span class="isle-topic">${i.topic}</span>
+    <div class="stars">${starsHTML(S.stars[i.id])}</div>
+    ${locked?'':`<span class="isle-cta">${S.stars[i.id]?'Volver a jugar':'¡A la aventura!'}</span>`}</div></button>`;
+}
+function intro(){
+  showOv(`<div class="hatch-stage">${egg(PAL.aurelia,0,'egg-shake')}</div>
+  <h2>¡Te necesitamos!</h2>
+  <p>Soy Azulón, el mensajero de la Reina Dragona. En el reino hay cuatro huevos mágicos: violeta, verde, rojo y dorado. Para que nazcan los dragoncitos hay que resolver retos de <b>vocabulario</b>, <b>gramática</b> y <b>ortografía</b>.</p>
+  <p>Cada acierto da <b>gemas</b>. Tres aciertos seguidos encienden una <b>racha de fuego</b> con gemas extra. ¿Aceptas el encargo? Antes, dime quién eres.</p>
+  ${nameForm()}
+  <button class="btn gold" id="go" type="button">¡Acepto!</button>`);
+  const go=()=>{if(!readName())return;S.seenIntro=true;save();hideOv();sfx.win();renderMap()};
+  $('#go').onclick=go;bindNameEnter(go);
+}
+
+/* ===================== PARTIDA ===================== */
+function start(id){
+  const I=isle(id);
+  let qs;
+  if(id==='boss'){qs=shuffle([...shuffle(BANK.voc).slice(0,4),...shuffle(BANK.gra).slice(0,4),...shuffle(BANK.ort).slice(0,4)])}
+  else{qs=balanced(BANK[id],I.total)}
+  G={id,I,qs,idx:0,correct:0,results:[],streak:0,best:0,hearts:id==='boss'?3:null,gained:0,locked:false};
+  renderQ();
+}
+// Mezcla tipos: no más de 2 del mismo tipo seguidas y variedad garantizada
+function balanced(bank,n){
+  const byType={};bank.forEach(q=>(byType[q.t]=byType[q.t]||[]).push(q));
+  Object.keys(byType).forEach(t=>byType[t]=shuffle(byType[t]));
+  const out=[];const types=Object.keys(byType);
+  while(out.length<n){
+    const avail=types.filter(t=>byType[t].length);if(!avail.length)break;
+    const last2=out.slice(-2).map(q=>q.t);
+    const okT=avail.filter(t=>!(last2.length===2&&last2[0]===t&&last2[1]===t));
+    out.push(byType[pick(okT.length?okT:avail)].pop());
+  }
+  return out;
+}
+const TYPE_LABEL={mc:'Elige la respuesta',cls:'Clasifica',split:'Zarpazo de lexema',acc:'Chispa de tilde',caps:'Caza de mayúsculas'};
+function renderQ(){
+  const {I,qs,idx}=G;const q=qs[idx];G.locked=false;
+  const p=PAL[I.pal];
+  const cracks=Math.min(4,Math.ceil(G.correct/(I.total/4)));
+  $('#app').innerHTML=`
+  <div class="play">
+    <div class="hud">
+      <button class="btn ghost" id="exit" type="button" aria-label="Volver al mapa">← Mapa</button>
+      <div class="dots" aria-label="Progreso">${qs.map((_,i)=>`<i class="${G.results[i]===true?'ok':G.results[i]===false?'no':i===idx?'now':''}"></i>`).join('')}</div>
+      ${G.hearts!==null?`<div class="hearts" aria-label="${G.hearts} vidas">${[0,1,2].map(i=>ICON.heart(i<G.hearts)).join('')}</div>`:''}
+      ${G.streak>=3?`<span class="streak">${ICON.flame}×${G.streak}</span>`:''}
+      <div class="hud-egg" id="hudEgg">${egg(p,cracks)}</div>
+    </div>
+    <article class="qcard">
+      <div class="qmeta"><span>Reto ${idx+1} de ${qs.length} · ${TYPE_LABEL[q.t]}</span><span>${q.k}</span></div>
+      <div class="qhead"><div class="mini">${dragon(PAL[srcPal(q)])}</div><div class="q" id="qtext"></div></div>
+      <div class="area" id="area"></div>
+      <div id="fb"></div>
+    </article>
+  </div>`;
+  $('#exit').onclick=()=>{showOv(`<h2>¿Volver al mapa?</h2><p>Si sales ahora, perderás el progreso de esta partida (las gemas ganadas se quedan).</p><div class="center"><button class="btn ghost" id="stay" type="button">Seguir jugando</button><button class="btn" id="leave" type="button">Volver al mapa</button></div>`);$('#stay').onclick=hideOv;$('#leave').onclick=()=>{hideOv();renderMap()}};
+  ({mc:rMC,cls:rCLS,split:rSPLIT,acc:rACC,caps:rCAPS})[q.t](q);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function srcPal(q){if(G.id!=='boss')return G.I.pal;return BANK.voc.includes(q)?'lila':BANK.gra.includes(q)?'verdin':'rubi'}
+
+function answer(ok,exp){
+  if(G.locked)return;G.locked=true;
+  G.results[G.idx]=ok;
+  let gain=0,extra='';
+  if(ok){G.correct++;G.streak++;G.best=Math.max(G.best,G.streak);gain=10;if(G.streak>=3){gain+=5;extra=' ¡Racha de fuego!'}sfx.ok();const e=$('#hudEgg');if(e){const p=PAL[G.I.pal];e.innerHTML=egg(p,Math.min(4,Math.ceil(G.correct/(G.I.total/4))));e.classList.remove('wob');void e.offsetWidth;e.classList.add('wob')}}
+  else{G.streak=0;sfx.no();if(G.hearts!==null){G.hearts--}}
+  S.gems+=gain;G.gained+=gain;save();header();
+  const last=G.idx>=G.qs.length-1||G.hearts===0;
+  const title=ok?pick([`¡Fantástico, ${NM()}!`,'¡Llamarada de sabiduría!',pers('¡Eso es, {Guardiana|Guardián}!'),'¡Perfecto!','¡Qué bien lo has hecho!']):pick(['¡Uy, casi!',pers('Vamos a verlo {juntas|juntos}'),'¡Así se aprende!']);
+  $('#fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}" role="status">
+    <div class="mini">${dragon(PAL[srcPal(G.qs[G.idx])])}</div>
+    <div><h3>${title}${ok?` <span class="gain">+${gain}</span>`:''}</h3><p>${exp}${extra?`<br><b>${extra}</b>`:''}${!ok&&G.hearts!==null?`<br>Te ${G.hearts===1?'queda 1 vida':`quedan ${G.hearts} vidas`}.`:''}</p></div>
+    <button class="btn ${ok?'green':''}" id="next" type="button">${last?'Ver resultado':'Siguiente reto →'}</button></div>`;
+  const n=$('#next');n.onclick=()=>{sfx.tap();if(last)finish();else{G.idx++;renderQ()}};
+  n.scrollIntoView({behavior:'smooth',block:'nearest'});n.focus({preventScroll:true});
+  // actualizar puntos y racha en el HUD
+  const dots=document.querySelectorAll('.dots i');if(dots[G.idx])dots[G.idx].className=ok?'ok':'no';
+  const h=document.querySelector('.hearts');if(h)h.innerHTML=[0,1,2].map(i=>ICON.heart(i<G.hearts)).join('');
+}
+
+/* --- tipo: opción múltiple --- */
+function rMC(q){
+  $('#qtext').innerHTML=q.q;
+  const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));
+  const area=$('#area');
+  area.innerHTML=`<div class="opts">${opts.map((o,i)=>`<button class="opt" type="button" data-i="${i}">${o.t}</button>`).join('')}</div>`;
+  const btns=[...area.querySelectorAll('.opt')];
+  btns.forEach(b=>b.onclick=()=>{
+    if(G.locked)return;const o=opts[+b.dataset.i];
+    b.classList.add(o.ok?'ok':'no');
+    btns.forEach((bb,j)=>{bb.disabled=true;if(opts[j].ok)bb.classList.add('ok')});
+    answer(o.ok,q.exp);
+  });
+}
+/* --- tipo: clasificar en nidos --- */
+function rCLS(q){
+  $('#qtext').innerHTML=q.q;
+  const items=shuffle(q.items.map(([t,c])=>({t,c})));
+  let sel=null,errors=0,placed=0;
+  const area=$('#area');
+  area.innerHTML=`<p class="hint">Toca una tarjeta y después el nido donde va.</p>
+    <div class="chips">${items.map((it,i)=>`<button class="chip" type="button" data-i="${i}">${it.t}</button>`).join('')}</div>
+    <div class="nests">${q.b.map((b,j)=>`<button class="nest" type="button" data-j="${j}"><span class="nest-label">${b}</span><span class="nest-items"></span></button>`).join('')}</div>`;
+  const chips=[...area.querySelectorAll('.chip')];
+  chips.forEach(c=>c.onclick=()=>{if(G.locked)return;sfx.tap();chips.forEach(x=>x.classList.remove('sel'));c.classList.add('sel');sel=+c.dataset.i});
+  area.querySelectorAll('.nest').forEach(n=>n.onclick=()=>{
+    if(G.locked)return;
+    if(sel===null){toast('Primero toca una tarjeta');return}
+    const it=items[sel],chip=chips[sel],j=+n.dataset.j;
+    if(it.c===j){
+      sfx.ok();chip.classList.add('gone');n.querySelector('.nest-items').insertAdjacentHTML('beforeend',`<span>${it.t}</span>`);placed++;sel=null;
+      if(placed===items.length)answer(errors===0,(errors===0?'¡Todo en su sitio a la primera! ':`Has tenido ${errors} ${errors===1?'despiste':'despistes'}. `)+q.exp);
+    }else{
+      errors++;sfx.no();
+      [chip,n].forEach(el=>{el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')});
+      toast('Ese no es su nido. ¡Prueba otro!');
+    }
+  });
+}
+/* --- tipo: separar lexema y morfemas --- */
+function rSPLIT(q){
+  $('#qtext').innerHTML=`Separa el <b>lexema</b> (la raíz) de los <b>morfemas</b> de <i>${q.w}</i>. Toca el hueco entre dos letras para dar el zarpazo.`;
+  const L=[...q.w];let cut=null,done=false;
+  const area=$('#area');
+  const draw=(show)=>{
+    const lockedNow=done;
+    area.innerHTML=`<div class="legend"><span><b style="background:#d4f7e2;border:2px solid #11663a"></b>Lexema</span><span><b style="background:#ffe7c7;border:2px solid #9a4b00"></b>Morfemas</span></div>
+    <div class="word">${L.map((ch,i)=>{const c=(show??cut);const cls=c===null?'':(i<c?'lex':'mor');return `<span class="let ${cls}">${ch}</span>${i<L.length-1?`<button class="gap ${cut===i+1?'on':''}" type="button" data-c="${i+1}" aria-label="Cortar entre ${ch} y ${L[i+1]}" ${lockedNow?'disabled':''}></button>`:''}`}).join('')}</div>
+    <div class="center"><button class="btn" id="chk" type="button" ${cut===null||lockedNow?'disabled':''}>¡Zarpazo!</button></div>`;
+    area.querySelectorAll('.gap').forEach(g=>g.onclick=()=>{if(done)return;sfx.tap();cut=+g.dataset.c;draw()});
+    const c=$('#chk');if(c)c.onclick=()=>{if(done)return;const ok=cut===q.cut;done=true;draw(q.cut);answer(ok,(ok?'':`Se corta así: <b>${q.w.slice(0,q.cut)}</b> | ${q.w.slice(q.cut)}. `)+q.exp)};
+  };
+  draw();
+}
+/* --- tipo: ¿dónde va la tilde? --- */
+const TILDE={a:'á',e:'é',i:'í',o:'ó',u:'ú'};
+function rACC(q){
+  $('#qtext').innerHTML=`Rubí quiere lanzar una chispa de tilde. ¿Sobre qué vocal de <i>${q.w}</i> cae? Si no lleva tilde, pulsa «No lleva tilde».`;
+  const L=[...q.w];
+  const right=q.i<0?q.w:q.w.slice(0,q.i)+TILDE[q.w[q.i]]+q.w.slice(q.i+1);
+  const area=$('#area');
+  area.innerHTML=`<div class="word">${L.map((ch,i)=>'aeiou'.includes(ch)?`<button class="vow" type="button" data-i="${i}">${ch}</button>`:`<span class="let">${ch}</span>`).join('')}</div>
+  <div class="center"><button class="btn ghost" id="none" type="button">No lleva tilde</button></div>`;
+  const vows=[...area.querySelectorAll('.vow')];
+  const done=(i,el)=>{
+    if(G.locked)return;const ok=i===q.i;
+    vows.forEach(v=>{v.disabled=true;if(+v.dataset.i===q.i){v.classList.add('ok');v.textContent=TILDE[v.textContent]}});
+    if(!ok&&el)el.classList.add('no');
+    $('#none').disabled=true;
+    answer(ok,`Se escribe <b>${right}</b>. ${q.exp}`);
+  };
+  vows.forEach(v=>v.onclick=()=>done(+v.dataset.i,v));
+  $('#none').onclick=e=>done(-1,e.currentTarget);
+}
+/* --- tipo: caza de mayúsculas --- */
+const firstL=t=>t.search(/[a-záéíóúüñ]/i);
+const capT=t=>{const k=firstL(t);return k<0?t:t.slice(0,k)+t[k].toUpperCase()+t.slice(k+1)};
+function rCAPS(q){
+  $('#qtext').innerHTML='¡Un dragón travieso ha borrado las mayúsculas! Toca las palabras que deberían empezar con mayúscula y pulsa «Comprobar».';
+  const toks=q.s.split(' ');
+  const need=toks.map(t=>{const k=firstL(t);return k>=0&&t[k]!==t[k].toLowerCase()});
+  const st=toks.map(()=>false);
+  const area=$('#area');
+  area.innerHTML=`<div class="sent">${toks.map((t,i)=>`<button class="tok" type="button" data-i="${i}" aria-pressed="false">${t.toLowerCase()}</button>`).join('')}</div>
+  <div class="center"><button class="btn" id="chk" type="button">Comprobar</button></div>`;
+  const tb=[...area.querySelectorAll('.tok')];
+  tb.forEach(b=>b.onclick=()=>{if(G.locked)return;sfx.tap();const i=+b.dataset.i;st[i]=!st[i];b.textContent=st[i]?capT(toks[i].toLowerCase()):toks[i].toLowerCase();b.classList.toggle('up',st[i]);b.setAttribute('aria-pressed',st[i])});
+  $('#chk').onclick=()=>{
+    if(G.locked)return;let ok=true;
+    tb.forEach((b,i)=>{b.disabled=true;b.classList.remove('up');
+      if(need[i]&&st[i])b.classList.add('ok');
+      else if(need[i]&&!st[i]){b.classList.add('miss');b.textContent=toks[i];ok=false}
+      else if(!need[i]&&st[i]){b.classList.add('extra');ok=false}
+    });
+    $('#chk').disabled=true;
+    answer(ok,(ok?'':`Así queda bien: «${q.s}» `)+q.exp);
+  };
+}
+
+/* ===================== FINAL DE PARTIDA ===================== */
+function finish(){
+  const {id,I,correct,qs}=G;
+  let stars;
+  if(id==='boss'){stars=G.hearts>0?G.hearts:0}
+  else{stars=correct>=7?3:correct>=5?2:correct>=3?1:0}
+  const bonus=stars*20;S.gems+=bonus;G.gained+=bonus;
+  const firstHatch=stars>0&&!S.hatched[id];
+  const improved=stars>S.stars[id];
+  if(improved)S.stars[id]=stars;
+  if(firstHatch)S.hatched[id]=true;
+  save();header();
+  const msg=stars===3?'¡Puntuación perfecta de dragón!':stars===2?'¡Muy bien! Estás muy cerca de las tres estrellas.':stars===1?'¡Conseguido! Vuelve a intentarlo para ganar más estrellas.':(id==='boss'?'La Torre es dura. Repasa el Grimorio y vuelve a intentarlo: ¡tú puedes!':'El huevo aún no se ha abierto. Repasa el Grimorio y vuelve a intentarlo.');
+  const show=()=>{
+    if(stars>0)sfx.win();
+    showOv(`<h2>${stars>0?'¡Reto superado!':'¡Casi lo tienes!'}</h2>
+    <div class="big-stars">${[0,1,2].map(i=>ICON.star(i<stars).replace('class="on"',`class="on" style="animation-delay:${i*.2}s"`)).join('')}</div>
+    <p>${id==='boss'?`Has llegado con ${G.hearts} ${G.hearts===1?'vida':'vidas'}`:`Has acertado ${correct} de ${qs.length}`}. Mejor racha: ${G.best}. Gemas ganadas: <b class="gain">+${G.gained}</b></p>
+    <p>${msg}${improved&&!firstHatch&&stars>0?' ¡Nuevo récord de estrellas!':''}</p>
+    <div class="center"><button class="btn ghost" id="again" type="button">Jugar otra vez</button><button class="btn" id="tomap" type="button">Volver al mapa</button></div>`);
+    $('#again').onclick=()=>{hideOv();start(id)};
+    $('#tomap').onclick=()=>{hideOv();renderMap();if(id!=='boss'&&unlockedBoss()&&firstHatch)setTimeout(()=>toast('¡La Torre del Huevo Dorado se ha abierto!'),400)};
+  };
+  if(firstHatch)hatch(id,id==='boss'?()=>{show();}:show);else show();
+}
+function hatch(id,after){
+  const I=isle(id);const p=PAL[I.pal];
+  showOv(`<div class="hatch-stage" id="hs">${egg(p,4,'egg-shake')}</div><h2 id="ht">¡Algo se mueve dentro del huevo…!</h2><p id="hp">&nbsp;</p><div class="center" id="hb"></div>`);
+  setTimeout(()=>{
+    $('#hs').innerHTML=`<div class="dragon-pop">${dragon(p)}</div>`;
+    $('#ht').textContent=`¡Ha nacido ${I.dragon}!`;
+    $('#hp').innerHTML=pers(BIO[id]);
+    $('#hb').innerHTML=`<button class="btn gold" id="hi" type="button">¡Hola, ${I.dragon}!</button>`;
+    $('#hi').focus();
+    $('#hi').onclick=()=>{if(id==='boss'){diploma(after)}else after()};
+    sfx.hatch();confetti(p);
+  },1800);
+}
+function diploma(after){
+  const d=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  showOv(`<div class="diploma">
+    <p style="margin:0;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#9a6500">Diploma de la Academia de Dragones</p>
+    <p>La Reina Dragona Aurelia otorga el título de</p>
+    <h2>${pers('Gran {Guardiana|Guardián} de las Palabras')}</h2>
+    <p>a</p><div class="name">${NM()}</div>
+    <p>por dominar los sinónimos y antónimos, las clases y la estructura de las palabras, las mayúsculas y las reglas de acentuación.</p>
+    <div class="row">${['lila','verdin','rubi','aurelia'].map(k=>dragon(PAL[k])).join('')}</div>
+    <p style="margin-bottom:0">${d}</p></div>
+    <div class="center" style="margin-top:16px"><button class="btn gold" id="dipOk" type="button">¡Gracias, Aurelia!</button></div>`);
+  confetti(PAL.aurelia);
+  $('#dipOk').onclick=()=>{typeof after==='function'?after():hideOv()};
+}
+
+/* ===================== GRIMORIO (repaso) ===================== */
+const BOOK={
+ voc:`<h3>Sinónimos</h3><div class="rule-box">Palabras que significan <b>lo mismo o casi lo mismo</b>: <i>rápido – veloz</i>, <i>bello – hermoso</i>, <i>empezar – comenzar</i>. Sirven para no repetir palabras.</div>
+ <h3>Antónimos</h3><div class="rule-box">Palabras que significan <b>lo contrario</b>: <i>alto – bajo</i>, <i>valiente – cobarde</i>. Muchos se forman con prefijos:
+ <ul><li><b>des-</b>: hacer → deshacer, ordenado → desordenado</li><li><b>in-</b>: útil → inútil</li><li><b>im-</b> (delante de p, b): posible → imposible</li><li><b>i-</b> (delante de l): legal → ilegal</li><li><b>ir-</b> (delante de r): responsable → irresponsable</li></ul></div>`,
+ gra:`<h3>Clases de palabras</h3><div class="rule-box"><ul>
+ <li><b>Sustantivo</b>: nombra personas, animales, cosas o ideas (dragón, cueva).</li>
+ <li><b>Adjetivo</b>: dice cómo es el sustantivo (verde, feroz).</li>
+ <li><b>Determinante</b>: acompaña y presenta al sustantivo (el, una, mis, aquellos).</li>
+ <li><b>Pronombre</b>: sustituye al sustantivo (yo, tú, ella, nosotros).</li>
+ <li><b>Verbo</b>: expresa acciones o estados (volar, es).</li>
+ <li><b>Adverbio</b>: indica lugar, tiempo, modo, cantidad… (aquí, ayer, despacio). Es invariable.</li>
+ <li><b>Preposición</b>: une palabras (a, con, de, en, sobre…).</li>
+ <li><b>Conjunción</b>: une palabras u oraciones (y, o, pero).</li>
+ <li><b>Interjección</b>: expresa emociones (¡ay!, ¡oh!).</li></ul>
+ Son <b>variables</b> (cambian de forma): sustantivo, adjetivo, determinante, pronombre y verbo. Son <b>invariables</b>: adverbio, preposición, conjunción e interjección.</div>
+ <h3>Estructura de la palabra</h3><div class="rule-box"><b>Lexema</b>: la raíz, la parte que da el significado (<i>pan</i>-adero). <b>Morfemas</b>: lo que se le añade. Pueden indicar género y número (gat-<b>a</b>-<b>s</b>) o formar palabras nuevas: <b>prefijos</b> delante (<b>sub</b>marino) y <b>sufijos</b> detrás (flor<b>ero</b>).</div>
+ <h3>Primitivas, derivadas y compuestas</h3><div class="rule-box"><b>Primitiva</b>: no viene de otra (libro). <b>Derivada</b>: lexema + prefijo o sufijo (librería). <b>Compuesta</b>: unión de dos palabras (paraguas). Las palabras con el mismo lexema forman una <b>familia de palabras</b>.</div>`,
+ ort:`<h3>Mayúsculas</h3><div class="rule-box"><b>Sí</b> llevan mayúscula: la primera palabra de un escrito, después de punto, después de ? o ! si termina la oración, los nombres propios (Lucía, Madrid, Tajo), las instituciones y museos (Museo del Prado) y la primera palabra de un título (El dragón azul).<br><b>No</b> llevan mayúscula: los días, los meses, las estaciones, los idiomas y los gentilicios (lunes, octubre, verano, francés, madrileño).</div>
+ <h3>Reglas generales de acentuación</h3><div class="rule-box"><ul>
+ <li><b>Agudas</b> (tónica en la última sílaba): tilde si acaban en <b>vocal, n o s</b>. Sofá, ratón, compás. Reloj, feliz: sin tilde.</li>
+ <li><b>Llanas</b> (tónica en la penúltima): tilde si <b>no</b> acaban en vocal, n ni s. Árbol, lápiz, césped. Mesa, examen: sin tilde.</li>
+ <li><b>Esdrújulas</b> (antepenúltima) y <b>sobresdrújulas</b>: tilde <b>siempre</b>. Pájaro, murciélago, explícamelo.</li></ul></div>`
+};
+function book(tab='voc'){
+  showOv(`<div class="book"><h2 style="text-align:center">El Grimorio de ${NM()}</h2><p style="text-align:center">Las reglas mágicas para despertar a los dragones.</p>
+  <div class="tabs" role="tablist">${[['voc','Vocabulario'],['gra','Gramática'],['ort','Ortografía']].map(([k,l])=>`<button class="tab" type="button" role="tab" aria-selected="${k===tab}" data-k="${k}">${l}</button>`).join('')}</div>
+  <div>${BOOK[tab]}</div>
+  <div class="center" style="margin-top:16px"><button class="btn" id="bookClose" type="button">Cerrar el Grimorio</button></div></div>`);
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>book(t.dataset.k));
+  $('#bookClose').onclick=hideOv;
+}
+
+/* ===================== CONFETI ===================== */
+function confetti(p){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const c=$('#fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=[p.main,p.accent,p.light,'#5bd0f0','#ff8fb0'];
+  const P=Array.from({length:140},()=>({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-14-4,r:Math.random()*6+4,c:pick(cols),a:Math.random()*6,s:Math.random()<.5}));
+  let t=0;(function f(){x.clearRect(0,0,c.width,c.height);P.forEach(q=>{q.vy+=.35;q.x+=q.vx;q.y+=q.vy;q.a+=.2;x.save();x.translate(q.x,q.y);x.rotate(q.a);x.fillStyle=q.c;if(q.s){x.beginPath();x.arc(0,0,q.r/2,0,7);x.fill()}else x.fillRect(-q.r/2,-q.r/4,q.r,q.r/2);x.restore()});if(++t<150)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})();
+}
+
+/* ===================== ARRANQUE ===================== */
+$('#soundBtn').onclick=()=>{S.sound=!S.sound;save();header();if(S.sound)sfx.tap()};
+$('#bookBtn').onclick=()=>book();
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ovRoot').innerHTML&&$('#bookClose'))hideOv()});
+renderMap();
+</script>
+</body>
+</html>
