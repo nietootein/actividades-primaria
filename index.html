@@ -15,7 +15,8 @@
   --bg:#f3f7ff; --paper:#ffffff; --ink:#22264a; --soft:#5b6088; --line:#dfe3f3;
   --lengua:#8a5ce6; --lengua-bg:#efe8ff;
   --mates:#1f8fd6; --mates-bg:#e2f2ff;
-  --cono:#22a36a; --cono-bg:#e0f6ea;
+  --naturales:#22a36a; --naturales-bg:#e0f6ea;
+  --sociales:#c9771f; --sociales-bg:#fff0dc;
   --ingles:#e0603b; --ingles-bg:#ffe9e1;
   --f-display:'Grandstander','Trebuchet MS',system-ui,sans-serif;
   --f-body:'Nunito','Segoe UI',system-ui,sans-serif;
@@ -23,7 +24,7 @@
 }
 @media (prefers-color-scheme:dark){
   :root{--bg:#15172b;--paper:#1f2240;--ink:#eef0ff;--soft:#b3b7da;--line:#33375e;
-    --lengua:#b496ff;--lengua-bg:#2c2550;--mates:#6cc3ff;--mates-bg:#1c3047;--cono:#6ed9a4;--cono-bg:#1c3a2d;--ingles:#ff9a7a;--ingles-bg:#45281f;color-scheme:dark}
+    --lengua:#b496ff;--lengua-bg:#2c2550;--mates:#6cc3ff;--mates-bg:#1c3047;--naturales:#6ed9a4;--naturales-bg:#1c3a2d;--sociales:#ffb866;--sociales-bg:#45321c;--ingles:#ff9a7a;--ingles-bg:#45281f;color-scheme:dark}
 }
 *{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -64,19 +65,21 @@ footer{margin-top:44px;color:var(--soft);font-size:.9rem;font-weight:600;border-
    LISTA DE RECURSOS
    Para añadir uno nuevo, copia una línea y cambia los datos.
    El archivo debe llamarse  asignatura-recurso-NN.html
-   Asignaturas: lengua, mates, conocimiento, ingles
+   Asignaturas: lengua, mates, naturales, sociales, ingles
    curso: 5 (cuando haya actividades de otros cursos, se
    mostrarán automáticamente en su propio apartado)
    ============================================================ */
 const RECURSOS=[
   {curso:5, asig:'lengua', id:'01', titulo:'Academia de Dragones', desc:'Despierta cinco huevos de dragón superando retos de lengua. Los retos no se repiten hasta haberlos visto todos.', temas:['Sinónimos y antónimos','Clases de palabras','Variables e invariables','Lexema y morfemas','Mayúsculas','Acentuación','Comprensión lectora']},
   {curso:5, asig:'mates', id:'01', titulo:'La Noche de los Números', desc:'Números naturales y decimales. Libera a los amigos de Halloween resolviendo retos. Las preguntas cambian en cada ronda.', temas:['Naturales y decimales','Aproximaciones','Comparación de decimales','Sumas y restas','Multiplicación','División','Operaciones combinadas','Problemas']},
+  {curso:5, asig:'naturales', id:'01', titulo:'El Laboratorio de las Mil Especies', desc:'Una gran variedad de seres vivos. Enfoca el microscopio, rotula células y completa tu Atlas de la biodiversidad. Los retos no se repiten hasta haberlos visto todos.', temas:['Funciones vitales','La célula y sus partes','Células animales y vegetales','Niveles de organización','Los cinco reinos','Mohos y Leeuwenhoek','Biodiversidad']},
 ];
 const CURSOS={5:'Quinto de primaria'};
 const ASIG={
   lengua:{nombre:'Lengua Castellana y Literatura',c:'var(--lengua)',cbg:'var(--lengua-bg)'},
   mates:{nombre:'Matemáticas',c:'var(--mates)',cbg:'var(--mates-bg)'},
-  conocimiento:{nombre:'Conocimiento del Medio',c:'var(--cono)',cbg:'var(--cono-bg)'},
+  naturales:{nombre:'Ciencias de la Naturaleza',c:'var(--naturales)',cbg:'var(--naturales-bg)'},
+  sociales:{nombre:'Ciencias Sociales',c:'var(--sociales)',cbg:'var(--sociales-bg)'},
   ingles:{nombre:'Inglés',c:'var(--ingles)',cbg:'var(--ingles-bg)'}
 };
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
