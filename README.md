@@ -7,6 +7,8 @@ Actividades interactivas para repasar en casa (5.º de primaria, Comunidad de Ma
 2. En el repositorio: **Settings → Pages → Deploy from a branch**, rama `main`, carpeta `/ (root)`.
 3. La web quedará en `https://TU-USUARIO.github.io/actividades-primaria/`.
 
+Enlace a la web actual [aquí](https://nietootein.github.io/actividades-primaria/).
+
 ## Añadir una actividad
 1. Nombra el archivo `asignatura-recurso-NN.html` (por ejemplo `mates-recurso-01.html`). Asignaturas: `lengua`, `mates`, `naturales`, `sociales` e `ingles`.
 2. Súbelo a la raíz del repositorio.
