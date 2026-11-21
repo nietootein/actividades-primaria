@@ -22,6 +22,7 @@ La numeración es por asignatura y no se repite aunque en el futuro haya varios 
 | lengua-recurso-01.html | 5.º | Lengua | Academia de Dragones |
 | mates-recurso-01.html | 5.º | Matemáticas | La Noche de los Números |
 | naturales-recurso-01.html | 5.º | Ciencias de la Naturaleza | El Laboratorio de las Mil Especies |
+| sociales-recurso-01.html | 5.º | Ciencias Sociales | La Fábrica de los Paisajes |
 
 ## Licencia
 © 2026 NietooteiN. Estas actividades se publican bajo la licencia [Creative Commons Atribución/Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es).
