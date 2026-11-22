@@ -24,6 +24,18 @@ La numeración es por asignatura y no se repite aunque en el futuro haya varios 
 | naturales-recurso-01.html | 5.º | Ciencias de la Naturaleza | El Laboratorio de las Mil Especies |
 | sociales-recurso-01.html | 5.º | Ciencias Sociales | La Fábrica de los Paisajes |
 
+## Informe para la familia o el profesorado
+Cada actividad tiene, en su pantalla principal, el botón **«Informe para tu familia o tu profe»**. El informe muestra:
+
+- Actividad, fecha del informe, fecha desde la que hay datos registrados, número de sesiones y fechas de la primera y la última.
+- Zonas completadas y logros conseguidos.
+- Porcentaje de aciertos al primer intento, en total y por zona.
+- **Conviene repasar**: en Lengua y Matemáticas, los conceptos con menos del 70 % de aciertos (mínimo, 2 retos); en Ciencias de la Naturaleza y Ciencias Sociales, las mesas o salas con menos del 70 % (mínimo, 3 retos) y los enunciados de los retos más fallados.
+
+Se puede **compartir** (menú del dispositivo), **copiar como texto** o **imprimir / guardar en PDF**. El texto para el alumno o la alumna usa la forma elegida al empezar; el informe para el adulto está redactado en lenguaje neutro.
+
+Los datos del informe se guardan solo en el navegador (`localStorage`), en una clave propia (`…-informe`) que no modifica el progreso del juego. No se envía nada a ningún servidor. Desde el propio informe se pueden borrar sus datos sin tocar el progreso.
+
 ## Licencia
 © 2026 NietooteiN. Estas actividades se publican bajo la licencia [Creative Commons Atribución/Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es).
 

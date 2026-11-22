@@ -232,6 +232,45 @@ main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding-block:20p
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 .credit{position:relative;z-index:1;text-align:center;font-size:.8rem;font-weight:700;color:var(--ink-soft);padding:0 16px calc(18px + env(safe-area-inset-bottom,0px))}
 .credit a{color:inherit}
+
+/* ---- Informe para la familia o el profesorado ---- */
+.repbar{display:flex;justify-content:center;margin:22px 0 8px}
+.ov-card:has(.rep){max-width:760px}
+.rep{text-align:left}
+.rep h2{text-align:center}
+.rep-kid{text-align:center;margin:0 0 12px}
+div.rep-doc{background:#fff;color:#1f1f24;border:1px solid #d9d6e3;border-radius:14px;padding:18px 20px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;font-weight:400;line-height:1.45;text-align:left;box-shadow:none}
+div.rep-doc h2{font-family:inherit;font-size:1.35rem;font-weight:700;color:#1f1f24;margin:0 0 4px;text-align:left;text-shadow:none}
+div.rep-doc h3{font-family:inherit;font-size:1.02rem;font-weight:700;color:#1f1f24;margin:16px 0 6px;padding-bottom:3px;border-bottom:1px solid #e4e2ea;text-shadow:none}
+div.rep-doc p{margin:4px 0;color:#1f1f24;font-weight:400;font-size:1em}
+div.rep-doc b{font-weight:700;color:inherit}
+div.rep-doc ul,div.rep-doc ol{margin:4px 0;padding-left:1.4em}
+div.rep-doc li{margin:2px 0;font-weight:400;color:#1f1f24}
+div.rep-doc table{border-collapse:collapse;width:100%;margin:4px 0;background:none;font-size:1em}
+div.rep-doc th,div.rep-doc td{border:0;border-bottom:1px solid #eeecf3;padding:4px 6px;text-align:left;vertical-align:top;font-weight:400;color:#1f1f24;background:none}
+div.rep-doc .rep-meta th{width:9.5em;font-weight:700;white-space:nowrap}
+div.rep-doc .rep-n{white-space:nowrap;text-align:right}
+div.rep-doc .rep-b{width:96px}
+div.rep-doc .rep-bar{display:inline-block;width:90px;height:9px;border-radius:5px;background:#e9e7ef;overflow:hidden;vertical-align:middle}
+div.rep-doc .rep-bar i{display:block;height:100%;background:#5b6fd6}
+div.rep-doc .rep-mut{color:#6a6676}
+div.rep-doc .rep-for{font-size:1.05em}
+div.rep-doc .rep-note{font-size:.86em;color:#55515f;margin-top:10px}
+.rep-acts{margin-top:14px}
+.rep-reset{text-align:center;margin:10px 0 0}
+.rep-link{background:none;border:0;padding:2px 0;font:inherit;font-size:.85rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:inherit;opacity:.8}
+#repPrintBox{display:none}
+@media (max-width:520px){div.rep-doc{padding:14px 12px}div.rep-doc .rep-b{display:none}div.rep-doc .rep-meta th{width:auto;white-space:normal}}
+@media print{
+  html.rep-printing,html.rep-printing body{background:#fff!important;min-height:0!important}
+  html.rep-printing body::before,html.rep-printing body::after{display:none!important}
+  html.rep-printing body>*:not(#repPrintBox){display:none!important}
+  html.rep-printing #repPrintBox{display:block!important;position:static!important}
+  html.rep-printing #repPrintBox,html.rep-printing #repPrintBox *{visibility:visible!important}
+  html.rep-printing div.rep-doc{border:0;padding:0;font-size:11.5pt}
+  html.rep-printing div.rep-doc .rep-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html.rep-printing .rep-foot{font:9pt system-ui,Arial,sans-serif;color:#666;margin-top:14px}
+}
 </style>
 </head>
 <body>
@@ -623,10 +662,12 @@ function renderMap(){
   </section>
   <div class="map-title"><h2>Mapa del reino</h2>${S.hatched.boss?'<button class="btn gold" id="dipBtn" type="button">Ver mi diploma</button>':''}</div>
   <div class="map">${ISLANDS.map(isleCard).join('')}</div>
-  <section class="nest-row"><h2>Mi nido de dragones</h2><div class="nest-list">${ISLANDS.map(i=>`<div class="nest-slot">${S.hatched[i.id]?dragon(PAL[i.pal],'bob'):egg(PAL[i.pal],0)}<div>${S.hatched[i.id]?i.dragon:'Huevo sin abrir'}</div><span class="who">${i.name}</span></div>`).join('')}</div></section>`;
+  <section class="nest-row"><h2>Mi nido de dragones</h2><div class="nest-list">${ISLANDS.map(i=>`<div class="nest-slot">${S.hatched[i.id]?dragon(PAL[i.pal],'bob'):egg(PAL[i.pal],0)}<div>${S.hatched[i.id]?i.dragon:'Huevo sin abrir'}</div><span class="who">${i.name}</span></div>`).join('')}</div></section>
+  <div class="repbar"><button class="btn ghost" id="repBtn" type="button">Informe para tu familia o tu profe</button></div>`;
   document.querySelectorAll('.isle').forEach(b=>b.onclick=()=>{sfx.tap();start(b.dataset.id)});
   const d=$('#dipBtn');if(d)d.onclick=diploma;
   $('#nmBtn').onclick=()=>changeName(renderMap);
+  $('#repBtn').onclick=repOpen;
   if(!S.seenIntro||!S.name)intro();
 }
 function isleCard(i){
@@ -727,6 +768,7 @@ function markSeen(q){
 function answer(ok,exp){
   if(G.locked)return;G.locked=true;
   markSeen(G.qs[G.idx]);
+  {const q=G.qs[G.idx];repLog(G.id,q.src,q.k,q.id,ok)}
   G.results[G.idx]=ok;
   let gain=0,extra='';
   if(ok){G.correct++;G.streak++;G.best=Math.max(G.best,G.streak);gain=10;if(G.streak>=3){gain+=5;extra=' ¡Racha de fuego!'}sfx.ok();const e=$('#hudEgg');if(e){const p=PAL[G.I.pal];e.innerHTML=egg(p,Math.min(4,Math.ceil(G.correct/(G.I.total/4))));e.classList.remove('wob');void e.offsetWidth;e.classList.add('wob')}}
@@ -973,6 +1015,163 @@ $('#soundBtn').onclick=()=>{S.sound=!S.sound;save();header();if(S.sound)sfx.tap(
 $('#bookBtn').onclick=()=>book();
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ovRoot').innerHTML&&$('#bookClose'))hideOv()});
 renderMap();
+
+const REPCFG={
+ title:'Academia de Dragones',subject:'Lengua',mode:'concept',
+ zones:ISLANDS.map(i=>({id:i.id,name:i.name})),
+ kid:()=>`¡${pers('{Guardiana|Guardián}')} ${NM()}! Este informe es para tu familia o tu profe: así podrán ver cómo vas y qué conviene repasar. Puedes compartirlo, copiarlo o imprimirlo.`,
+ logros:()=>{const st=ISLANDS.reduce((a,i)=>a+(S.stars[i.id]||0),0);return [`Dragones despertados: ${Object.keys(S.hatched).length} de ${ISLANDS.length}`,`Estrellas: ${st} de ${ISLANDS.length*3}`,`Gemas: ${S.gems}`,S.hatched.boss?'Torre del Huevo Dorado superada: diploma de la Academia conseguido':'Diploma final (Torre del Huevo Dorado): pendiente']}
+};
+
+/* =========================================================
+   INFORME PARA LA FAMILIA O EL PROFESORADO
+   Registro propio en localStorage (clave aparte): no modifica ni borra el progreso del juego.
+   ========================================================= */
+const REP_KEY=KEY+'-informe';
+const REP_GAP=30*60*1000; // 30 minutos sin responder ningún reto = nueva sesión
+const repNew=()=>({v:1,desde:new Date().toISOString(),first:null,last:null,ses:0,z:{},c:{},q:{}});
+let REP=(()=>{try{const v=JSON.parse(localStorage.getItem(REP_KEY));if(v&&v.v===1&&v.desde)return {...repNew(),...v,z:v.z||{},c:v.c||{},q:v.q||{}}}catch(e){}return repNew()})();
+function repSave(){try{localStorage.setItem(REP_KEY,JSON.stringify(REP))}catch(e){}}
+repSave();
+function repAdd(o,k,ok){const r=o[k]||(o[k]={n:0,ok:0});r.n++;if(ok)r.ok++;return r}
+// zonePlayed: zona en la que se juega · src: zona de la que procede el reto · concept: campo k · qid: identificador del reto
+function repLog(zonePlayed,src,concept,qid,ok){
+  try{
+    const now=new Date();
+    if(!REP.last||now-Date.parse(REP.last)>REP_GAP)REP.ses++;
+    if(!REP.first)REP.first=now.toISOString();
+    REP.last=now.toISOString();
+    repAdd(REP.z,zonePlayed,ok);
+    if(concept)repAdd(REP.c,concept,ok);
+    if(qid){const r=repAdd(REP.q,src+':'+qid,ok);r.s=src}
+    repSave();
+  }catch(e){}
+}
+const repEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const repPlain=h=>{const d=document.createElement('div');d.innerHTML=String(h).replace(/<br\s*\/?>/gi,' ');return d.textContent.replace(/\s+/g,' ').trim()};
+const repDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+const repPct=r=>Math.round(r.ok/r.n*100);
+const repFrac=r=>`${r.ok} de ${r.n} (${repPct(r)} %)`;
+const repStars=n=>n===1?'1 estrella':n+' estrellas';
+const repCut=(s,n)=>s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;
+function repData(){
+  const C=REPCFG;
+  const tot=Object.keys(REP.z).reduce((a,k)=>({n:a.n+REP.z[k].n,ok:a.ok+REP.z[k].ok}),{n:0,ok:0});
+  const zones=C.zones.map(z=>({name:z.name,r:REP.z[z.id]&&REP.z[z.id].n?REP.z[z.id]:null}));
+  const done=C.zones.filter(z=>S.stars[z.id]>0).map(z=>({name:z.name,stars:S.stars[z.id]}));
+  const D={tot,zones,done,logros:C.logros(),repaso:[],fallados:[]};
+  if(C.mode==='concept'){
+    D.repaso=Object.keys(REP.c).map(k=>({name:k,r:REP.c[k]})).filter(x=>x.r.n>=2&&x.r.ok/x.r.n<.7)
+      .sort((a,b)=>a.r.ok/a.r.n-b.r.ok/b.r.n||b.r.n-a.r.n).slice(0,6);
+  }else{
+    const by={};Object.keys(REP.q).forEach(k=>{const r=REP.q[k];const s=by[r.s]||(by[r.s]={n:0,ok:0});s.n+=r.n;s.ok+=r.ok});
+    D.repaso=C.zones.filter(z=>by[z.id]&&by[z.id].n>=3&&by[z.id].ok/by[z.id].n<.7).map(z=>({name:z.name,r:by[z.id]}))
+      .sort((a,b)=>a.r.ok/a.r.n-b.r.ok/b.r.n);
+    const zn=id=>{const z=C.zones.find(x=>x.id===id);return z?z.name:''};
+    D.fallados=Object.keys(REP.q).map(k=>({k,r:REP.q[k]})).filter(x=>x.r.n>x.r.ok)
+      .sort((a,b)=>(b.r.n-b.r.ok)-(a.r.n-a.r.ok)||a.r.ok/a.r.n-b.r.ok/b.r.n||by[a.r.s].ok/by[a.r.s].n-by[b.r.s].ok/by[b.r.s].n).slice(0,5)
+      .map(x=>({txt:repCut(C.qText(x.k)||'(reto sin enunciado)',170),zone:zn(x.r.s),r:x.r}));
+  }
+  return D;
+}
+function repNoteData(){return `Zonas completadas y logros incluyen todo el progreso guardado en este navegador; los porcentajes cuentan solo los retos respondidos desde el ${repDate(REP.desde)}.`}
+function repHTML(){
+  const C=REPCFG,D=repData(),now=new Date().toISOString();
+  const li=a=>a.length?`<ul>${a.join('')}</ul>`:'';
+  const ses=REP.ses?`${REP.ses} (primera: ${repDate(REP.first)}; última: ${repDate(REP.last)})`:'todavía ninguna';
+  let rep;
+  if(!D.tot.n)rep='<p>Todavía no hay retos respondidos desde que se empezaron a registrar los datos.</p>';
+  else if(C.mode==='concept'){
+    rep=D.repaso.length?`<p>Conceptos con menos del 70 % de aciertos al primer intento (mínimo, 2 retos):</p>${li(D.repaso.map(x=>`<li><b>${repEsc(x.name)}</b>: ${repFrac(x.r)}</li>`))}`
+      :'<p>Con los datos actuales, ningún concepto baja del 70 % de aciertos al primer intento (mínimo, 2 retos).</p>';
+  }else{
+    rep=(D.repaso.length?`<p>${C.srcWords[1].charAt(0).toUpperCase()+C.srcWords[1].slice(1)} con menos del 70 % de aciertos al primer intento (mínimo, 3 retos):</p>${li(D.repaso.map(x=>`<li><b>${repEsc(x.name)}</b>: ${repFrac(x.r)}</li>`))}`
+      :`<p>Con los datos actuales, ninguna ${C.srcWords[0]} baja del 70 % de aciertos al primer intento (mínimo, 3 retos).</p>`)
+      +(D.fallados.length?`<p>Retos más fallados:</p><ol>${D.fallados.map(x=>`<li>«${repEsc(x.txt)}» <span class="rep-mut">(${repEsc(x.zone)}; ${x.r.n-x.r.ok} ${x.r.n-x.r.ok===1?'fallo':'fallos'} en ${x.r.n} ${x.r.n===1?'intento':'intentos'})</span></li>`).join('')}</ol>`:'<p>No hay retos fallados.</p>');
+  }
+  return `<div class="rep-doc">
+  <h2>Informe de progreso</h2>
+  <p class="rep-for">Para la familia o el profesorado de: <b>${repEsc(S.name||'')}</b></p>
+  <table class="rep-meta"><tr><th>Actividad</th><td>${repEsc(C.title)} · ${repEsc(C.subject)}, 5.º de primaria</td></tr>
+  <tr><th>Fecha del informe</th><td>${repDate(now)}</td></tr>
+  <tr><th>Datos</th><td>Datos registrados desde el ${repDate(REP.desde)}</td></tr>
+  <tr><th>Sesiones</th><td>${ses}</td></tr></table>
+  <h3>Zonas completadas: ${D.done.length} de ${C.zones.length}</h3>
+  ${D.done.length?li(D.done.map(x=>`<li>${repEsc(x.name)} (${repStars(x.stars)})</li>`)):'<p>Ninguna todavía.</p>'}
+  <h3>Aciertos al primer intento</h3>
+  <p><b>Total: ${D.tot.n?repFrac(D.tot):'sin datos'}</b></p>
+  <table class="rep-z">${D.zones.map(x=>`<tr><td>${repEsc(x.name)}</td><td class="rep-n">${x.r?repFrac(x.r):'<span class="rep-mut">sin datos</span>'}</td><td class="rep-b">${x.r?`<span class="rep-bar"><i style="width:${repPct(x.r)}%"></i></span>`:''}</td></tr>`).join('')}</table>
+  <h3>Logros</h3>${li(D.logros.map(t=>`<li>${repEsc(t)}</li>`))}
+  <h3>Conviene repasar</h3>${rep}
+  <p class="rep-note">${repEsc(repNoteData())} Una sesión es un periodo de juego; 30 minutos sin actividad inician una nueva.</p>
+  <p class="rep-note"><b>Datos guardados solo en este navegador; no se ha enviado nada a ningún servidor.</b></p>
+  </div>`;
+}
+function repText(){
+  const C=REPCFG,D=repData(),now=new Date().toISOString();const L=[];
+  L.push('INFORME DE PROGRESO','Para la familia o el profesorado de: '+(S.name||''),
+    'Actividad: '+C.title+' · '+C.subject+', 5.º de primaria','Fecha del informe: '+repDate(now),
+    'Datos registrados desde el '+repDate(REP.desde),
+    'Sesiones: '+(REP.ses?`${REP.ses} (primera: ${repDate(REP.first)}; última: ${repDate(REP.last)})`:'todavía ninguna'),'');
+  L.push(`ZONAS COMPLETADAS: ${D.done.length} de ${C.zones.length}`);
+  D.done.forEach(x=>L.push(`- ${x.name} (${repStars(x.stars)})`));if(!D.done.length)L.push('Ninguna todavía.');
+  L.push('','ACIERTOS AL PRIMER INTENTO','Total: '+(D.tot.n?repFrac(D.tot):'sin datos'));
+  D.zones.forEach(x=>L.push(`- ${x.name}: ${x.r?repFrac(x.r):'sin datos'}`));
+  L.push('','LOGROS');D.logros.forEach(t=>L.push('- '+t));
+  L.push('','CONVIENE REPASAR');
+  if(!D.tot.n)L.push('Todavía no hay retos respondidos desde que se empezaron a registrar los datos.');
+  else if(C.mode==='concept'){
+    if(D.repaso.length){L.push('Conceptos con menos del 70 % de aciertos al primer intento (mínimo, 2 retos):');D.repaso.forEach(x=>L.push(`- ${x.name}: ${repFrac(x.r)}`))}
+    else L.push('Con los datos actuales, ningún concepto baja del 70 % de aciertos al primer intento (mínimo, 2 retos).');
+  }else{
+    if(D.repaso.length){L.push(`${C.srcWords[1].charAt(0).toUpperCase()+C.srcWords[1].slice(1)} con menos del 70 % de aciertos al primer intento (mínimo, 3 retos):`);D.repaso.forEach(x=>L.push(`- ${x.name}: ${repFrac(x.r)}`))}
+    else L.push(`Con los datos actuales, ninguna ${C.srcWords[0]} baja del 70 % de aciertos al primer intento (mínimo, 3 retos).`);
+    if(D.fallados.length){L.push('Retos más fallados:');D.fallados.forEach((x,i)=>L.push(`${i+1}. «${x.txt}» (${x.zone}; ${x.r.n-x.r.ok} ${x.r.n-x.r.ok===1?'fallo':'fallos'} en ${x.r.n} ${x.r.n===1?'intento':'intentos'})`))}
+  }
+  L.push('',repNoteData(),'Datos guardados solo en este navegador; no se ha enviado nada a ningún servidor.');
+  if(/^https?:/.test(location.protocol))L.push('Actividad en línea: '+location.href.split('#')[0]);
+  return L.join('\n').replace(/ /g,' ');
+}
+function repCopyText(t){
+  const fb=()=>{try{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}};
+  if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).then(()=>true,()=>fb());
+  return Promise.resolve(fb());
+}
+function repCopy(){repCopyText(repText()).then(ok=>toast(ok?'Informe copiado. Ya puedes pegarlo en un mensaje o en un correo.':'No se ha podido copiar. Prueba con «Imprimir / Guardar PDF».'))}
+function repShare(){
+  const t=repText();
+  if(navigator.share){navigator.share({title:'Informe de progreso · '+REPCFG.title,text:t}).catch(e=>{if(!e||e.name!=='AbortError')repCopy()});return}
+  repCopyText(t).then(ok=>toast(ok?'Este navegador no permite compartir; el informe se ha copiado para que lo pegues donde quieras.':'Este navegador no permite compartir. Prueba con «Imprimir / Guardar PDF».'));
+}
+let repPrintAt=0;
+window.addEventListener('beforeprint',()=>{if(Date.now()-repPrintAt>3000)document.documentElement.classList.remove('rep-printing')});
+function repPrint(){
+  repPrintAt=Date.now();
+  let el=document.getElementById('repPrintBox');
+  if(!el){el=document.createElement('div');el.id='repPrintBox';document.body.appendChild(el)}
+  el.innerHTML=repHTML()+`<p class="rep-foot">${repEsc(REPCFG.title)} · © 2026 NietooteiN · CC BY-NC-SA 4.0</p>`;
+  const root=document.documentElement;root.classList.add('rep-printing');
+  const done=()=>{root.classList.remove('rep-printing');window.removeEventListener('afterprint',done)};
+  window.addEventListener('afterprint',done);
+  setTimeout(()=>window.print(),30);
+}
+function repOpen(){
+  showOv(`<div class="rep">
+   <p class="rep-kid">${REPCFG.kid()}</p>
+   ${repHTML()}
+   <div class="center rep-acts"><button class="btn" id="repShareB" type="button">Compartir</button><button class="btn ghost" id="repCopyB" type="button">Copiar texto</button><button class="btn ghost" id="repPrintB" type="button">Imprimir / Guardar PDF</button></div>
+   <div class="center"><button class="btn ghost" id="repClose" type="button">Cerrar</button></div>
+   <p class="rep-reset"><button class="rep-link" id="repReset" type="button">Borrar los datos del informe</button></p>
+  </div>`,true);
+  $('#repShareB').onclick=repShare;$('#repCopyB').onclick=repCopy;$('#repPrintB').onclick=repPrint;
+  $('#repClose').onclick=hideOv;
+  $('#repReset').onclick=()=>{
+    showOv(`<div class="rep"><h2>¿Borrar los datos del informe?</h2><p>Se borrarán los intentos, los aciertos y las sesiones registrados desde el ${repDate(REP.desde)}. El progreso del juego (estrellas, logros y nombre) no se toca.</p>
+    <div class="center"><button class="btn ghost" id="repNo" type="button">No, mejor no</button><button class="btn" id="repYes" type="button">Sí, borrar</button></div></div>`,true);
+    $('#repNo').onclick=repOpen;$('#repYes').onclick=()=>{REP=repNew();repSave();repOpen();toast('Datos del informe borrados.')};
+  };
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('repClose'))hideOv()});
 </script>
 </body>
 </html>
