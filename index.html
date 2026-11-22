@@ -96,6 +96,22 @@ const out=[];
   });
 });
 document.getElementById('lista').innerHTML=out.join('');
+
+/* =========================================================
+   ESTADÍSTICAS DE VISITAS (GoatCounter: anónimas y sin cookies)
+   Solo cuenta en nietootein.github.io (no en archivos locales ni en copias en otras webs).
+   Nunca se envían el nombre ni los resultados.
+   ========================================================= */
+const GC_URL='https://nietootein.goatcounter.com/count',GC_HOST='nietootein.github.io';
+function gcCount(p,t,ev){
+  try{
+    if(location.hostname!==GC_HOST)return;
+    const q=new URLSearchParams({p,t:t||document.title,s:[screen.width,screen.height,window.devicePixelRatio||1].join(','),rnd:Math.random().toString(36).slice(2)});
+    if(ev)q.set('e','true');else if(document.referrer)q.set('r',document.referrer);
+    new Image().src=GC_URL+'?'+q.toString();
+  }catch(e){}
+}
+gcCount(location.pathname);
 </script>
 </body>
 </html>

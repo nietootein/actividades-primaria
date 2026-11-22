@@ -979,7 +979,7 @@ function map(first){
   </section>`;
   $$('[data-z]').forEach(b=>b.onclick=()=>{const id=b.dataset.z;if(id==='boss'&&!open){toast('El Ascensor de Cristal funciona cuando tengas las cinco chocolatinas.');return}sfx.tap();start(id)});
   $('#chgName').onclick=()=>welcome();
-  $('#repBtn').onclick=repOpen;
+  $('#repBtn').onclick=()=>{gcRep('abierto');repOpen()};
 }
 
 /* =========================================================
@@ -1386,7 +1386,7 @@ function repHTML(){
   <h3>Logros</h3>${li(D.logros.map(t=>`<li>${repEsc(t)}</li>`))}
   <h3>Conviene repasar</h3>${rep}
   <p class="rep-note">${repEsc(repNoteData())} Una sesión es un periodo de juego; 30 minutos sin actividad inician una nueva.</p>
-  <p class="rep-note"><b>Datos guardados solo en este navegador; no se ha enviado nada a ningún servidor.</b></p>
+  <p class="rep-note"><b>Los resultados se guardan solo en este navegador y no se envían a ningún servidor.</b></p>
   </div>`;
 }
 function repText(){
@@ -1410,7 +1410,7 @@ function repText(){
     else L.push(`Con los datos actuales, ninguna ${C.srcWords[0]} baja del 70 % de aciertos al primer intento (mínimo, 3 retos).`);
     if(D.fallados.length){L.push('Retos más fallados:');D.fallados.forEach((x,i)=>L.push(`${i+1}. «${x.txt}» (${x.zone}; ${x.r.n-x.r.ok} ${x.r.n-x.r.ok===1?'fallo':'fallos'} en ${x.r.n} ${x.r.n===1?'intento':'intentos'})`))}
   }
-  L.push('',repNoteData(),'Datos guardados solo en este navegador; no se ha enviado nada a ningún servidor.');
+  L.push('',repNoteData(),'Los resultados se guardan solo en este navegador y no se envían a ningún servidor.');
   if(/^https?:/.test(location.protocol))L.push('Actividad en línea: '+location.href.split('#')[0]);
   return L.join('\n').replace(/ /g,' ');
 }
@@ -1445,7 +1445,7 @@ function repOpen(){
    <div class="center"><button class="btn ghost" id="repClose" type="button">Cerrar</button></div>
    <p class="rep-reset"><button class="rep-link" id="repReset" type="button">Borrar los datos del informe</button></p>
   </div>`,true);
-  $('#repShareB').onclick=repShare;$('#repCopyB').onclick=repCopy;$('#repPrintB').onclick=repPrint;
+  $('#repShareB').onclick=()=>{gcRep('compartido');repShare()};$('#repCopyB').onclick=()=>{gcRep('copiado');repCopy()};$('#repPrintB').onclick=()=>{gcRep('impreso');repPrint()};
   $('#repClose').onclick=hideOv;
   $('#repReset').onclick=()=>{
     showOv(`<div class="rep"><h2>¿Borrar los datos del informe?</h2><p>Se borrarán los intentos, los aciertos y las sesiones registrados desde el ${repDate(REP.desde)}. El progreso del juego (estrellas, logros y nombre) no se toca.</p>
@@ -1454,6 +1454,23 @@ function repOpen(){
   };
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('repClose'))hideOv()});
+
+/* =========================================================
+   ESTADÍSTICAS DE VISITAS (GoatCounter: anónimas y sin cookies)
+   Solo cuenta en nietootein.github.io (no en archivos locales ni en copias en otras webs).
+   Nunca se envían el nombre ni los resultados.
+   ========================================================= */
+const GC_URL='https://nietootein.goatcounter.com/count',GC_HOST='nietootein.github.io';
+function gcCount(p,t,ev){
+  try{
+    if(location.hostname!==GC_HOST)return;
+    const q=new URLSearchParams({p,t:t||document.title,s:[screen.width,screen.height,window.devicePixelRatio||1].join(','),rnd:Math.random().toString(36).slice(2)});
+    if(ev)q.set('e','true');else if(document.referrer)q.set('r',document.referrer);
+    new Image().src=GC_URL+'?'+q.toString();
+  }catch(e){}
+}
+gcCount(location.pathname);
+function gcRep(a){gcCount('informe-'+a+'-'+KEY.split('-')[0],'Informe '+a+' · '+REPCFG.subject,true)}
 </script>
 </body>
 </html>
